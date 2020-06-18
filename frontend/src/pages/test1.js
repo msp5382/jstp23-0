@@ -8,14 +8,14 @@ export default (props) => {
     <div>
       พ่องตาย
       <BaseLink router={router} routeName="index">
-        รืกำำำ
+        ไอควย หน้าหี
       </BaseLink>
       <div>{router.getState().name}</div>
       <div
         onClick={() => {
-          window.location = "/test1";
+          window.location = "/index";
         }}>
-        Test1 gogo
+        indexgogo
       </div>
     </div>
   );

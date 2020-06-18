@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./pages/index";
+import App from "./App";
 import { RouterProvider } from "react-router5";
 import createRouter from "./service/router";
 
