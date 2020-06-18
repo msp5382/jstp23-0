@@ -1,6 +1,6 @@
 import React from "react";
-import IndexPage from "../../pages/index";
-import Test1Page from "../../pages/test1";
+import IndexPage from "../pages/index";
+import Test1Page from "../pages/test1";
 /*
   วิธีการวาง Page และใช้ router นะครับ
   1.สร้าง page เป็น component ใน /page
