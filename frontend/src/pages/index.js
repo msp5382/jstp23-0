@@ -5,7 +5,7 @@ export default (props) => {
   const { router } = useRoute();
 
   return (
-    <div>
+    <div style={{ backgroundColor: "#000" }}>
       พ่องตาย
       <BaseLink router={router} routeName="index">
         รืกำำำ
