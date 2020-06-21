@@ -11,7 +11,7 @@ export default (props) => {
     <>
       <div>
         <div className="row justify-content-center">
-          <div class="col-lg-5 col-md-11 col-sm-11">
+          <div className="col-lg-5 col-md-11 col-sm-11">
             <div>{router.getState().component}</div>
           </div>
         </div>

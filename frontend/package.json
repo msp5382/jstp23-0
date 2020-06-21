@@ -7,13 +7,15 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "bootstrap": "^5.0.0-alpha1",
+    "firebase": "^7.15.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router5": "^8.0.1",
     "react-scripts": "3.4.1",
     "router5": "^8.0.1",
     "router5-plugin-browser": "^8.0.1",
-    "router5-plugin-logger": "^8.0.1"
+    "router5-plugin-logger": "^8.0.1",
+    "styled-components": "^5.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
