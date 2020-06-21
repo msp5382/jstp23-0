@@ -1,12 +1,73 @@
 import React from "react";
-import IndexPage from "../pages/index";
-import Test1Page from "../pages/test1";
 /*
   วิธีการวาง Page และใช้ router นะครับ
   1.สร้าง page เป็น component ใน /page
   2.import เข้ามา ละมาเพิ่ม { name: ชื่อ, path: พาร์ท , component: <คอมโพเน้น /> },
  */
+
+import IndexPage from "../pages/index";
+import LoginPage from "../pages/loginPage";
+
+import CharacterGenPage from "../pages/userZone/registerZone/characterGen";
+import CharacterEditPage from "../pages/userZone/registerZone/characterEdit";
+
+import HomePage from "../pages/userZone/home";
+import ChatPage from "../pages/userZone/chat";
+import QuestPage from "../pages/userZone/quest";
+import ViewQuestPage from "../pages/userZone/viewQuest";
+import ScoreBoardPage from "../pages/userZone/menu/scoreboard";
+import SettingsPage from "../pages/userZone/menu/settings";
+import HistoryPage from "../pages/userZone/menu/history";
+import HelpPage from "../pages/userZone/menu/help";
+
 export default [
   { name: "index", path: "/index", component: <IndexPage /> },
-  { name: "test1", path: "/test1", component: <Test1Page /> },
+  { name: "login", path: "/login", component: <LoginPage /> },
+  { name: "home", path: "/home", component: <HomePage />, needLogin: true },
+  { name: "chat", path: "/chat", component: <ChatPage />, needLogin: true },
+  { name: "quest", path: "/quest", component: <QuestPage />, needLogin: true },
+  {
+    name: "view_quest",
+    path: "/view_quest/:id",
+    component: <ViewQuestPage />,
+    needLogin: true,
+  },
+  {
+    name: "scoreboard",
+    path: "/scoreboard",
+    component: <ScoreBoardPage />,
+    needLogin: true,
+  },
+  {
+    name: "settings",
+    path: "/settings",
+    component: <SettingsPage />,
+    needLogin: true,
+  },
+  {
+    name: "history",
+    path: "/history",
+    component: <HistoryPage />,
+    needLogin: true,
+  },
+
+  {
+    name: "help",
+    path: "/help",
+    component: <HelpPage />,
+    needLogin: true,
+  },
+  {
+    name: "character_gen",
+    path: "/character_gen",
+    component: <CharacterGenPage />,
+    needLogin: true,
+  },
+  {
+    name: "character_edit",
+    path: "/character_edit",
+    component: <CharacterEditPage />,
+    needLogin: true,
+  },
+  ,
 ];
