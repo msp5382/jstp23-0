@@ -5,17 +5,12 @@ export default (props) => {
   const { router } = useRoute();
 
   return (
-    <div style={{ backgroundColor: "#000" }}>
-      พ่องตาย
-      <BaseLink router={router} routeName="index">
-        รืกำำำ
-      </BaseLink>
-      <div>{router.getState().name}</div>
-      <div
-        onClick={() => {
-          window.location = "/test1";
-        }}>
-        Test1 gogo
+    <div>
+      <div>PAGE :{router.getState().name}</div>
+      <div onClick={() => router.navigate("home")}>* Login แล้ว</div>
+      <div onClick={() => router.navigate("login")}>* ยังไม่ได้ Login</div>
+      <div onClick={() => router.navigate("character_gen")}>
+        * character build
       </div>
     </div>
   );
