@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { withRoute } from "react-router5";
 import Chat from "../../service/Chat";
 import Auth from "../../service/Auth";
+
+import { Navbar } from "../../component";
 class ChatPage extends React.Component {
   state = {
     textMessage: "",
@@ -22,6 +24,10 @@ class ChatPage extends React.Component {
   render() {
     return (
       <>
+        <Navbar
+          pageName="การตั้งค่า"
+          onGoBack={() => this.props.router.navigate("home")}
+        />
         <div>PAGE :{this.props.router.getState().name}</div>
         <div onClick={() => this.props.router.navigate("home")}>{"<BACK"}</div>
         {this.state.messages.map((d) => (
