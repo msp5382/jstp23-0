@@ -70,17 +70,18 @@ export default class Auth {
     const {
       name,
       email,
-      photoUrl,
+      photoURL,
       uid,
       displayName,
       emailVerified,
     } = firebase.auth().currentUser;
+
     localStorage.setItem(
       "JSTP_USER_DATA",
       JSON.stringify({
         name,
         email,
-        photoUrl,
+        photoURL,
         uid,
         emailVerified,
         displayName,
