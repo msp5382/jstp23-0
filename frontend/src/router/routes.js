@@ -15,6 +15,7 @@ import HomePage from "../pages/userZone/home";
 import ChatPage from "../pages/userZone/chat";
 import QuestPage from "../pages/userZone/quest";
 import ViewQuestPage from "../pages/userZone/viewQuest";
+import ChooseQuestPage from "../pages/userZone/chooseQuest";
 import ScoreBoardPage from "../pages/userZone/menu/scoreboard";
 import SettingsPage from "../pages/userZone/menu/settings";
 import HistoryPage from "../pages/userZone/menu/history";
@@ -69,5 +70,10 @@ export default [
     component: <CharacterEditPage />,
     needLogin: true,
   },
-  ,
+  {
+    name: "choose_quest",
+    path: "/choose_quest",
+    component: <ChooseQuestPage />,
+    needLogin: true,
+  },
 ];
