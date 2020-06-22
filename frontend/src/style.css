@@ -1,8 +1,14 @@
+@font-face {
+  src: url("/assets/GraphikAnuparp.woff2");
+  font-family: GraphikAnuparp;
+}
+
 html,
 body {
   max-width: 100%;
   overflow-x: hidden;
-  font-family: "Sarabun";
-  background-color: #be9a6d;
+  font-family: "GraphikAnuparp";
+  background-color: hsl(33, 38%, 59%);
   color: #442e15;
+  overflow-y: hidden;
 }

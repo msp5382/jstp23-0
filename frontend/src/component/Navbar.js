@@ -17,6 +17,7 @@ const NavFilled = styled.div`
   border-bottom: 3px solid black;
   display: flex;
   flex-wrap: wrap;
+  font-size: 20px;
 `;
 const Space = styled.div`
   height: 50px;
@@ -42,12 +43,15 @@ const Image = styled.img`
 const BackButton = styled.img`
   width: 70px;
 `;
+
+let CachedImage;
 export default (props) => {
   const [profileImgURL, setProfileImgURL] = useState(
-    "/assets/example_user.png"
+    CachedImage ?? "/assets/example_user.png"
   );
   useEffect(() => {
     new UserProfile().getUserProfileImg().then((u) => {
+      CachedImage = u;
       setProfileImgURL(u);
     });
   }, []);

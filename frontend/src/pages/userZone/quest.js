@@ -1,30 +1,36 @@
 import React from "react";
 import { BaseLink, useRoute } from "react-router5";
-
+import { Navbar, Body } from "../../component";
 export default (props) => {
   const { router } = useRoute();
 
   return (
     <div>
-      <div>
-        PAGE :{router.getState().name}
-        <br />
-      </div>
-      <div onClick={() => router.navigate("home")}>{"<BACK"}</div>
-      TODO: fetch daily quest and show here
-      <br />
-      <div onClick={() => router.navigate("view_quest", { id: 1234 })}>
-        <br />
-        ดูเควสหมายเลข 1234
-      </div>
-      <div onClick={() => router.navigate("view_quest", { id: 2345 })}>
-        <br />
-        ดูเควสหมายเลข 2345
-      </div>
-      <div onClick={() => router.navigate("view_quest", { id: 9384 })}>
-        <br />
-        ดูเควสหมายเลข 9384
-      </div>
+      <Navbar
+        onGoBack={() => router.navigate("home")}
+        pageName={"เควส"}></Navbar>
+      <Body>
+        <div onClick={() => router.navigate("choose_quest", { location: 1 })}>
+          <br />
+          location1
+        </div>
+        <div onClick={() => router.navigate("choose_quest", { location: 2 })}>
+          <br />
+          location2
+        </div>
+        <div onClick={() => router.navigate("choose_quest", { location: 3 })}>
+          <br />
+          location3
+        </div>
+        <div onClick={() => router.navigate("choose_quest", { location: 4 })}>
+          <br />
+          location4
+        </div>
+        <div onClick={() => router.navigate("choose_quest", { location: 5 })}>
+          <br />
+          location5
+        </div>
+      </Body>
     </div>
   );
 };
