@@ -17,6 +17,7 @@ const NavFilled = styled.div`
   border-bottom: 3px solid black;
   display: flex;
   flex-wrap: wrap;
+  font-size: 20px;
 `;
 const Space = styled.div`
   height: 50px;
