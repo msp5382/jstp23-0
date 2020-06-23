@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { withRoute } from "react-router5";
 import Chat from "../../service/Chat";
 import Auth from "../../service/Auth";
+import UserProfile from "../../service/UserProfile";
 
 import { Navbar } from "../../component";
 class ChatPage extends React.Component {
@@ -19,7 +20,14 @@ class ChatPage extends React.Component {
     this.chat.listenToMessage((d) => {
       console.log(d);
       this.setMessages(d);
+    
     });
+    this.userprofile = new UserProfile().getUser();
+    this.name = this.userprofile.displayName;
+    this.profilePromise = new UserProfile().getUserProfileImg(this.userprofile.uid).then(async (result)=>{
+      this.profileImg= await result;
+    });
+    
   }
   render() {
     return (
@@ -28,7 +36,7 @@ class ChatPage extends React.Component {
           pageName="การตั้งค่า"
           onGoBack={() => this.props.router.navigate("home")}
         />
-        <div>PAGE :{this.props.router.getState().name}</div>
+        <div style={{marginTop:60}}>PAGE :{this.props.router.getState().name}</div>
         <div onClick={() => this.props.router.navigate("home")}>{"<BACK"}</div>
         {this.state.messages.map((d) => (
           <div>
@@ -44,8 +52,8 @@ class ChatPage extends React.Component {
           onClick={() =>
             this.chat.sendMessage(
               this.uData.uid,
-              "meen",
-              "",
+              this.name,
+              this.profileImg,
               this.state.textMessage
             )
           }>
