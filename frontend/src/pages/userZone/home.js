@@ -26,12 +26,18 @@ const MenuIcon = styled.img`
   width: 100px;
   position: absolute;
   margin-top: ${(props) => props.margin}px;
+  &:hover {
+    opacity: 0.5;
+  }
 `;
 
 const MenuIconRight = styled.img`
   width: 100px;
   position: absolute;
   margin-top: ${(props) => props.margin}px;
+  &:hover {
+    opacity: 0.5;
+  }
 `;
 const Ground = styled.img`
   width: 100%;

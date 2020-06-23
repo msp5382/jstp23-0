@@ -42,6 +42,9 @@ const Image = styled.img`
 `;
 const BackButton = styled.img`
   width: 70px;
+  &:hover {
+    opacity: 0.5;
+  }
 `;
 
 let CachedImage;
@@ -79,7 +82,6 @@ export default (props) => {
               <div className="row d-flex justify-content-start">
                 <div
                   style={{
-                    height: 100,
                     width: 130,
                     marginTop: "-60px",
                     marginLeft: "10px",

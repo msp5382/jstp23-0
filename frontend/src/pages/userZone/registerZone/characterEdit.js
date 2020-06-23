@@ -1,6 +1,16 @@
 import React, { useState } from "react";
 import { withRoute } from "react-router5";
 import UserProfile from "../../../service/UserProfile";
+import styled from "styled-components";
+import { Navbar, Body, TextBox, Button } from "../../../component";
+const PageBody = styled(Body)`
+  padding-left: 15px;
+  padding-right: 15px;
+`;
+
+const NextButton = styled(Button)`
+  margin-left: auto;
+`;
 class Page extends React.Component {
   state = {
     username: "",
@@ -12,11 +22,16 @@ class Page extends React.Component {
   render() {
     return (
       <>
-        <div>CharacterEdit : {this.state.username}</div>
-        <div onClick={() => this.props.router.navigate("character_gen")}>
-          * back
-        </div>
-        <div onClick={() => this.props.router.navigate("home")}>* next</div>
+        <Navbar
+          onGoBack={() => this.props.router.navigate("character_gen")}
+          pageName="สร้างตัวละคร"
+        />
+        <PageBody>
+          <NextButton
+            style={{ marginLeft: "auto" }}
+            text="ถัดไป >"
+            onClick={() => this.props.router.navigate("home")}></NextButton>
+        </PageBody>
       </>
     );
   }
