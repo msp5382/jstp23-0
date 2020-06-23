@@ -58,7 +58,6 @@ class ChatPage extends React.Component {
       </div>
     }
   }
-  
 
   render() {
     return (
@@ -74,7 +73,7 @@ class ChatPage extends React.Component {
             {this.wordPosition(d)}
             
           </div>
-        ))}
+        )).reverse()}
         <form onSubmit={(e)=>{
           e.preventDefault();
           this.sendData()}}>
