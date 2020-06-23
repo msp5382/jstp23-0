@@ -63,12 +63,16 @@ class ChatPage extends React.Component {
             
           </div>
         ))}
+        <form onSubmit={(e)=>{
+          e.preventDefault();
+          this.sendData()}}>
         <input
           value={this.state.textMessage}
           onChange={(e) => this.setTextMessage(e.target.value)}
           type="text"
         />
-        <h3 onClick={this.sendData} onKeyDown={this.sendData}>Send Message</h3>
+          <h3 onClick={this.sendData} onKeyDownCapture={this.sendData}>Send Message</h3>
+        </form>
         TODO: Connect this to firestore Chat
       </>
     );
