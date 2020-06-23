@@ -31,7 +31,7 @@ class ChatPage extends React.Component {
     
   }
 
-    sendData = () =>{
+    sendData = () =>{ //ส่งไฟลฺ์แชทเข้า Database
     if(this.state.textMessage!="")
     this.chat.sendMessage(
     this.uData.uid,
@@ -43,8 +43,21 @@ class ChatPage extends React.Component {
       textMessage:""
     })
   }
-
   
+    wordPosition = (d) =>{ //จัดแยกซ้ายขวาตาม UID
+    if(d.sender == this.uData.uid){
+      return <div style={{textAlign:"right"}}>
+        <img src={d.profilePic} style={{width:40,borderRadius:100}}/>
+        {d.name} : {d.message} 
+      </div>
+    }
+    else{
+      return <div>
+        <img src={d.profilePic} style={{width:40,borderRadius:100}}/>
+        {d.name} : {d.message} 
+      </div>
+    }
+  }
 
   render() {
     return (
@@ -57,12 +70,10 @@ class ChatPage extends React.Component {
         <div onClick={() => this.props.router.navigate("home")}>{"<BACK"}</div>
         {this.state.messages.map((d) => (
           <div>
-            <img src={d.profilePic} style={{width:40,borderRadius:100}}/>
-          
-            {d.name} : {d.message} 
+            {this.wordPosition(d)}
             
           </div>
-        ))}
+        )).reverse()}
         <form onSubmit={(e)=>{
           e.preventDefault();
           this.sendData()}}>
@@ -71,9 +82,8 @@ class ChatPage extends React.Component {
           onChange={(e) => this.setTextMessage(e.target.value)}
           type="text"
         />
-          <h3 onClick={this.sendData} onKeyDownCapture={this.sendData}>Send Message</h3>
+          <span onClick={this.sendData} onKeyDownCapture={this.sendData}>Send Message</span>
         </form>
-        TODO: Connect this to firestore Chat
       </>
     );
   }
