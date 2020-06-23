@@ -25,7 +25,7 @@ class ChatPage extends React.Component {
     return (
       <>
         <Navbar
-          pageName="การตั้งค่า"
+          pageName="แชท"
           onGoBack={() => this.props.router.navigate("home")}
         />
         <div>PAGE :{this.props.router.getState().name}</div>
