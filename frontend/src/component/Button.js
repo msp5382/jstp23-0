@@ -10,6 +10,9 @@ const Wrap = styled.div`
   border-right: 4px solid #d3ba8d;
   border-left: 4px solid #e9d3a6;
   cursor: pointer;
+  &:hover {
+    opacity: 0.5;
+  }
 `;
 
 export default (props) => {
