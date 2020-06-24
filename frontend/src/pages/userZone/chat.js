@@ -20,44 +20,48 @@ class ChatPage extends React.Component {
     this.chat.listenToMessage((d) => {
       console.log(d);
       this.setMessages(d);
-    
     });
     this.userprofile = new UserProfile().getUser();
     this.name = this.userprofile.displayName;
-    this.profilePromise = new UserProfile().getUserProfileImg(this.userprofile.uid).then(async (result)=>{
-      this.profileImg= await result;
-    });
-
-    
+    this.profilePromise = new UserProfile()
+      .getUserProfileImg(this.userprofile.uid)
+      .then(async (result) => {
+        this.profileImg = await result;
+      });
   }
 
-    sendData = () =>{ //ส่งไฟลฺ์แชทเข้า Database
-    if(this.state.textMessage!="")
-    this.chat.sendMessage(
-    this.uData.uid,
-    this.name,
-    this.profileImg,
-    this.state.textMessage
-    )
+  sendData = () => {
+    //ส่งไฟลฺ์แชทเข้า Database
+    if (this.state.textMessage != "")
+      this.chat.sendMessage(
+        this.uData.uid,
+        this.name,
+        this.profileImg,
+        this.state.textMessage
+      );
     this.setState({
-      textMessage:""
-    })
-  }
-  
-    wordPosition = (d) =>{ //จัดแยกซ้ายขวาตาม UID
-    if(d.sender == this.uData.uid){
-      return <div style={{textAlign:"right"}}>
-        <img src={d.profilePic} style={{width:40,borderRadius:100}}/>
-        {d.name} : {d.message} 
-      </div>
+      textMessage: "",
+    });
+  };
+
+  wordPosition = (d) => {
+    //จัดแยกซ้ายขวาตาม UID
+    if (d.sender == this.uData.uid) {
+      return (
+        <div style={{ textAlign: "right" }}>
+          <img src={d.profilePic} style={{ width: 40, borderRadius: 100 }} />
+          {d.name} : {d.message}
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <img src={d.profilePic} style={{ width: 40, borderRadius: 100 }} />
+          {d.name} : {d.message}
+        </div>
+      );
     }
-    else{
-      return <div>
-        <img src={d.profilePic} style={{width:40,borderRadius:100}}/>
-        {d.name} : {d.message} 
-      </div>
-    }
-  }
+  };
 
   render() {
     return (
@@ -66,23 +70,26 @@ class ChatPage extends React.Component {
           pageName="แชท"
           onGoBack={() => this.props.router.navigate("home")}
         />
-        <div style={{marginTop:60}}>PAGE :{this.props.router.getState().name}</div>
+        <div style={{ marginTop: 60 }}>
+          PAGE :{this.props.router.getState().name}
+        </div>
         <div onClick={() => this.props.router.navigate("home")}>{"<BACK"}</div>
-        {this.state.messages.map((d) => (
-          <div>
-            {this.wordPosition(d)}
-            
-          </div>
-        )).reverse()}
-        <form onSubmit={(e)=>{
-          e.preventDefault();
-          this.sendData()}}>
-        <input
-          value={this.state.textMessage}
-          onChange={(e) => this.setTextMessage(e.target.value)}
-          type="text"
-        />
-          <span onClick={this.sendData} onKeyDownCapture={this.sendData}>Send Message</span>
+        {this.state.messages
+          .map((d) => <div>{this.wordPosition(d)}</div>)
+          .reverse()}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            this.sendData();
+          }}>
+          <input
+            value={this.state.textMessage}
+            onChange={(e) => this.setTextMessage(e.target.value)}
+            type="text"
+          />
+          <span onClick={this.sendData} onKeyDownCapture={this.sendData}>
+            Send Message
+          </span>
         </form>
       </>
     );
