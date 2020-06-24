@@ -5,6 +5,8 @@ import React from "react";
   2.import เข้ามา ละมาเพิ่ม { name: ชื่อ, path: พาร์ท , component: <คอมโพเน้น /> },
  */
 
+import AdminPage from "../pages/adminZone/admin";
+
 import IndexPage from "../pages/index";
 import LoginPage from "../pages/loginPage";
 
@@ -22,6 +24,14 @@ import HistoryPage from "../pages/userZone/menu/history";
 import HelpPage from "../pages/userZone/menu/help";
 
 export default [
+  {
+    name: "admin",
+    path: "/admin_dash",
+    component: <AdminPage />,
+    needLogin: true,
+    admin: true,
+  },
+
   { name: "index", path: "/index", component: <IndexPage /> },
   { name: "login", path: "/login", component: <LoginPage /> },
   { name: "home", path: "/home", component: <HomePage />, needLogin: true },

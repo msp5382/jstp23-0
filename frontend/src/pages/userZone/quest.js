@@ -1,34 +1,73 @@
-import React from "react";
-import { BaseLink, useRoute } from "react-router5";
+import React, { useEffect, useState } from "react";
+import { useRoute } from "react-router5";
 import { Navbar, Body } from "../../component";
+import styled from "styled-components";
+import Game from "../../service/Game";
+const Location = styled.img`
+  max-height: 200px;
+  margin-top: auto;
+  margin-bottom: auto;
+  &:hover {
+    opacity: 0.5;
+  }
+`;
 export default (props) => {
   const { router } = useRoute();
-
+  const [userTime, setTime] = useState("");
+  useEffect(() => {
+    const f = async () => {
+      const { time } = await new Game().getMyMeta();
+      console.log("found time", time);
+      setTime(time);
+    };
+    f();
+  }, []);
   return (
     <div>
       <Navbar
         onGoBack={() => router.navigate("home")}
         pageName={"เควส"}></Navbar>
       <Body>
-        <div onClick={() => router.navigate("choose_quest", { location: 1 })}>
-          <br />
-          location1
+        <div className="row">
+          <div class="col d-flex justify-content-center">
+            <Location
+              onClick={() => router.navigate("choose_quest", { location: 1 })}
+              src={`/assets/location/${userTime}0.png`}
+              className="img-fluid"
+            />
+          </div>
+          <div class="col d-flex justify-content-center">
+            <Location
+              onClick={() => router.navigate("choose_quest", { location: 2 })}
+              src={`/assets/location/${userTime}1.png`}
+              className="img-fluid"
+            />
+          </div>
         </div>
-        <div onClick={() => router.navigate("choose_quest", { location: 2 })}>
-          <br />
-          location2
+        <div className="row">
+          <div class="col d-flex justify-content-center">
+            <Location
+              onClick={() => router.navigate("choose_quest", { location: 3 })}
+              src={`/assets/location/${userTime}2.png`}
+              className="img-fluid"
+            />
+          </div>
+          <div class="col d-flex justify-content-center">
+            <Location
+              onClick={() => router.navigate("choose_quest", { location: 4 })}
+              src={`/assets/location/${userTime}3.png`}
+              className="img-fluid"
+            />
+          </div>
         </div>
-        <div onClick={() => router.navigate("choose_quest", { location: 3 })}>
-          <br />
-          location3
-        </div>
-        <div onClick={() => router.navigate("choose_quest", { location: 4 })}>
-          <br />
-          location4
-        </div>
-        <div onClick={() => router.navigate("choose_quest", { location: 5 })}>
-          <br />
-          location5
+        <div className="row justify-content-center">
+          <div class="col d-flex justify-content-center">
+            <Location
+              onClick={() => router.navigate("choose_quest", { location: 5 })}
+              src={`/assets/location/${userTime}4.png`}
+              className="img-fluid"
+            />
+          </div>
         </div>
       </Body>
     </div>

@@ -1,9 +1,15 @@
-import React from "react";
-import { BaseLink, useRoute } from "react-router5";
-
+import React, { useEffect } from "react";
+import { useRoute } from "react-router5";
+import Game from "../../../service/Game";
 export default (props) => {
   const { router } = useRoute();
-
+  useEffect(async () => {
+    console.log(await new Game().getMyMeta());
+    //new Game().setMyMeta({
+    //  time: "M",
+    //  subTime: "A0",
+    //});
+  }, []);
   return (
     <div>
       <div>PAGE :{router.getState().name}</div>
