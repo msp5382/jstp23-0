@@ -3,6 +3,7 @@ import { withRoute } from "react-router5";
 import Chat from "../../service/Chat";
 import Auth from "../../service/Auth";
 import UserProfile from "../../service/UserProfile";
+import MyCSS from "../../style.css";
 
 import { Navbar, Button } from "../../component";
 class ChatPage extends React.Component {
@@ -49,14 +50,15 @@ class ChatPage extends React.Component {
     if (d.sender == this.uData.uid) {
       return (
         <div style={{ textAlign: "right" }}>
-          <img src={d.profilePic} style={{ width: 40, borderRadius: 100 }} />
-          {d.name} : {d.message}
+          
+          {d.message} : {d.name}
+          <img src={d.profilePic} style={{ width: 40, borderRadius: 100 ,marginBottom:8,marginLeft:5}} />
         </div>
       );
     } else {
       return (
         <div>
-          <img src={d.profilePic} style={{ width: 40, borderRadius: 100 }} />
+          <img src={d.profilePic} style={{ width: 40, borderRadius: 100 ,marginBottom:8,marginRight:5}} />
           {d.name} : {d.message}
         </div>
       );
@@ -70,19 +72,20 @@ class ChatPage extends React.Component {
           pageName="แชท"
           onGoBack={() => this.props.router.navigate("home")}
         />
-        <div style={{ marginTop: 60 }}>
+        <div style={{ marginLeft:10,marginRight:10,marginTop: 60 ,marginBottom:60,height : 500, overflowY : "scroll",overflowX : "hidden",scrollbarColor : "red"}}>
           PAGE :{this.props.router.getState().name}
-        </div>
-        <div onClick={() => this.props.router.navigate("home")}>{"<BACK"}</div>
-        {this.state.messages
+        
+          <div onClick={() => this.props.router.navigate("home")}>{"<BACK"}</div>
+          {this.state.messages
           .map((d) => <div>{this.wordPosition(d)}</div>)
           .reverse()}
-        <form
-          onSubmit={(e) => {
+        </div>
+         <form style = {{textAlign : "center"}}
+            onSubmit={(e) => {
             e.preventDefault();
             this.sendData();
           }}>
-          <input
+          <input style = {{marginRight : 8}}
             value={this.state.textMessage}
             onChange={(e) => this.setTextMessage(e.target.value)}
             type="text"
@@ -91,6 +94,7 @@ class ChatPage extends React.Component {
             Send Message
           </span>
         </form>
+        
       </>
     );
   }

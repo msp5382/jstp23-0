@@ -13,3 +13,7 @@ body {
   overflow-y: hidden;
   touch-action: none;
 }
+
+::-webkit-scrollbar{
+  display: none;
+}
