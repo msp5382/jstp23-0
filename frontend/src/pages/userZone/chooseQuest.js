@@ -82,7 +82,7 @@ const QuestChoice = (props) => {
           QUEST
         </QuestBadge>
 
-        <div class="col">
+        <div className="col">
           <Name color="#508497">{props.text}</Name>
         </div>
       </QuestBox>
@@ -101,7 +101,7 @@ const QuestChoice = (props) => {
           QUEST
         </QuestBadge>
 
-        <div class="col">
+        <div className="col">
           <Name color="#5b927a">{props.text}</Name>
         </div>
       </QuestBox>
@@ -110,12 +110,12 @@ const QuestChoice = (props) => {
 };
 export default (props) => {
   const { router } = useRoute();
-
+  console.log();
   return (
     <div>
       <Navbar
         onGoBack={() => router.navigate("quest")}
-        pageName={"เลือกเควส"}></Navbar>
+        pageName={"เลือกเควส " + router.getState().params.location}></Navbar>
       <PageBody>
         <QuestChoice main router={router} id={123} text="เควส" />
         <QuestChoice router={router} id={123} text="เควส" />

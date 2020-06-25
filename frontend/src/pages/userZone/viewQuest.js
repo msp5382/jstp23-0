@@ -8,7 +8,7 @@ export default (props) => {
     <div>
       <Navbar
         onGoBack={() => router.navigate("choose_quest")}
-        pageName={"เควส"}></Navbar>
+        pageName={""}></Navbar>
       <Body></Body>
       <div>PAGE :{router.getState().name}</div>
       <div>VIEWING :{router.getState().params.id}</div>

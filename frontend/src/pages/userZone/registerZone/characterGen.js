@@ -28,9 +28,9 @@ class Page extends React.Component {
       <>
         <Navbar pageName="สร้างตัวละคร" />
         <PageBody>
-          <div class="row mt-1">
-            <div class="col-lg-2 col-md-3 pt-2">ชื่อ:</div>
-            <div class="col">
+          <div className="row mt-1">
+            <div className="col-lg-2 col-md-3 pt-2">ชื่อ:</div>
+            <div className="col">
               <TextBox
                 className="form-control"
                 type="text"
@@ -39,9 +39,9 @@ class Page extends React.Component {
               />
             </div>
           </div>
-          <div class="row mt-1">
-            <div class="col-lg-2 col-md-3 pt-2">รูปโปรไฟล์:</div>
-            <div class="col">
+          <div className="row mt-1">
+            <div className="col-lg-2 col-md-3 pt-2">รูปโปรไฟล์:</div>
+            <div className="col">
               <ImageUploadButton text="^ อัพโหลดรูปโปรไฟล์">
                 <ImageUploadInput type="file" />{" "}
               </ImageUploadButton>
