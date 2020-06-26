@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRoute } from "react-router5";
 import { Navbar, Body } from "../../component";
 import styled from "styled-components";
+import Game from "../../service/Game";
 const QuestBox = styled.div`
   border: 7px solid #281d1d;
   position: relative;
@@ -13,6 +14,13 @@ const QuestBox = styled.div`
   &:hover {
     opacity: 0.5;
   }
+`;
+
+const Trunk = styled.div`
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 const PageBody = styled(Body)`
   padding-left: 30px;
@@ -67,11 +75,23 @@ const Name = styled.div`
   padding: 10px;
 `;
 
+const Desc = styled.div`
+  width: 100%;
+  max-height: 32px;
+  overflow: hidden;
+  padding: 10px;
+`;
+
 const QuestChoice = (props) => {
   if (props.main) {
     return (
       <QuestBox
-        onClick={() => props.router.navigate("view_quest", { id: props.id })}>
+        onClick={() =>
+          props.router.navigate("view_quest", {
+            id: props.id,
+            lastLocat: props.location,
+          })
+        }>
         <QuestTopLeftCorner src="/assets/questBox/topLeft.png" />
         <QuestBottomLeftCorner src="/assets/questBox/bottomLeft.png" />
         <QuestTopRightCorner src="/assets/questBox/topRight.png" />
@@ -82,8 +102,9 @@ const QuestChoice = (props) => {
           QUEST
         </QuestBadge>
 
-        <div class="col">
+        <div className="col">
           <Name color="#508497">{props.text}</Name>
+          <Desc>{props.description}</Desc>
         </div>
       </QuestBox>
     );
@@ -101,7 +122,7 @@ const QuestChoice = (props) => {
           QUEST
         </QuestBadge>
 
-        <div class="col">
+        <div className="col">
           <Name color="#5b927a">{props.text}</Name>
         </div>
       </QuestBox>
@@ -110,15 +131,57 @@ const QuestChoice = (props) => {
 };
 export default (props) => {
   const { router } = useRoute();
+  const [questData, setQuestData] = useState([]);
+  console.log();
+  useEffect(() => {
+    let f = async () => {
+      console.log(await new Game().getMyMeta());
+      console.log(await new Game().getMyQuest());
 
+      console.log(
+        await new Game().setMyQuest({
+          questData: [
+            {
+              id: 123,
+              name: "เควส #1",
+              description:
+                "ไมรัสเด็กอายุ 8 ขวบ น่าตาเฉลียวฉลาดและน่าเอ็นดู วันนี้คือวันเกิดของเขาและคุณได้บังเอิญพบกับงานเลี้ยงเล็กๆในห้องทำงานของพ่อเขา ในมือของคุณมีหนังสือเล่มหนึ่งและนั่นคงจะเป็นสิ่งสุดท้ายที่ควรจะเป็นของขวัญ เพียงแต่คุณไม่มีอะไรอย่างอื่นเลยและเวลางานจะเริ่มต้นแล้ว",
+            },
+            {
+              id: 323,
+              name: "เควส #2",
+              description:
+                "เวทย์มนต์คือสิ่งมหัศจรรย์ และนั่นทำให้ทุกคนเชื่อว่าเรามีอำนาจ มันทำให้อุปทานการซื้อขายสูงขึ้นจากการจัดการผังเมืองในรูปแบบที่เราเป็นไปในการถ่วงดุล คุณว่าไหมล่ะ? ",
+            },
+            {
+              id: 423,
+              name: "เควส #3",
+              description:
+                "เทคโนโลยีคือสิ่งที่จะพาพวกเราเข้าสู่ยุคใหม่ ผมว่าเครื่องจักรไอน้ำที่ผมประดิษฐ์ขึ้นมานี้จะเป็นประวัติศาสตร์หน้าใหม่ ที่เวทย์มนต์ก็สู้ไม่ได้ คุณว่าไหมล่ะ?",
+            },
+          ],
+        })
+      );
+      setQuestData((await new Game().getMyQuest()).questData);
+    };
+    f();
+  }, []);
   return (
     <div>
       <Navbar
         onGoBack={() => router.navigate("quest")}
-        pageName={"เลือกเควส"}></Navbar>
+        pageName={"เลือกเควส " + router.getState().params.location}></Navbar>
       <PageBody>
-        <QuestChoice main router={router} id={123} text="เควส" />
-        <QuestChoice router={router} id={123} text="เควส" />
+        {questData.map((q) => (
+          <QuestChoice
+            main
+            location={router.getState().params.location}
+            router={router}
+            id={q.id}
+            text={q.name}
+            description={q.description}
+          />
+        ))}
       </PageBody>
     </div>
   );

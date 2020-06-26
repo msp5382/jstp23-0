@@ -31,7 +31,7 @@ export default (props) => {
     <>
       <Navbar pageName="การตั้งค่า" onGoBack={() => router.navigate("home")} />
       <Body>
-        <div class="row justify-content-center">
+        <div className="row justify-content-center">
           <div style={{ width: 100 }}>
             <img
               src={picture}
@@ -53,8 +53,8 @@ export default (props) => {
           </div>
         </div>
         <div className="row mt-3 justify-content-center">
-          <div class="col"></div>
-          <div class="row">
+          <div className="col"></div>
+          <div className="row">
             <div className="col-md-2 col-sm-2">Name:</div>
             <div className="col">
               <TextBox
@@ -65,7 +65,7 @@ export default (props) => {
               />
             </div>
           </div>
-          <div class="col"></div>
+          <div className="col"></div>
         </div>
 
         <div></div>
@@ -74,7 +74,7 @@ export default (props) => {
         username != undefined &&
         username != null &&
         username != "" ? (
-          <div class="row justify-content-end mr-4 mt-2">
+          <div className="row justify-content-end mr-4 mt-2">
             <Button
               onClick={() => {
                 User.setUsername(username).then(() => alert("บันทึกแล้ว!"));

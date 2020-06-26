@@ -97,7 +97,7 @@ export default (props) => {
             )}
           </div>
         </div>
-        <div class="row"></div>
+        <div className="row"></div>
       </NavPos>
       <Space />
     </>

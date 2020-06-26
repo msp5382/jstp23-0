@@ -26,17 +26,17 @@ export default (props) => {
     <div>
       <Navbar
         onGoBack={() => router.navigate("home")}
-        pageName={"เควส"}></Navbar>
+        pageName={"เลือกสถานที่"}></Navbar>
       <Body>
         <div className="row">
-          <div class="col d-flex justify-content-center">
+          <div className="col d-flex justify-content-center">
             <Location
               onClick={() => router.navigate("choose_quest", { location: 1 })}
               src={`/assets/location/${userTime}0.png`}
               className="img-fluid"
             />
           </div>
-          <div class="col d-flex justify-content-center">
+          <div className="col d-flex justify-content-center">
             <Location
               onClick={() => router.navigate("choose_quest", { location: 2 })}
               src={`/assets/location/${userTime}1.png`}
@@ -45,14 +45,14 @@ export default (props) => {
           </div>
         </div>
         <div className="row">
-          <div class="col d-flex justify-content-center">
+          <div className="col d-flex justify-content-center">
             <Location
               onClick={() => router.navigate("choose_quest", { location: 3 })}
               src={`/assets/location/${userTime}2.png`}
               className="img-fluid"
             />
           </div>
-          <div class="col d-flex justify-content-center">
+          <div className="col d-flex justify-content-center">
             <Location
               onClick={() => router.navigate("choose_quest", { location: 4 })}
               src={`/assets/location/${userTime}3.png`}
@@ -61,7 +61,7 @@ export default (props) => {
           </div>
         </div>
         <div className="row justify-content-center">
-          <div class="col d-flex justify-content-center">
+          <div className="col d-flex justify-content-center">
             <Location
               onClick={() => router.navigate("choose_quest", { location: 5 })}
               src={`/assets/location/${userTime}4.png`}

@@ -89,9 +89,9 @@ export default (props) => {
           <div className="col"></div>
           <div className="col">
             <div className="row">
-              <div class="col"></div>
-              <div class="col-sm-2  col-lg-8 col-md-6">
-                <div class="row ">
+              <div className="col"></div>
+              <div className="col-sm-2  col-lg-8 col-md-6">
+                <div className="row ">
                   <RightMenu src="/assets/menu/homeRightMenu.png" />
 
                   <MenuIconRight
