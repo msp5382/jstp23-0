@@ -13,15 +13,15 @@ class ChatPage extends React.Component {
   };
   setTextMessage = (m) => this.setState({ textMessage: m });
   setMessages = (m) => this.setState({ messages: m });
-
   componentDidMount() {
     this.CurrentAuth = new Auth();
     this.uData = this.CurrentAuth.getUserData();
     this.chat = new Chat();
+    this.amount = 60;
     this.chat.listenToMessage((d) => {
       console.log(d);
       this.setMessages(d);
-    });
+    },this.amount);
     this.userprofile = new UserProfile().getUser();
     this.name = this.userprofile.displayName;
     this.profilePromise = new UserProfile()
@@ -65,6 +65,14 @@ class ChatPage extends React.Component {
     }
   };
 
+  moreMessage = () =>{
+    this.amount+=60;
+    console.log("chat = ",this.amount);
+    this.chat.listenToMessage((d) => {
+      console.log(d);
+      this.setMessages(d);
+    },this.amount);
+  }
   render() {
     return (
       <>
@@ -76,6 +84,7 @@ class ChatPage extends React.Component {
           PAGE :{this.props.router.getState().name}
         
           <div onClick={() => this.props.router.navigate("home")}>{"<BACK"}</div>
+          <h2 style={{textAlign:"center"}} onClick = {this.moreMessage}>Load More...</h2>
           {this.state.messages
           .map((d) => <div>{this.wordPosition(d)}</div>)
           .reverse()}
