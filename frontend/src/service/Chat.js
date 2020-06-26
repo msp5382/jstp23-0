@@ -20,7 +20,8 @@ export default class Chat {
     this.db
       .collection("chat")
       .orderBy("timestamp", "desc")
-      .limit(10)
+      .limit(30)
+      
       .onSnapshot((q) => {
         var messages = [];
         q.forEach(function (doc) {
