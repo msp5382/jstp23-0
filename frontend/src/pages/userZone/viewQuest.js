@@ -7,7 +7,11 @@ export default (props) => {
   return (
     <div>
       <Navbar
-        onGoBack={() => router.navigate("choose_quest")}
+        onGoBack={() =>
+          router.navigate("choose_quest", {
+            location: router.getState().params.lastLocat,
+          })
+        }
         pageName={""}></Navbar>
       <Body></Body>
       <div>PAGE :{router.getState().name}</div>

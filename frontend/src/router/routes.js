@@ -82,7 +82,7 @@ export default [
   },
   {
     name: "choose_quest",
-    path: "/choose_quest",
+    path: "/choose_quest/:location",
     component: <ChooseQuestPage />,
     needLogin: true,
   },

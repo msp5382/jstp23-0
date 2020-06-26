@@ -3,6 +3,7 @@ import "firebase/firestore";
 import UserProfile from "../service/UserProfile";
 export default class Game {
   //คลาสใช้ dev เท่านั้นนะครับ
+  //onProd ใช้ uid กับ profile ของ user ที่ต้องการ
   constructor() {
     this.db = firebase.firestore();
     this.profile = new UserProfile();
@@ -41,6 +42,17 @@ export default class Game {
       .collection("gameMetaData")
       .doc("meta")
       .set(data, { merge: true });
+    return res;
+  };
+
+  setMyQuest = async (data) => {
+    const res = await this.db
+      .collection("users")
+      .doc(this.uid)
+      .collection("gameMetaData")
+      .doc("quest")
+      .set(data, { merge: true });
+
     return res;
   };
 }

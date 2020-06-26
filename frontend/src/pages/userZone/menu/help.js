@@ -9,10 +9,6 @@ export default (props) => {
       console.log(await new Game().getMyQuest());
     };
     f();
-    //new Game().setMyMeta({
-    //  time: "M",
-    //  subTime: "A0",
-    //});
   }, []);
   return (
     <div>
