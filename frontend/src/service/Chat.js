@@ -21,7 +21,7 @@ export default class Chat {
       .collection("chat")
       .orderBy("timestamp", "desc")
       .limit(30)
-      
+
       .onSnapshot((q) => {
         var messages = [];
         q.forEach(function (doc) {
