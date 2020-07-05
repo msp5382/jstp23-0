@@ -22,7 +22,7 @@ import ScoreBoardPage from "../pages/userZone/menu/scoreboard";
 import SettingsPage from "../pages/userZone/menu/settings";
 import HistoryPage from "../pages/userZone/menu/history";
 import HelpPage from "../pages/userZone/menu/help";
-
+import DoMissionPage from "../pages/userZone/doMission";
 export default [
   {
     name: "admin",
@@ -84,6 +84,12 @@ export default [
     name: "choose_quest",
     path: "/choose_quest/:location",
     component: <ChooseQuestPage />,
+    needLogin: true,
+  },
+  {
+    name: "do_mission",
+    path: "/do_mission/:quest",
+    component: <DoMissionPage />,
     needLogin: true,
   },
 ];

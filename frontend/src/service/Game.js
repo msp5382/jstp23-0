@@ -35,24 +35,15 @@ export default class Game {
     });
     return col.find((d) => d.id === "meta");
   };
-  setMyMeta = async (data) => {
-    const res = await this.db
-      .collection("users")
-      .doc(this.uid)
-      .collection("gameMetaData")
-      .doc("meta")
-      .set(data, { merge: true });
-    return res;
-  };
-
-  setMyQuest = async (data) => {
-    const res = await this.db
-      .collection("users")
-      .doc(this.uid)
-      .collection("gameMetaData")
-      .doc("quest")
-      .set(data, { merge: true });
-
-    return res;
+  getQuest = async (questId) => {
+    const res = (
+      await this.db
+        .collection("users")
+        .doc(this.uid)
+        .collection("gameMetaData")
+        .doc("quest")
+        .get()
+    ).data().questData;
+    return res.find((q) => q.id === questId);
   };
 }
