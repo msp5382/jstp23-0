@@ -16,19 +16,27 @@ export default class Chat {
     this.db.collection("chat").add(messageFMT);
   };
   fetchMessage = () => {};
-  listenToMessage = (cb) => {
-    this.db
-      .collection("chat")
-      .orderBy("timestamp", "desc")
-      .limit(30)
-
-      .onSnapshot((q) => {
+  listenToMessage = (cb,last) => {
+    var query = this.db
+    .collection("chat")
+    .orderBy("timestamp", "desc")
+    if(last){
+      query = query
+      .startAfter(last)
+      .limit(10);
+    }
+    else{
+        query = query.limit(10);
+    }
+      query.onSnapshot((q) => {
         var messages = [];
         q.forEach(function (doc) {
           messages.push(doc.data());
         });
+        console.log("Callback parameter:");
         console.log(messages);
-        cb(messages);
+        console.log(q.docs[q.docs.length-1].data());
+        cb(messages,q.docs[q.docs.length-1]);
       });
   };
 }

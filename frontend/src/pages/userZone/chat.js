@@ -7,21 +7,25 @@ import MyCSS from "../../style.css";
 
 import { Navbar, Button } from "../../component";
 class ChatPage extends React.Component {
+  last = null;
   state = {
     textMessage: "",
     messages: [],
+    pages: 0
   };
   setTextMessage = (m) => this.setState({ textMessage: m });
-  setMessages = (m) => this.setState({ messages: m });
-
+  setMessages = (m) => this.setState({ messages: [...this.state.messages, ...m] });
+  setPages = () => this.setState({pages: this.state.pages+1});
   componentDidMount() {
     this.CurrentAuth = new Auth();
     this.uData = this.CurrentAuth.getUserData();
     this.chat = new Chat();
-    this.chat.listenToMessage((d) => {
+    this.chat.listenToMessage((d,endDoc) => {
       console.log(d);
       this.setMessages(d);
-    });
+      this.last = endDoc;
+    },this.last);
+    
     this.userprofile = new UserProfile().getUser();
     this.name = this.userprofile.displayName;
     this.profilePromise = new UserProfile()
@@ -30,7 +34,15 @@ class ChatPage extends React.Component {
         this.profileImg = await result;
       });
   }
-
+  componentDidUpdate(prevProps,prevState){
+    if(prevState.pages !== this.state.pages){
+      this.chat.listenToMessage((d,endDoc) => {
+        console.log(d);
+        this.setMessages(d);
+        this.last = endDoc;
+      },this.last);
+  }
+  }
   sendData = () => {
     //ส่งไฟลฺ์แชทเข้า Database
     if (this.state.textMessage != "")
@@ -74,7 +86,7 @@ class ChatPage extends React.Component {
         />
         <div style={{ marginLeft:10,marginRight:10,marginTop: 60 ,marginBottom:60,height : 500, overflowY : "scroll",overflowX : "hidden",scrollbarColor : "red"}}>
           PAGE :{this.props.router.getState().name}
-        
+          <a onClick={this.setPages} onKeyDownCapture={this.setPages}>Refresh {this.state.pages}</a>
           <div onClick={() => this.props.router.navigate("home")}>{"<BACK"}</div>
           {this.state.messages
           .map((d) => <div>{this.wordPosition(d)}</div>)
