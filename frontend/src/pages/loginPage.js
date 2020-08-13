@@ -63,7 +63,7 @@ export default (props) => {
           onClick={() => {
             new Auth().registerWithPassword(email, password);
           }}
-          style={{ textAlign: "center", cursor: "pointer" }}>
+          style={{ marginTop: 10, textAlign: "center", cursor: "pointer" }}>
           สมัคร JSTPID
         </div>
         {false ? (

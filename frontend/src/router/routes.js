@@ -23,6 +23,7 @@ import SettingsPage from "../pages/userZone/menu/settings";
 import HistoryPage from "../pages/userZone/menu/history";
 import HelpPage from "../pages/userZone/menu/help";
 import DoMissionPage from "../pages/userZone/doMission";
+import EventComplete from "../pages/userZone/eventComplete";
 export default [
   {
     name: "admin",
@@ -90,6 +91,13 @@ export default [
     name: "do_mission",
     path: "/do_mission/:quest",
     component: <DoMissionPage />,
+    needLogin: true,
+  },
+
+  {
+    name: "event_complete",
+    path: "/event_complete/",
+    component: <EventComplete />,
     needLogin: true,
   },
 ];

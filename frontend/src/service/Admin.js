@@ -3,6 +3,8 @@ import "firebase/firestore";
 //import UserProfile from "../service/UserProfile";
 import { v4 as uuidv4 } from "uuid";
 
+// Legacy code not use
+
 export default class Admin {
   constructor() {
     this.db = firebase.firestore();

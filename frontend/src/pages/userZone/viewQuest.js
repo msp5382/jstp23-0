@@ -54,19 +54,32 @@ const HideBadge = styled(Button)`
   left: calc(50% - 75px);
   z-index: 99;
   text-align: center;
+  ${(props) => (!props.locked ? "display:none" : "")}
 `;
 
 export default (props) => {
   const { router } = useRoute();
   const [quest, setQuest] = useState();
   const [lockState, setLockState] = useState(true);
+  const [startWithChoice, setStartWithChoice] = useState(false);
   useEffect(() => {
     const f = async () => {
-      setQuest(await new Game().getQuest(router.getState().params.id));
+      const questFetched = await new Game().getQuest(
+        router.getState().params.id
+      );
+      if (router.getState().params.doneQuest) {
+        setLockState(false);
+      }
+
+      setQuest(questFetched);
+      if (questFetched.startWithChoice) {
+        setLockState(false);
+        setStartWithChoice(true);
+      }
     };
     f();
   }, []);
-  console.log(quest);
+
   return (
     <div>
       <Navbar
@@ -81,20 +94,52 @@ export default (props) => {
         }}
         pageName={"เควสประจำวัน"}></Navbar>
       <PageBody>
-        <Content>{quest ? quest.description : <></>}</Content>
+        <Content>{quest ? quest.event : <></>}</Content>
         <HideBadge
+          locked={lockState}
           text="ทำภารกิจเพื่อใช้สิทธิ์เลือก"
           onClick={() =>
             router.navigate("do_mission", {
               quest: router.getState().params.id,
+              startWithChoice: false,
             })
           }></HideBadge>
         <EventChoice locked={lockState}>
           <Text>คุณจะทำยังไง ?</Text>
           {quest ? (
-            quest.event.map((c, i) => (
-              <EventButton locked={lockState} key={i} text={c} />
-            ))
+            quest.choice.map((c, i) => {
+              if (c !== "ยังไม่กำหนด") {
+                return (
+                  <EventButton
+                    onClick={() => {
+                      new Game()
+                        .setUserSelectedChoice(
+                          quest.id,
+                          quest.time,
+                          i,
+                          c.consequence
+                        )
+                        .then(() => {
+                          if (startWithChoice) {
+                            router.navigate("do_mission", {
+                              quest: router.getState().params.id,
+                              startWithChoice: true,
+                            });
+                          } else {
+                            router.navigate("event_complete", {
+                              quest: router.getState().params.id,
+                              startWithChoice: true,
+                            });
+                          }
+                        });
+                    }}
+                    locked={lockState}
+                    key={i}
+                    text={c.choiceText}
+                  />
+                );
+              }
+            })
           ) : (
             <></>
           )}
