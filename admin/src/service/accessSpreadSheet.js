@@ -34,7 +34,7 @@ const parseChoice = (choiceString) => {
   if (choiceString !== undefined) {
     return {
       choiceText: choiceString.split("ค่าสเตตัส")[0],
-      consequnce: choiceString.split("ค่าสเตตัส")[1],
+      consequence: choiceString.split("ค่าสเตตัส")[1],
     };
   } else {
     return null;
@@ -52,7 +52,7 @@ const parseEvent = (event) => {
         startWithChoice: true,
       };
     } else {
-      return { event: event };
+      return { event: event, startWithChoice: false };
     }
   } else {
     return { event: "ยังไม่กำหนด" };

@@ -1,6 +1,8 @@
 import firebase from "firebase";
 import "firebase/firestore";
 import UserProfile from "../service/UserProfile";
+import { v4 as uuidv4 } from "uuid";
+import moment from "moment";
 export default class Game {
   //คลาสใช้ dev เท่านั้นนะครับ
   //onProd ใช้ uid กับ profile ของ user ที่ต้องการ
@@ -26,7 +28,18 @@ export default class Game {
       "QuestData",
       Object.values(QuestData).filter((d) => d !== "quest")
     );
-    return Object.values(QuestData).filter((d) => d !== "quest");
+
+    const QuestAnswer = col.find((d) => d.id === "answers");
+    const Answers = Object.values(QuestAnswer)
+      .filter((a) => a != "answers")
+      .map((a) => a.answerFor);
+    console.log("Answers", Answers);
+    return Object.values(QuestData)
+      .filter((d) => d !== "quest")
+      .filter((d) =>
+        moment().isBefore(moment(d.expTime).add(6, "hour"), "hour")
+      )
+      .filter((d) => !Answers.includes(d.id));
   };
 
   getMyMeta = async () => {
@@ -60,5 +73,67 @@ export default class Game {
     return Object.values(QuestData)
       .filter((d) => d !== "quest")
       .find((d) => d.id === questId);
+  };
+
+  setUserSelectedChoice = async (questId, time, choiceSelect, consequence) => {
+    const generatedId = uuidv4();
+    const res = await this.db
+      .collection("users")
+      .doc(this.uid)
+      .collection("gameMetaData")
+      .doc("answers")
+      .set(
+        {
+          [generatedId]: {
+            answerFor: questId,
+            time: time,
+            choiceSelected: choiceSelect,
+            consequence: consequence || "SYSTEM ASSIGNED",
+            timeStamp: Date.now(),
+          },
+        },
+        { merge: true }
+      );
+    console.log(res);
+    return;
+  };
+  addContentToQuestAnswer = (file) => {
+    console.log(file);
+    return new Promise((sol, ject) => {
+      const generatedId = uuidv4();
+      const ref = firebase.storage().ref("/answer").child(generatedId);
+      ref.put(file).then((d) => {
+        firebase
+          .storage()
+          .ref("/answer")
+          .child(generatedId)
+          .getDownloadURL()
+          .then((url) => {
+            sol(url);
+          });
+      });
+    });
+  };
+  submitQuestAnswer = async (answerText, attatchFile, questId, time) => {
+    const generatedId = uuidv4();
+    const res = await this.db
+      .collection("users")
+      .doc(this.uid)
+      .collection("gameMetaData")
+      .doc("quest_answers")
+      .set(
+        {
+          [generatedId]: {
+            quest_answerFor: questId,
+            time: time,
+            answerText: answerText,
+            attatchFile: attatchFile,
+            timeStamp: Date.now(),
+          },
+        },
+        { merge: true }
+      );
+
+    return;
   };
 }

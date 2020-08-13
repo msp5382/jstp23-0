@@ -48,7 +48,28 @@ export default (props) => {
   }, []);
   return (
     <>
-      <div class="container mx-auto">
+      <div class="container mt-5 mx-auto">
+        <button
+          onClick={() => {
+            window.location = "/quest";
+          }}
+          class="bg-indigo-300 mr-3 hover:bg-indigo-700 text-black mb-3 font-bold py-2 px-4 rounded">
+          Quest
+        </button>
+        <button
+          onClick={() => {
+            window.location = "/monitor";
+          }}
+          class="bg-indigo-300 mr-3 hover:bg-indigo-700 text-black mb-3 font-bold py-2 px-4 rounded">
+          Monitor
+        </button>
+        <button
+          onClick={() => {
+            window.location = "/view_quest_answer";
+          }}
+          class="bg-indigo-300 mr-3 hover:bg-indigo-700 text-black mb-3 font-bold py-2 px-4 rounded">
+          View Quest Answer
+        </button>
         {users.map((u) => (
           <User {...u} />
         ))}

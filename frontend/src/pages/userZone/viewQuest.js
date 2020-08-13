@@ -67,6 +67,10 @@ export default (props) => {
       const questFetched = await new Game().getQuest(
         router.getState().params.id
       );
+      if (router.getState().params.doneQuest) {
+        setLockState(false);
+      }
+
       setQuest(questFetched);
       if (questFetched.startWithChoice) {
         setLockState(false);
@@ -75,7 +79,7 @@ export default (props) => {
     };
     f();
   }, []);
-  console.log(quest);
+
   return (
     <div>
       <Navbar
@@ -97,6 +101,7 @@ export default (props) => {
           onClick={() =>
             router.navigate("do_mission", {
               quest: router.getState().params.id,
+              startWithChoice: false,
             })
           }></HideBadge>
         <EventChoice locked={lockState}>
@@ -105,7 +110,33 @@ export default (props) => {
             quest.choice.map((c, i) => {
               if (c !== "ยังไม่กำหนด") {
                 return (
-                  <EventButton locked={lockState} key={i} text={c.choiceText} />
+                  <EventButton
+                    onClick={() => {
+                      new Game()
+                        .setUserSelectedChoice(
+                          quest.id,
+                          quest.time,
+                          i,
+                          c.consequence
+                        )
+                        .then(() => {
+                          if (startWithChoice) {
+                            router.navigate("do_mission", {
+                              quest: router.getState().params.id,
+                              startWithChoice: true,
+                            });
+                          } else {
+                            router.navigate("event_complete", {
+                              quest: router.getState().params.id,
+                              startWithChoice: true,
+                            });
+                          }
+                        });
+                    }}
+                    locked={lockState}
+                    key={i}
+                    text={c.choiceText}
+                  />
                 );
               }
             })
