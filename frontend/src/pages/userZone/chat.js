@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useRef, useEffect, useCallback} from "react";
 import { withRoute } from "react-router5";
 import Chat from "../../service/Chat";
 import Auth from "../../service/Auth";
@@ -6,121 +6,103 @@ import UserProfile from "../../service/UserProfile";
 import MyCSS from "../../style.css";
 
 import { Navbar, Button } from "../../component";
-class ChatPage extends React.Component {
-  constructor(props){
-    super(props);
-    this.callBackRef = this.callBackRef.bind(this);
-  }
-  observer = React.createRef()
-  last = null;
-  state = {
-    textMessage: "",
-    messages: [],
-    pages: 0,
-    loading : false,
-    hasMore : true
-  };
-  setLoading = (value) => this.setState({loading : value});
-  setTextMessage = (m) => this.setState({ textMessage: m });
-  setMessages = (m) => this.setState({ messages: [...this.state.messages, ...m] });
-  setPages = () => this.setState({pages: this.state.pages+1});
-  setHasMore = (value) => this.setState({hasMore : value});
-  componentDidMount() {
-    this.CurrentAuth = new Auth();
-    this.uData = this.CurrentAuth.getUserData();
-    this.chat = new Chat();
-    this.setLoading(true);
-    this.chat.listenToMessage((d,endDoc) => {
+var profileImg;
+function ChatPage(props) {
+  const last = useRef(null);
+  const observer = useRef(null);
+  const [textMessage, setTextMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [pages,setPages] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [hasMore,setHasMore] = useState(true);
+  const CurrentAuth = new Auth();
+  const uData = CurrentAuth.getUserData();
+  const chat = new Chat();
+  const userprofile = new UserProfile().getUser();
+  const name = userprofile.displayName;
+  const profilePromise = new UserProfile()
+    .getUserProfileImg(userprofile.uid)
+    .then(async (result) => {
+      profileImg = await result;
+  }).catch((err)=>{
+    console.log(err);
+    console.log("Can't load picture");
+  });
+  useEffect(() => {
+    setLoading(true);
+    chat.listenToMessage(async(d,endDoc) => {
       console.log(d);
-      this.setMessages(d);
-      this.setLoading(false);
-      this.last = endDoc;
-      if(!endDoc)this.setHasMore(false);
-    },this.last);
-    console.log(this.observer.current);
-    this.userprofile = new UserProfile().getUser();
-    this.name = this.userprofile.displayName;
-    this.profilePromise = new UserProfile()
-      .getUserProfileImg(this.userprofile.uid)
-      .then(async (result) => {
-        this.profileImg = await result;
-      });
+      setMessages([...messages,...d]);
+      setLoading(false);
+      last.current = await endDoc;
+      console.log("Last:");
+      console.log(last.current);
+      if(!endDoc)setHasMore(false);
+    },last.current);
+    console.log(observer.current);
     console.log("End did mount");
-  }
-  componentDidUpdate(prevProps,prevState){
-    if(this.state.hasMore&&prevState.pages !== this.state.pages){
-      this.setLoading(true);
-      this.chat.listenToMessage((d,endDoc) => {
-        console.log(d);
-        this.setMessages(d);
-        this.setLoading(false);
-        this.last = endDoc;
-        if(!endDoc) this.setHasMore(false);
-      },this.last);
-  }
-  }
-  callBackRef(element){
+  },[pages])
+
+  const callBackRef = useCallback((element)=>{
     console.log("Incallback");
-    if(this.observer.current){
-       this.observer.current.disconnect();
+    console.log(last.current);
+    if(loading) return;
+    if(observer.current){
+       observer.current.disconnect();
     }
-     this.observer.current = new IntersectionObserver((entries) => {
-       if(this.state.hasMore && entries[0].isIntersecting){
-         this.setPages();
+     observer.current = new IntersectionObserver((entries) => {
+       if(hasMore && entries[0].isIntersecting){
+         setPages(pages+1);
        }
      });
-     if(element) this.observer.current.observe(element);
-  }
-  sendData = () => {
+     if(element) observer.current.observe(element);
+  },[loading,hasMore]);
+  const sendData = () => {
     //ส่งไฟลฺ์แชทเข้า Database
-    if (this.state.textMessage != "")
-      this.chat.sendMessage(
-        this.uData.uid,
-        this.name,
-        this.profileImg,
-        this.state.textMessage
+    if (textMessage !== "")
+      chat.sendMessage(
+        uData.uid,
+        name,
+        profileImg,
+        textMessage
       );
-    this.setState({
-      textMessage: "",
-    });
+    setTextMessage("");
   };
 
-  wordPosition = (d) => {
+  const wordPosition = (data) => {
     //จัดแยกซ้ายขวาตาม UID
-    if (d.sender == this.uData.uid) {
+    if (data.sender == uData.uid) {
       return (
         <div style={{ textAlign: "right" }}>
           
-          {d.message} : {d.name}
-          <img src={d.profilePic} style={{ width: 40, borderRadius: 100 ,marginBottom:8,marginLeft:5}} />
+          {data.message} : {data.name}
+          <img src={data.profilePic} style={{ width: 40, borderRadius: 100 ,marginBottom:8,marginLeft:5}} />
         </div>
       );
     } else {
       return (
         <div>
-          <img src={d.profilePic} style={{ width: 40, borderRadius: 100 ,marginBottom:8,marginRight:5}} />
-          {d.name} : {d.message}
+          <img src={data.profilePic} style={{ width: 40, borderRadius: 100 ,marginBottom:8,marginRight:5}} />
+          {data.name} : {data.message}
         </div>
       );
     }
   };
-
-  render() {
     return (<>
         <Navbar
           pageName="แชท"
-          onGoBack={() => this.props.router.navigate("home")}
+          onGoBack={() => props.router.navigate("home")}
         />
         <div style={{ marginLeft:10,marginRight:10,marginTop: 60 ,marginBottom:60,height : 500, overflowY : "scroll",overflowX : "hidden",scrollbarColor : "red"}}>
-          PAGE :{this.props.router.getState().name}
-          <div onClick={() => this.props.router.navigate("home")}>{"<BACK"}</div>
+          PAGE :{props.router.getState().name}
+          <div onClick={() => props.router.navigate("home")}>{"<BACK"}</div>
           <div>
-          {this.state.loading && <p>Loading...</p>}
-          {this.state.messages
+          {loading && <p>Loading...</p>}
+          {messages
           .map((d,index) => {
-            if(index === this.state.messages.length-1)
-              return <div key={index} ref={this.callBackRef}>{this.wordPosition(d)}</div>
-          return <div key={index}>{this.wordPosition(d)}</div>
+            if(index === messages.length-1)
+              return <div key={index} ref={callBackRef}>{wordPosition(d)}</div>
+          return <div key={index}>{wordPosition(d)}</div>
         })
           .reverse()}
           </div>
@@ -128,20 +110,19 @@ class ChatPage extends React.Component {
          <form style = {{textAlign : "center"}}
             onSubmit={(e) => {
             e.preventDefault();
-            this.sendData();
+            sendData();
           }}>
           <input style = {{marginRight : 8}}
-            value={this.state.textMessage}
-            onChange={(e) => this.setTextMessage(e.target.value)}
+            value={textMessage}
+            onChange={(e) => setTextMessage(e.target.value)}
             type="text"
           />
-          <span onClick={this.sendData} onKeyDownCapture={this.sendData}>
+          <span onClick={sendData} onKeyDownCapture={sendData}>
             Send Message
           </span>
         </form>
         
       </>
     );
-  }
 }
 export default withRoute(ChatPage);
