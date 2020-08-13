@@ -6,10 +6,11 @@ import UserProfile from "../../service/UserProfile";
 import MyCSS from "../../style.css";
 
 import { Navbar, Button } from "../../component";
-var profileImg;
+var profileImg = null;
 function ChatPage(props) {
   const last = useRef(null);
   const observer = useRef(null);
+  const scroller = useRef(null);
   const [textMessage, setTextMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [pages,setPages] = useState(0);
@@ -28,24 +29,23 @@ function ChatPage(props) {
     console.log(err);
     console.log("Can't load picture");
   });
+  useEffect(()=>{
+    console.log("For rendering messages");
+    scroller.current.scrollTop = scroller.current.clientHeight;
+  },[messages])
   useEffect(() => {
     setLoading(true);
-    chat.listenToMessage(async(d,endDoc) => {
+    chat.listenToMessage((d,endDoc) => {
       console.log(d);
-      setMessages([...messages,...d]);
       setLoading(false);
-      last.current = await endDoc;
-      console.log("Last:");
-      console.log(last.current);
+      setMessages([...messages,...d]);
+      last.current = endDoc;
       if(!endDoc)setHasMore(false);
     },last.current);
-    console.log(observer.current);
-    console.log("End did mount");
   },[pages])
 
   const callBackRef = useCallback((element)=>{
     console.log("Incallback");
-    console.log(last.current);
     if(loading) return;
     if(observer.current){
        observer.current.disconnect();
@@ -59,6 +59,7 @@ function ChatPage(props) {
   },[loading,hasMore]);
   const sendData = () => {
     //ส่งไฟลฺ์แชทเข้า Database
+    console.log(profileImg);
     if (textMessage !== "")
       chat.sendMessage(
         uData.uid,
@@ -67,6 +68,7 @@ function ChatPage(props) {
         textMessage
       );
     setTextMessage("");
+    scroller.current.scrollIntoView({behavior:"smooth"});
   };
 
   const wordPosition = (data) => {
@@ -93,7 +95,7 @@ function ChatPage(props) {
           pageName="แชท"
           onGoBack={() => props.router.navigate("home")}
         />
-        <div style={{ marginLeft:10,marginRight:10,marginTop: 60 ,marginBottom:60,height : 500, overflowY : "scroll",overflowX : "hidden",scrollbarColor : "red"}}>
+        <div style={{ marginLeft:10,marginRight:10,marginTop: 60 ,marginBottom:60,height : 500, overflowY : "scroll",overflowX : "hidden",scrollbarColor : "red"}} ref={scroller}>
           PAGE :{props.router.getState().name}
           <div onClick={() => props.router.navigate("home")}>{"<BACK"}</div>
           <div>
