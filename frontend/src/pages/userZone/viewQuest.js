@@ -54,15 +54,24 @@ const HideBadge = styled(Button)`
   left: calc(50% - 75px);
   z-index: 99;
   text-align: center;
+  ${(props) => (!props.locked ? "display:none" : "")}
 `;
 
 export default (props) => {
   const { router } = useRoute();
   const [quest, setQuest] = useState();
   const [lockState, setLockState] = useState(true);
+  const [startWithChoice, setStartWithChoice] = useState(false);
   useEffect(() => {
     const f = async () => {
-      setQuest(await new Game().getQuest(router.getState().params.id));
+      const questFetched = await new Game().getQuest(
+        router.getState().params.id
+      );
+      setQuest(questFetched);
+      if (questFetched.startWithChoice) {
+        setLockState(false);
+        setStartWithChoice(true);
+      }
     };
     f();
   }, []);
@@ -81,8 +90,9 @@ export default (props) => {
         }}
         pageName={"เควสประจำวัน"}></Navbar>
       <PageBody>
-        <Content>{quest ? quest.description : <></>}</Content>
+        <Content>{quest ? quest.event : <></>}</Content>
         <HideBadge
+          locked={lockState}
           text="ทำภารกิจเพื่อใช้สิทธิ์เลือก"
           onClick={() =>
             router.navigate("do_mission", {
@@ -92,9 +102,13 @@ export default (props) => {
         <EventChoice locked={lockState}>
           <Text>คุณจะทำยังไง ?</Text>
           {quest ? (
-            quest.event.map((c, i) => (
-              <EventButton locked={lockState} key={i} text={c} />
-            ))
+            quest.choice.map((c, i) => {
+              if (c !== "ยังไม่กำหนด") {
+                return (
+                  <EventButton locked={lockState} key={i} text={c.choiceText} />
+                );
+              }
+            })
           ) : (
             <></>
           )}

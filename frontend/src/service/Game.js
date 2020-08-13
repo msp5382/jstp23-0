@@ -17,10 +17,16 @@ export default class Game {
       .collection("gameMetaData")
       .get();
     let col = [];
+
     res.forEach((d) => {
       col.push({ ...d.data(), id: d.id });
     });
-    return col.find((d) => d.id === "quest");
+    const QuestData = col.find((d) => d.id === "quest");
+    console.log(
+      "QuestData",
+      Object.values(QuestData).filter((d) => d !== "quest")
+    );
+    return Object.values(QuestData).filter((d) => d !== "quest");
   };
 
   getMyMeta = async () => {
@@ -36,14 +42,23 @@ export default class Game {
     return col.find((d) => d.id === "meta");
   };
   getQuest = async (questId) => {
-    const res = (
-      await this.db
-        .collection("users")
-        .doc(this.uid)
-        .collection("gameMetaData")
-        .doc("quest")
-        .get()
-    ).data().questData;
-    return res.find((q) => q.id === questId);
+    const res = await this.db
+      .collection("users")
+      .doc(this.uid)
+      .collection("gameMetaData")
+      .get();
+    let col = [];
+
+    res.forEach((d) => {
+      col.push({ ...d.data(), id: d.id });
+    });
+    const QuestData = col.find((d) => d.id === "quest");
+    console.log(
+      "QuestData",
+      Object.values(QuestData).filter((d) => d !== "quest")
+    );
+    return Object.values(QuestData)
+      .filter((d) => d !== "quest")
+      .find((d) => d.id === questId);
   };
 }

@@ -6,9 +6,17 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "autoprefixer": "^9.8.6",
+    "axios": "^0.19.2",
+    "bootstrap": "^5.0.0-alpha1",
+    "gapi": "^0.0.3",
+    "moment": "^2.27.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "styled-components": "^5.1.1",
+    "tailwindcss": "^1.6.2",
+    "url-parse": "^1.4.7"
   },
   "scripts": {
     "start": "set PORT=4000 && react-scripts start",

@@ -4,6 +4,7 @@ import { Navbar, Body } from "../../component";
 import styled from "styled-components";
 import Game from "../../service/Game";
 import Admin from "../../service/Admin";
+import moment from "moment";
 const QuestBox = styled.div`
   border: 7px solid #281d1d;
   position: relative;
@@ -136,14 +137,34 @@ const QuestChoice = (props) => {
 export default (props) => {
   const { router } = useRoute();
   const [questData, setQuestData] = useState([]);
-  console.log();
+  moment.updateLocale("en", {
+    relativeTime: {
+      future: "ใน %s",
+      s: "a ไม่กี่วินาที",
+      ss: "%d วินาที",
+      m: "นาที",
+      mm: "%d นาที",
+      h: "ชั่วโมง",
+      hh: "%d ชั่วโมง",
+      d: "วัน",
+      dd: "%d วัน",
+      w: "สัปดาห์",
+      ww: "%d สัปดาห์",
+      M: "เดือน",
+      MM: "%d เดือน",
+      y: "ปี",
+      yy: "%d ปี",
+    },
+  });
   useEffect(() => {
     let f = async () => {
       const UserGame = await new Game().getMyQuest();
+      console.log(UserGame);
       if (UserGame) {
-        setQuestData(UserGame.questData);
+        setQuestData(UserGame);
       }
     };
+
     f();
   }, []);
   return (
@@ -159,21 +180,23 @@ export default (props) => {
               location={router.getState().params.location}
               router={router}
               id={q.id}
-              text={q.name}
-              description={q.description}
+              text="เควสประจำวัน"
+              description={`หมดอายุ ${moment(q.expTime)
+                .locale("th")
+                .fromNow()}`}
             />
           ) : (
             <></>
           )
         )}
         {console.log(questData)}
-        {questData.filter(
+        {/*questData.filter(
           (q) => router.getState().params.location === q.location
         ).length === 0 ? (
           <TextCenter>ไม่มีเควสในบริเวณนี้</TextCenter>
         ) : (
           <></>
-        )}
+        )*/}
       </PageBody>
     </div>
   );
