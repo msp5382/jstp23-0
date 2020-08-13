@@ -35,10 +35,10 @@ function ChatPage(props) {
   },[messages])
   useEffect(() => {
     setLoading(true);
-    chat.listenToMessage((d,endDoc) => {
-      console.log(d);
+    chat.listenToMessage((data,endDoc) => {
+      console.log(data);
       setLoading(false);
-      setMessages([...messages,...d]);
+      setMessages([...messages,...data]);
       last.current = endDoc;
       if(!endDoc)setHasMore(false);
     },last.current);
