@@ -34,9 +34,8 @@ export default class Chat {
           messages.push(doc.data());
         });
         console.log("Callback parameter:");
-        console.log(messages);
-        console.log(q.docs[q.docs.length-1].data());
-        cb(messages,q.docs[q.docs.length-1]);
+        if(messages !== []) cb(messages,q.docs[q.docs.length-1]);
+        else cb(messages,null);
       });
   };
 }

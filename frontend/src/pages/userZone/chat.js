@@ -7,25 +7,37 @@ import MyCSS from "../../style.css";
 
 import { Navbar, Button } from "../../component";
 class ChatPage extends React.Component {
+  constructor(props){
+    super(props);
+    this.callBackRef = this.callBackRef.bind(this);
+  }
+  observer = React.createRef()
   last = null;
   state = {
     textMessage: "",
     messages: [],
-    pages: 0
+    pages: 0,
+    loading : false,
+    hasMore : true
   };
+  setLoading = (value) => this.setState({loading : value});
   setTextMessage = (m) => this.setState({ textMessage: m });
   setMessages = (m) => this.setState({ messages: [...this.state.messages, ...m] });
   setPages = () => this.setState({pages: this.state.pages+1});
+  setHasMore = (value) => this.setState({hasMore : value});
   componentDidMount() {
     this.CurrentAuth = new Auth();
     this.uData = this.CurrentAuth.getUserData();
     this.chat = new Chat();
+    this.setLoading(true);
     this.chat.listenToMessage((d,endDoc) => {
       console.log(d);
       this.setMessages(d);
+      this.setLoading(false);
       this.last = endDoc;
+      if(!endDoc)this.setHasMore(false);
     },this.last);
-    
+    console.log(this.observer.current);
     this.userprofile = new UserProfile().getUser();
     this.name = this.userprofile.displayName;
     this.profilePromise = new UserProfile()
@@ -33,15 +45,31 @@ class ChatPage extends React.Component {
       .then(async (result) => {
         this.profileImg = await result;
       });
+    console.log("End did mount");
   }
   componentDidUpdate(prevProps,prevState){
-    if(prevState.pages !== this.state.pages){
+    if(this.state.hasMore&&prevState.pages !== this.state.pages){
+      this.setLoading(true);
       this.chat.listenToMessage((d,endDoc) => {
         console.log(d);
         this.setMessages(d);
+        this.setLoading(false);
         this.last = endDoc;
+        if(!endDoc) this.setHasMore(false);
       },this.last);
   }
+  }
+  callBackRef(element){
+    console.log("Incallback");
+    if(this.observer.current){
+       this.observer.current.disconnect();
+    }
+     this.observer.current = new IntersectionObserver((entries) => {
+       if(this.state.hasMore && entries[0].isIntersecting){
+         this.setPages();
+       }
+     });
+     if(element) this.observer.current.observe(element);
   }
   sendData = () => {
     //ส่งไฟลฺ์แชทเข้า Database
@@ -78,19 +106,24 @@ class ChatPage extends React.Component {
   };
 
   render() {
-    return (
-      <>
+    return (<>
         <Navbar
           pageName="แชท"
           onGoBack={() => this.props.router.navigate("home")}
         />
         <div style={{ marginLeft:10,marginRight:10,marginTop: 60 ,marginBottom:60,height : 500, overflowY : "scroll",overflowX : "hidden",scrollbarColor : "red"}}>
           PAGE :{this.props.router.getState().name}
-          <a onClick={this.setPages} onKeyDownCapture={this.setPages}>Refresh {this.state.pages}</a>
           <div onClick={() => this.props.router.navigate("home")}>{"<BACK"}</div>
+          <div>
+          {this.state.loading && <p>Loading...</p>}
           {this.state.messages
-          .map((d) => <div>{this.wordPosition(d)}</div>)
+          .map((d,index) => {
+            if(index === this.state.messages.length-1)
+              return <div key={index} ref={this.callBackRef}>{this.wordPosition(d)}</div>
+          return <div key={index}>{this.wordPosition(d)}</div>
+        })
           .reverse()}
+          </div>
         </div>
          <form style = {{textAlign : "center"}}
             onSubmit={(e) => {
