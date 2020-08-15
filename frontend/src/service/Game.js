@@ -31,15 +31,39 @@ export default class Game {
 
     const QuestAnswer = col.find((d) => d.id === "answers");
     const Answers = Object.values(QuestAnswer)
-      .filter((a) => a != "answers")
+      .filter((a) => a !== "answers")
       .map((a) => a.answerFor);
     console.log("Answers", Answers);
+    console.log(
+      "Res Q",
+      Object.values(QuestData)
+        .filter((d) => d !== "quest")
+        .filter((d) => {
+          const res = moment().isBefore(
+            moment(d.expTime).add(6, "hour"),
+            "hour"
+          );
+          console.log("time ", res);
+          return res;
+        })
+        .filter((d) => {
+          const res = !Answers.includes(d.id);
+          console.log("answer ", res);
+          return res;
+        })
+    );
     return Object.values(QuestData)
       .filter((d) => d !== "quest")
-      .filter((d) =>
-        moment().isBefore(moment(d.expTime).add(6, "hour"), "hour")
-      )
-      .filter((d) => !Answers.includes(d.id));
+      .filter((d) => {
+        const res = moment().isBefore(moment(d.expTime).add(6, "hour"), "hour");
+        console.log("time ", res);
+        return res;
+      })
+      .filter((d) => {
+        const res = !Answers.includes(d.id);
+        console.log("answer ", res);
+        return res;
+      });
   };
 
   getMyMeta = async () => {
