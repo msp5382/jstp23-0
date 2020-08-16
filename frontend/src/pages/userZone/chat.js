@@ -29,6 +29,14 @@ const ChatBubble = (prop) => {
     </div>
   );
 };
+
+/*
+1.คนในยุคสุดท้ายจะเห็นทุกข้อความ
+2.คนในยุคแรกเห็นการคุยกัน แต่ไม่เห็นข้อความของใครเลย นอกจากยุคเดียวกัน
+3.คนในยุคเดียวกัน เห็นข้อความคนยุคเดียวกันปกติ
+4.คนในยุคถัดไป ได้ตัวอักษรในข้อความลดลง
+5.ยิ่งยุคห่างมาก ก็จะเห็นข้อความลดลงมาก
+*/
 var profileImg = null;
 function ChatPage(props) {
   const last = useRef(null);
@@ -61,7 +69,7 @@ function ChatPage(props) {
     setLoading(true);
     chat.listenToMessage((data, endDoc) => {
       console.log(data);
-      Promise.all(data.map((d) => new Chat().getUserName(d.sender))).then(
+      Promise.all(data.map((d) => chat.getUserName(d.sender))).then(
         (usernameArray) => {
           setUsernameCache(
             [...usernameArray, ...UsernameCache].filter((item, pos) => {
@@ -74,8 +82,8 @@ function ChatPage(props) {
       setLoading(false);
       setMessages([...messages, ...data]);
       last.current = endDoc;
-      scroller.current.scrollTop = scroller.current.clientHeight;
       if (!endDoc) setHasMore(false);
+      scroller.current.scrollTop = scroller.current.clientHeight;
     }, last.current);
   }, [pages]);
 
@@ -117,7 +125,7 @@ function ChatPage(props) {
         <div style={{ display: "flex", marginTop: 3 }}>
           <img
             alt="profile"
-            src={data.profilePic}
+            src={data.profilePic || "/assets/example_user.png"}
             style={{
               width: 40,
               height: 40,

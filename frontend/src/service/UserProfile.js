@@ -27,7 +27,14 @@ export default class UserProfile {
       return JSON.parse(localStorage.JSTP_USER_DATA);
     }
   };
-
+  getMyTime = async () => {
+    return firebase
+      .firestore()
+      .collection("users")
+      .doc(this.getUser().uid)
+      .get()
+      .data().time;
+  };
   setProfilePicture = async (file) => {
     const ref = firebase.storage().ref("/profileImg").child(this.getUser().uid);
 
@@ -82,5 +89,20 @@ export default class UserProfile {
       .child(uid)
       .getDownloadURL();
     return url;
+  };
+
+  getAllUsers = async () => {
+    const db = firebase.firestore();
+    const res = await db.collection("users").get();
+
+    let users = [];
+    res.forEach((doc) => {
+      users.push({
+        id: doc.id,
+        data: doc.data(),
+      });
+    });
+
+    return users;
   };
 }

@@ -51,7 +51,7 @@ const MenuIconRight = styled.img`
 const Ground = styled.img`
   width: 100%;
   position: absolute;
-  bottom: 0;
+  bottom: 10px;
   z-index: 0;
 `;
 
@@ -63,6 +63,22 @@ const MenuWrap = styled.div`
   position: relative;
   z-index: 10;
 `;
+
+const CrossTimeBox = styled.div`
+  border: 2px solid #4c341f;
+  background-color: #be9c6c;
+  width: 300px;
+
+  padding: 4px;
+  position: absolute;
+  bottom: 4rem;
+  z-index: 100;
+  opacity: 0.8;
+`;
+
+const CrossTimeWorldData = (props) => {
+  return <CrossTimeBox>เทคโนโลยี: 0 ความรู้สึก: 0 ประชากร: 0</CrossTimeBox>;
+};
 export default (props) => {
   const { router } = useRoute();
   const [Charcter, setCharcter] = useState("");
@@ -126,6 +142,11 @@ export default (props) => {
           </div>
         </div>
       </MenuWrap>
+
+      <div class="row justify-content-center">
+        <CrossTimeWorldData></CrossTimeWorldData>
+      </div>
+
       <div class="row justify-content-center">
         <CharacterImage alt="character" src={Charcter}></CharacterImage>
       </div>

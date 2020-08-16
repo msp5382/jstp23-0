@@ -1,19 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useRoute } from "react-router5";
-import Game from "../../../service/Game";
+import styled from "styled-components";
+import UserProfile from "../../../service/UserProfile";
+import { Navbar, Body, TextBox, Button } from "../../../component";
+const User = new UserProfile();
+
 export default (props) => {
   const { router } = useRoute();
-  useEffect(() => {
-    let f = async () => {
-      console.log(await new Game().getMyMeta());
-      console.log(await new Game().getMyQuest());
-    };
-    f();
-  }, []);
   return (
-    <div>
-      <div>PAGE :{router.getState().name}</div>
-      <div onClick={() => router.navigate("home")}>{"<BACK"}</div>
-    </div>
+    <>
+      <Navbar pageName="ช่วยเหลือ!" onGoBack={() => router.navigate("home")} />
+      <Body></Body>
+    </>
   );
 };
