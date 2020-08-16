@@ -190,13 +190,13 @@ export default (props) => {
           )
         )}
         {console.log(questData)}
-        {/*questData.filter(
+        {questData.filter(
           (q) => router.getState().params.location === q.location
         ).length === 0 ? (
           <TextCenter>ไม่มีเควสในบริเวณนี้</TextCenter>
         ) : (
           <></>
-        )*/}
+        )}
       </PageBody>
     </div>
   );

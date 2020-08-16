@@ -1,7 +1,8 @@
-import React from "react";
-import { BaseLink, useRoute } from "react-router5";
+import React, { useState, useEffect } from "react";
+import { useRoute } from "react-router5";
 import styled from "styled-components";
 import Auth from "../../service/Auth";
+import UserProfile from "../../service/UserProfile";
 
 import { Navbar } from "../../component/index";
 
@@ -31,6 +32,14 @@ const MenuIcon = styled.img`
   }
 `;
 
+const CharacterImage = styled.img`
+  position: absolute;
+  width: 300px;
+  bottom: 10px;
+  z-index: 9;
+  margin: auto;
+`;
+
 const MenuIconRight = styled.img`
   width: 100px;
   position: absolute;
@@ -42,6 +51,7 @@ const MenuIconRight = styled.img`
 const Ground = styled.img`
   width: 100%;
   position: absolute;
+  bottom: 0;
   z-index: 0;
 `;
 
@@ -55,6 +65,12 @@ const MenuWrap = styled.div`
 `;
 export default (props) => {
   const { router } = useRoute();
+  const [Charcter, setCharcter] = useState("");
+  useEffect(() => {
+    (async () => {
+      setCharcter(await new UserProfile().getUserCharacter());
+    })();
+  }, []);
   return (
     <div>
       <Navbar pageName={new Auth().getUserData().displayName} />
@@ -110,6 +126,9 @@ export default (props) => {
           </div>
         </div>
       </MenuWrap>
+      <div class="row justify-content-center">
+        <CharacterImage alt="character" src={Charcter}></CharacterImage>
+      </div>
 
       <GroundWrap>
         <Ground src="/assets/ground.png"></Ground>

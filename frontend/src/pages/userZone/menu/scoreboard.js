@@ -1,13 +1,15 @@
-import React from "react";
-import { BaseLink, useRoute } from "react-router5";
-
+import React, { useEffect, useState, useRef } from "react";
+import { useRoute } from "react-router5";
+import styled from "styled-components";
+import UserProfile from "../../../service/UserProfile";
+import { Navbar, Body, TextBox, Button } from "../../../component";
+const User = new UserProfile();
 export default (props) => {
   const { router } = useRoute();
-
   return (
-    <div>
-      <div>PAGE :{router.getState().name}</div>
-      <div onClick={() => router.navigate("home")}>{"<BACK"}</div>
-    </div>
+    <>
+      <Navbar pageName="เพื่อนค่าย" onGoBack={() => router.navigate("home")} />
+      <Body></Body>
+    </>
   );
 };
