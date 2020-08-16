@@ -32,12 +32,18 @@ export default async () => {
 
 export const setTime = async (time, id) => {
   const db = firebase.firestore();
+  const MainTime = time
+    .replace("T_", "")
+    .replace("1", "")
+    .replace("2", "")
+    .replace("3", "")
+    .replace("4", "")
+    .replace("5", "");
   await db
     .collection("gameData")
     .doc("userRoleAssign")
     .set({ [id]: time }, { merge: true });
-
-  return await db
+  await db
     .collection("users")
     .doc(id)
     .collection("gameMetaData")
@@ -45,14 +51,15 @@ export const setTime = async (time, id) => {
     .set(
       {
         subTime: time,
-        time: time
-          .replace("T_", "")
-          .replace("1", "")
-          .replace("2", "")
-          .replace("3", "")
-          .replace("4", "")
-          .replace("5", ""),
+        time: MainTime,
       },
       { merge: true }
     );
+  await db.collection("users").doc(id).set(
+    {
+      time: MainTime,
+    },
+    { merge: true }
+  );
+  return;
 };

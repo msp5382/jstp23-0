@@ -27,7 +27,14 @@ export default class UserProfile {
       return JSON.parse(localStorage.JSTP_USER_DATA);
     }
   };
-
+  getMyTime = async () => {
+    return firebase
+      .firestore()
+      .collection("users")
+      .doc(this.getUser().uid)
+      .get()
+      .data().time;
+  };
   setProfilePicture = async (file) => {
     const ref = firebase.storage().ref("/profileImg").child(this.getUser().uid);
 

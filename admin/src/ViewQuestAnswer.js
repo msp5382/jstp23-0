@@ -29,6 +29,9 @@ export default (props) => {
             <div class="w-1/2">
               <div className=" text-sm text-gray-500">{q.quest_answer_id}</div>
               <div className=" text-sm ">{q.answerText}</div>
+              {q.attatchFile.map((a) => (
+                <img src={a} alt="attatchfile" />
+              ))}
             </div>
           </div>
         ))}

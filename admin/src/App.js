@@ -70,6 +70,14 @@ export default (props) => {
           class="bg-indigo-300 mr-3 hover:bg-indigo-700 text-black mb-3 font-bold py-2 px-4 rounded">
           View Quest Answer
         </button>
+
+        <button
+          onClick={() => {
+            window.location = "/login";
+          }}
+          class="bg-indigo-300 mr-3 hover:bg-indigo-700 text-black mb-3 font-bold py-2 px-4 rounded">
+          Login
+        </button>
         {users.map((u) => (
           <User {...u} />
         ))}

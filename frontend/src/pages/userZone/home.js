@@ -68,9 +68,12 @@ const CrossTimeBox = styled.div`
   border: 2px solid #4c341f;
   background-color: #be9c6c;
   width: 300px;
-  margin: auto;
-  margin-top: 3rem;
+
   padding: 4px;
+  position: absolute;
+  bottom: 4rem;
+  z-index: 100;
+  opacity: 0.8;
 `;
 
 const CrossTimeWorldData = (props) => {
@@ -139,7 +142,11 @@ export default (props) => {
           </div>
         </div>
       </MenuWrap>
-      <CrossTimeWorldData></CrossTimeWorldData>
+
+      <div class="row justify-content-center">
+        <CrossTimeWorldData></CrossTimeWorldData>
+      </div>
+
       <div class="row justify-content-center">
         <CharacterImage alt="character" src={Charcter}></CharacterImage>
       </div>
