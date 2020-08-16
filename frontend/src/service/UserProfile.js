@@ -75,4 +75,12 @@ export default class UserProfile {
       return url;
     }
   };
+  getUserCharacter = async (uid = this.getUser().uid) => {
+    const url = await firebase
+      .storage()
+      .ref("/character")
+      .child(uid)
+      .getDownloadURL();
+    return url;
+  };
 }

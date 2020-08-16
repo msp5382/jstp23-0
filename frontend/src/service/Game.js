@@ -24,12 +24,7 @@ export default class Game {
       col.push({ ...d.data(), id: d.id });
     });
     const QuestData = col.find((d) => d.id === "quest");
-    console.log(
-      "QuestData",
-      Object.values(QuestData).filter((d) => d !== "quest")
-    );
-
-    const QuestAnswer = col.find((d) => d.id === "answers");
+    const QuestAnswer = col.find((d) => d.id === "answers") || [];
     const Answers = Object.values(QuestAnswer)
       .filter((a) => a !== "answers")
       .map((a) => a.answerFor);

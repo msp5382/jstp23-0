@@ -12,6 +12,7 @@ import LoginPage from "../pages/loginPage";
 
 import CharacterGenPage from "../pages/userZone/registerZone/characterGen";
 import CharacterEditPage from "../pages/userZone/registerZone/characterEdit";
+import CharacterUserNamePass from "../pages/userZone/registerZone/characterUserNamePass";
 
 import HomePage from "../pages/userZone/home";
 import ChatPage from "../pages/userZone/chat";
@@ -99,5 +100,11 @@ export default [
     path: "/event_complete/",
     component: <EventComplete />,
     needLogin: true,
+  },
+  {
+    name: "character_username_pass",
+    path: "/character_username_pass/",
+    component: <CharacterUserNamePass />,
+    needLogin: false,
   },
 ];

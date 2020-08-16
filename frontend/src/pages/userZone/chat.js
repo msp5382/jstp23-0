@@ -17,8 +17,17 @@ const Bubble = styled.div`
 const Row = styled.div`
   display: flex;
 `;
+const Uname = styled.div`
+  font-size: 0.6rem;
+  margin-left: 0.2rem;
+`;
 const ChatBubble = (prop) => {
-  return <Bubble>{prop.children}</Bubble>;
+  return (
+    <div>
+      <Uname>{prop.name}</Uname>
+      <Bubble>{prop.children}</Bubble>
+    </div>
+  );
 };
 var profileImg = null;
 function ChatPage(props) {
@@ -30,6 +39,7 @@ function ChatPage(props) {
   const [pages, setPages] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [UsernameCache, setUsernameCache] = useState([]);
   const CurrentAuth = new Auth();
   const uData = CurrentAuth.getUserData();
   const chat = new Chat();
@@ -40,21 +50,31 @@ function ChatPage(props) {
     .then(async (result) => {
       profileImg = await result;
     })
-    .catch((err) => {
-      console.log(err);
-      console.log("Can't load picture");
-    });
+    .catch((err) => {});
   useEffect(() => {
-    console.log("For rendering messages");
+    console.log("Rendering Message");
     scroller.current.scrollTop = scroller.current.clientHeight;
+    //scroller.current.scrollIntoView({ block: "end" });
   }, [messages]);
+
   useEffect(() => {
     setLoading(true);
     chat.listenToMessage((data, endDoc) => {
       console.log(data);
+      Promise.all(data.map((d) => new Chat().getUserName(d.sender))).then(
+        (usernameArray) => {
+          setUsernameCache(
+            [...usernameArray, ...UsernameCache].filter((item, pos) => {
+              return [...usernameArray, ...UsernameCache].indexOf(item) === pos;
+            })
+          );
+        }
+      );
+
       setLoading(false);
       setMessages([...messages, ...data]);
       last.current = endDoc;
+      scroller.current.scrollTop = scroller.current.clientHeight;
       if (!endDoc) setHasMore(false);
     }, last.current);
   }, [pages]);
@@ -80,7 +100,7 @@ function ChatPage(props) {
     if (textMessage !== "")
       chat.sendMessage(uData.uid, name, profileImg, textMessage);
     setTextMessage("");
-    scroller.current.scrollIntoView({ behavior: "smooth" });
+    //scroller.current.scrollIntoView(false);
   };
 
   const wordPosition = (data) => {
@@ -96,6 +116,7 @@ function ChatPage(props) {
       return (
         <div style={{ display: "flex", marginTop: 3 }}>
           <img
+            alt="profile"
             src={data.profilePic}
             style={{
               width: 40,
@@ -103,10 +124,13 @@ function ChatPage(props) {
               borderRadius: "100%",
               marginBottom: 8,
               marginLeft: 5,
+              marginTop: 12,
             }}
           />
-
-          <ChatBubble>{data.message}</ChatBubble>
+          <ChatBubble
+            name={UsernameCache.find((u) => u.uid === data.sender)?.username}>
+            {data.message}
+          </ChatBubble>
         </div>
       );
     }
@@ -145,7 +169,7 @@ function ChatPage(props) {
         style={{
           textAlign: "center",
           bottom: 0,
-          position: "fixed",
+          marginBottom: 20,
           width: "100%",
         }}>
         <Row>
@@ -158,8 +182,7 @@ function ChatPage(props) {
           <Button
             style={{ marginLeft: 5 }}
             onClick={sendData}
-            text={"Send"}
-            onKeyDownCapture={sendData}></Button>
+            text={"Send"}></Button>
         </Row>
       </div>
     </>

@@ -155,7 +155,7 @@ export default (props) => {
                         quest.time
                       )
                       .then(() => {
-                        if (router.getState().params.isStartWithChoice) {
+                        if (router.getState().params.startWithChoice) {
                           router.navigate("home", {});
                         } else {
                           router.navigate("view_quest", {
