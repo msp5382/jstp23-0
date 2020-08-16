@@ -83,4 +83,19 @@ export default class UserProfile {
       .getDownloadURL();
     return url;
   };
+
+  getAllUsers = async () => {
+    const db = firebase.firestore();
+    const res = await db.collection("users").get();
+
+    let users = [];
+    res.forEach((doc) => {
+      users.push({
+        id: doc.id,
+        data: doc.data(),
+      });
+    });
+
+    return users;
+  };
 }

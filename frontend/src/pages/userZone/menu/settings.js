@@ -68,8 +68,22 @@ export default (props) => {
           <div className="col"></div>
         </div>
 
-        <div></div>
+        <div className="row mt-3 justify-content-center">
+          <div className="col"></div>
+          <div className="row">
+            <div className="col-md-2 col-sm-2">ปรับแต่งตัวละคร:</div>
+            <div className="col">
+              <Button
+                onClick={() => {
+                  window.location = "/character_edit";
+                }}
+                text={"ไปปรับแต่งตัวละคร"}></Button>
+            </div>
+          </div>
+          <div className="col"></div>
+        </div>
 
+        <div></div>
         {username != oldUserName &&
         username != undefined &&
         username != null &&

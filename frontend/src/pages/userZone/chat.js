@@ -117,7 +117,7 @@ function ChatPage(props) {
         <div style={{ display: "flex", marginTop: 3 }}>
           <img
             alt="profile"
-            src={data.profilePic}
+            src={data.profilePic || "/assets/example_user.png"}
             style={{
               width: 40,
               height: 40,
