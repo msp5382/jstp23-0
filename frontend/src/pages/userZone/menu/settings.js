@@ -87,7 +87,7 @@ export default (props) => {
         <div className="row mt-3 justify-content-center">
           <div className="col"></div>
           <div className="row">
-            <div className="col-md-2 col-sm-2">ปรับแต่งตัวละคร:</div>
+            <div className="col-md-2 col-sm-2">ออกจากระบบ:</div>
             <div className="col">
               <Button
                 onClick={() => {
