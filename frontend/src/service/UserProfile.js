@@ -56,30 +56,37 @@ export default class UserProfile {
       new Auth().updateUserProfile();
     });
   };
-  getUserProfileImg = async (uid = this.getUser().uid) => {
-    if (uid === this.getUser().uid) {
-      //const url = this.getUser().photoURL;
-      //return url;
-      if (CachedURL === "") {
+  getUserProfileImg = async (uid) => {
+    if (this.getUser() === undefined) {
+      return "/assets/example_user.png";
+    } else {
+      if (uid === undefined) {
+        uid = this.getUser().uid;
+      }
+      if (uid === this.getUser().uid) {
+        //const url = this.getUser().photoURL;
+        //return url;
+        if (CachedURL === "") {
+          const url = firebase
+            .storage()
+            .ref("/profileImg")
+            .child(uid)
+            .getDownloadURL();
+          CachedURL = url;
+          console.log("NO CACHED");
+          return url;
+        } else {
+          console.log("USE CACHED");
+          return CachedURL;
+        }
+      } else {
         const url = firebase
           .storage()
           .ref("/profileImg")
           .child(uid)
           .getDownloadURL();
-        CachedURL = url;
-        console.log("NO CACHED");
         return url;
-      } else {
-        console.log("USE CACHED");
-        return CachedURL;
       }
-    } else {
-      const url = firebase
-        .storage()
-        .ref("/profileImg")
-        .child(uid)
-        .getDownloadURL();
-      return url;
     }
   };
   getUserCharacter = async (uid = this.getUser().uid) => {
