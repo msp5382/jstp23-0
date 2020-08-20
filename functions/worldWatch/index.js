@@ -99,7 +99,7 @@ const parseUserIntoEdiableQuest = (d) => {
 exports["world-data-watch"] = async (req, res) => {
   let consequence = (await fetchQuestAnswer()).AnswerAll;
   console.log(consequence);
-  const conSqMap = consequence.map((c) => {
+  const conSqMap = consequence.map(({ consequence: c }) => {
     let consq = c.split("\n");
     consq = consq.filter((a) => a !== "");
     consq = consq.map((a) => ({ data: a.split(" ")[1], key: a.split(" ")[0] }));
