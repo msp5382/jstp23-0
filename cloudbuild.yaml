@@ -9,6 +9,6 @@ steps:
       - jstp-23-backend
       - --source=.
       - --runtime
-      - node12
+      - nodejs12
       - --trigger-http
     dir: "functions"
