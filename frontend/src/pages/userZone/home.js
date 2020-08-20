@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRoute } from "react-router5";
 import styled from "styled-components";
 import Auth from "../../service/Auth";
+import Game from "../../service/Game";
 import UserProfile from "../../service/UserProfile";
 
 import { Navbar } from "../../component/index";
@@ -94,6 +95,7 @@ export default (props) => {
   useEffect(() => {
     (async () => {
       setCharcter(await new UserProfile().getUserCharacter());
+      new Game().listenToWorldData((d) => setWorldData(d));
     })();
   }, []);
   return (

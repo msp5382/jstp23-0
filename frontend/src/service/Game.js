@@ -155,4 +155,12 @@ export default class Game {
 
     return;
   };
+  listenToWorldData = (cb) => {
+    this.db
+      .collection("gameData")
+      .doc("worldData")
+      .onSnapshot(function (doc) {
+        cb(doc.data());
+      });
+  };
 }
