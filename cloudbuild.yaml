@@ -12,3 +12,13 @@ steps:
       - nodejs12
       - --trigger-http
     dir: "functions"
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      - functions
+      - deploy
+      - world-data-watch
+      - --source=worldWatch.js
+      - --runtime
+      - nodejs12
+      - --trigger-http
+    dir: "functions"

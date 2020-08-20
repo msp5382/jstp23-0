@@ -1,6 +1,10 @@
 {
   "name": "functions",
+  "version": "1.0.0",
   "dependencies": {
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "firebase": "^7.18.0",
+    "firebase-admin": "^9.1.0",
+    "firebase-functions": "^3.9.1"
   }
 }
