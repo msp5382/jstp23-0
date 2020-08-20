@@ -170,6 +170,8 @@ exports["world-data-watch"] = async (req, res) => {
   });
   conSqMap.map((c) => {
     c.filter((f) => f.key.includes(":")).map(({ key: k, data: a, time: t }) => {
+      console.log(k, a, t);
+      console.log(transformConsq(k));
       originData[transformConsq(k)] = calcConsq(
         originData[transformConsq(k)],
         a,
