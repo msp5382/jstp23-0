@@ -2,16 +2,16 @@ steps:
   - name: "gcr.io/cloud-builders/npm"
     args: ["install"]
     dir: "functions"
-  - name: "gcr.io/cloud-builders/gcloud"
-    args:
-      - functions
-      - deploy
-      - jstp-23-backend
-      - --source=.
-      - --runtime
-      - nodejs12
-      - --trigger-http
-    dir: "functions"
+  #- name: "gcr.io/cloud-builders/gcloud"
+  #  args:
+  #    - functions
+  #    - deploy
+  #    - jstp-23-backend
+  #    - --source=.
+  #    - --runtime
+  #    - nodejs12
+  #    - --trigger-http
+  #  dir: "functions"
   - name: "gcr.io/cloud-builders/gcloud"
     args:
       - functions
