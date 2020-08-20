@@ -1,1 +1,1 @@
-export const (req,res) => res.send(req.body || "wowowow")
+export const test = (req, res) => res.send(req.body || "wowowow");
