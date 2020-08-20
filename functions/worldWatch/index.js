@@ -138,9 +138,14 @@ const calcConsq = (origin, action, time) => {
 };
 
 const loadOrigin = async () => {
-  const origin = (
-    await db.collection("gameData").doc("worldData").get()
-  ).data();
+  let origin = (await db.collection("gameData").doc("worldData").get()).data();
+  if (!origin) {
+    origin = {
+      T: 0,
+      F: 0,
+      P: 0,
+    };
+  }
   const dataKey = { "เทคโนโลยี:": "T", "ความรู้สึก:": "F", "ประชากร:": "P" };
   return {
     T: origin["T"] || 0,
