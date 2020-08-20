@@ -77,11 +77,20 @@ const CrossTimeBox = styled.div`
 `;
 
 const CrossTimeWorldData = (props) => {
-  return <CrossTimeBox>เทคโนโลยี: 0 ความรู้สึก: 0 ประชากร: 0</CrossTimeBox>;
+  return (
+    <CrossTimeBox>
+      เทคโนโลยี: {props.T} ความรู้สึก: {props.F} ประชากร: {props.P}
+    </CrossTimeBox>
+  );
 };
 export default (props) => {
   const { router } = useRoute();
   const [Charcter, setCharcter] = useState("");
+  const [WorldData, setWorldData] = useState({
+    T: 0,
+    F: 0,
+    P: 0,
+  });
   useEffect(() => {
     (async () => {
       setCharcter(await new UserProfile().getUserCharacter());
@@ -144,7 +153,7 @@ export default (props) => {
       </MenuWrap>
 
       <div class="row justify-content-center">
-        <CrossTimeWorldData></CrossTimeWorldData>
+        <CrossTimeWorldData {...WorldData}></CrossTimeWorldData>
       </div>
 
       <div class="row justify-content-center">
