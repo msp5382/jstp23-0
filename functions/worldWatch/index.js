@@ -96,14 +96,82 @@ const parseUserIntoEdiableQuest = (d) => {
   };
 };
 
+const transformConsq = (consq) => {
+  switch (consq) {
+    case "เทคโนโลยี:":
+      return "T";
+      break;
+    case "ความรู้สึก:":
+      return "F";
+      break;
+    case "ประชากร:":
+      return "P";
+      break;
+    default:
+      return;
+      break;
+  }
+};
+
+const calcConsq = (origin, action, time) => {
+  let timeFac = 1;
+
+  if (time.includes("M")) {
+    timeFac = 11;
+  } else if (time.includes("R")) {
+    timeFac = 5;
+  } else if (time.includes("D")) {
+    timeFac = 3;
+  } else if (time.includes("B")) {
+    timeFac = 2;
+  } else if (time.includes("V")) {
+    timeFac = 1;
+  }
+
+  if (action === "-") {
+    return origin - 1 * timeFac;
+  } else if (action === "0") {
+    return origin;
+  } else if (action === "+") {
+    return origin + 1 * timeFac;
+  }
+};
+
+const loadOrigin = async () => {
+  const origin = (
+    await db.collection("gameData").doc("worldData").get()
+  ).data();
+  const dataKey = { "เทคโนโลยี:": "T", "ความรู้สึก:": "F", "ประชากร:": "P" };
+  return {
+    T: origin["T"] || 0,
+    F: origin["F"] || 0,
+    P: origin["P"] || 0,
+  };
+};
+
 exports["world-data-watch"] = async (req, res) => {
+  let originData = await loadOrigin();
   let consequence = (await fetchQuestAnswer()).AnswerAll;
   console.log(consequence);
-  const conSqMap = consequence.map(({ consequence: c }) => {
+  const conSqMap = consequence.map(({ consequence: c, time: t }) => {
     let consq = c.split("\n");
     consq = consq.filter((a) => a !== "");
-    consq = consq.map((a) => ({ data: a.split(" ")[1], key: a.split(" ")[0] }));
+    consq = consq.map((a) => ({
+      data: a.split(" ")[1],
+      key: a.split(" ")[0],
+      time: t,
+    }));
     return consq;
   });
-  res.send(conSqMap);
+  conSqMap.map((c) => {
+    c.filter((f) => f.key.includes(":")).map(({ key: k, data: a, time: t }) => {
+      originData[transformConsq(k)] = calcConsq(
+        originData[transformConsq(k)],
+        a,
+        t
+      );
+    });
+  });
+  await db.collection("gameData").doc("worldData").set(originData);
+  res.send(originData);
 };
