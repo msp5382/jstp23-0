@@ -27,7 +27,7 @@ const timeTable = [
   "T_V5",
 ];
 
-export const fetchQuestAnswer = async () => {
+const fetchQuestAnswer = async () => {
   const res = await db.collection("users").get();
 
   let users = [];
