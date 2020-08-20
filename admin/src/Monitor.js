@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { getStep, setStep } from "./service/Inspector";
+import { fetchQuestAnswer } from "./service/fetchQuestAnswer";
+import { calculateWorldData } from "./service/calculateWorldData";
 export default (props) => {
   const [currentStep, setCurrentStep] = useState(0);
+
+  const [answer, setAnswer] = useState([]);
+
   useEffect(() => {
     (async () => {
       setCurrentStep(await getStep());
+      setAnswer((await fetchQuestAnswer()).AnswerAll);
     })();
   }, []);
   return (
@@ -24,6 +30,14 @@ export default (props) => {
           }}
           value={currentStep}
         />
+      </div>
+      <div class="bg-black text-sm p-10 text-white">
+        {answer.map((a) => (
+          <div>
+            {calculateWorldData(a.consequence)}
+            action {a.consequence} in time {a.time}
+          </div>
+        ))}
       </div>
     </div>
   );
