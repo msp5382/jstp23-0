@@ -177,7 +177,7 @@ exports["world-data-watch"] = async (req, res) => {
       );
     });
   });
-  console.log(await db.collection("gameData").doc("worldData").set(originData));
+  //console.log(await db.collection("gameData").doc("worldData").set(originData));
 
   res.send(originData);
 };
