@@ -99,11 +99,11 @@ const parseUserIntoEdiableQuest = (d) => {
 exports["world-data-watch"] = async (req, res) => {
   let consequence = (await fetchQuestAnswer()).AnswerAll;
   console.log(consequence);
-  if (!consequence) {
-    consequence = "";
-  }
-  let consq = consequence.split("\n");
-  consq = consq.filter((a) => a !== "");
-  consq = consq.map((a) => ({ data: a.split(" ")[1], key: a.split(" ")[0] }));
-  res.send(consq);
+  const conSqMap = consequence.map((c) => {
+    let consq = c.split("\n");
+    consq = consq.filter((a) => a !== "");
+    consq = consq.map((a) => ({ data: a.split(" ")[1], key: a.split(" ")[0] }));
+    return consq;
+  });
+  res.send(conSqMap);
 };
