@@ -155,7 +155,7 @@ const loadOrigin = async () => {
 };
 
 exports["world-data-watch"] = async (req, res) => {
-  let originData = await loadOrigin();
+  let originData;
   let consequence = (await fetchQuestAnswer()).AnswerAll;
   const conSqMap = consequence.map(({ consequence: c, time: t }) => {
     let consq = c.split("\n");
@@ -169,7 +169,7 @@ exports["world-data-watch"] = async (req, res) => {
   });
   conSqMap.map((c) => {
     c.filter((f) => f.key.includes(":")).map(({ key: k, data: a, time: t }) => {
-      originData[transformConsq(k)] = calcConsq(0, a, t);
+      originData[transformConsq(k)] = calcConsq(transformConsq(k), a, t);
     });
   });
   await db.collection("gameData").doc("worldData").set(originData);
