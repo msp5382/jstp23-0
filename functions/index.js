@@ -1,1 +1,0 @@
-export const (req,res) => res.send(req.body || "wowowow")
