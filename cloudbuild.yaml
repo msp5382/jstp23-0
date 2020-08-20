@@ -17,7 +17,7 @@ steps:
       - functions
       - deploy
       - world-data-watch
-      - --source=worldWatch.js
+      - --source=./worldWatch
       - --runtime
       - nodejs12
       - --trigger-http
