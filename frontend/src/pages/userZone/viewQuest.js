@@ -116,7 +116,7 @@ export default (props) => {
                         .setUserSelectedChoice(
                           quest.id,
                           quest.time,
-                          i,
+                          i + 1,
                           c.consequence
                         )
                         .then(() => {
@@ -124,6 +124,7 @@ export default (props) => {
                             router.navigate("do_mission", {
                               quest: router.getState().params.id,
                               startWithChoice: true,
+                              choice: i + 1,
                             });
                           } else {
                             router.navigate("event_complete", {

@@ -55,17 +55,37 @@ const Answer = styled.div`
   margin-bottom: 20px;
   ${(props) => (props.locked ? "opacity : 0.3;" : "")}
 `;
-
+const expressionQuestFilter = (q, select) => {
+  if (q.includes("if choice")) {
+    const parsedQ = q
+      .split("\n")
+      .filter((a) => a !== "")
+      .map((a) => a.split("if choice ")[1])
+      .map((a) => ({
+        key: a.split("")[0],
+        quest: a.split("").slice(2).join(""),
+      }));
+    let selected = select;
+    if (select) {
+      selected = select.toString();
+    }
+    return parsedQ.find((k) => k.key === selected).quest;
+  } else {
+    return q;
+  }
+};
 export default (props) => {
   const { router } = useRoute();
   const [quest, setQuest] = useState();
   const [imgPreview, setImgPreview] = useState([]);
   const [answerText, setAnswerText] = useState("");
   const [moreImgComing, setMoreImgComing] = useState(false);
+  const [choice, setChoice] = useState();
   const file = useRef();
   useEffect(() => {
     const f = async () => {
       setQuest(await new Game().getQuest(router.getState().params.quest));
+      setChoice(router.getState().params.choice);
     };
     f();
   }, []);
@@ -84,7 +104,9 @@ export default (props) => {
         }}
         pageName={"ทำภารกิจ"}></Navbar>
       <PageBody>
-        <Content>{quest ? quest.quest : <></>}</Content>
+        <Content>
+          {quest ? expressionQuestFilter(quest.quest, choice) : <></>}
+        </Content>
         <Answer>
           {quest ? (
             <>
