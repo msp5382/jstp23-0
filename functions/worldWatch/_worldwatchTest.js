@@ -1,4 +1,4 @@
-const axios = require("axios");
+const util = require("util");
 const admin = require("firebase-admin");
 const serviceAccount = require("./serviceAcc.json");
 
@@ -137,6 +137,23 @@ const calcConsq = (origin, action, time) => {
   }
 };
 
+const loadOrigin = async () => {
+  let origin = (await db.collection("gameData").doc("worldData").get()).data();
+  if (!origin) {
+    origin = {
+      T: 0,
+      F: 0,
+      P: 0,
+    };
+  }
+  const dataKey = { "เทคโนโลยี:": "T", "ความรู้สึก:": "F", "ประชากร:": "P" };
+  return {
+    T: origin["T"] || 0,
+    F: origin["F"] || 0,
+    P: origin["P"] || 0,
+  };
+};
+
 const buildConsequence = (t) => {
   return (a) => {
     if (a.split(" ")[2] === "กับ") {
@@ -161,83 +178,58 @@ const buildConsequence = (t) => {
   };
 };
 
-const loadOrigin = async () => {
-  let origin = (await db.collection("gameData").doc("worldData").get()).data();
-  if (!origin) {
-    origin = {
-      T: 0,
-      F: 0,
-      P: 0,
-    };
-  }
-  const dataKey = { "เทคโนโลยี:": "T", "ความรู้สึก:": "F", "ประชากร:": "P" };
-  return {
-    T: origin["T"] || 0,
-    F: origin["F"] || 0,
-    P: origin["P"] || 0,
-  };
-};
-
-exports["world-data-watch"] = async (req, res) => {
+(async () => {
+  let consequence = [
+    {
+      time: "T_X1",
+      consequence: `
+เทคโนโลยี: 0
+ความรู้สึก: 0
+ประชากร: 0
+ไม่เกิดเหตุการณ์ 11 กับ 12`,
+    },
+    {
+      time: "T_X2",
+      consequence: `
+เทคโนโลยี: 0
+ความรู้สึก: 0
+ประชากร: 0
+ไม่เกิดเหตุการณ์ 11`,
+    },
+    {
+      time: "T_X3",
+      consequence: `
+เทคโนโลยี: 0
+ความรู้สึก: 0
+ประชากร: 0
+ไม่สามารถเลือกทางเลือกที่ 3 ของข้อ 3 ได้`,
+    },
+  ];
   let originData = {
     T: 0,
     F: 0,
     P: 0,
   };
-  let consequence = (await fetchQuestAnswer()).AnswerAll;
-  const conSqMap = consequence.map(
-    ({
-      consequence: c,
-      time: t,
-      id: uid,
-      disabled: disabled,
-      answer_id: answer_id,
-    }) => {
-      let consq = c.split("\n");
-      consq = consq.filter((a) => a !== "");
-      consq = consq.map(buildConsequence(t));
-      if (disabled) {
-        return { disable: true };
-      } else {
-        return { action: consq, uid: uid, answer_id: answer_id };
-      }
-    }
-  );
-  await Promise.all(
-    conSqMap
-      .filter((a) => a.disable !== true)
-      .map(({ action: c, uid: uid, answer_id: answer_id }) => {
-        c.filter((f) => f.key.includes(":")).map(
-          ({ key: k, data: a, time: t }) => {
-            originData[transformConsq(k)] = calcConsq(
-              originData[transformConsq(k)],
-              a,
-              t
-            );
-          }
-        );
-        return Promise.all(
-          c
-            .filter((f) => !f.key.includes(":"))
-            .map(({ key: k, data: a, time: t }) => {
-              db.collection("users")
-                .doc(uid)
-                .collection("gameMetaData")
-                .doc("consequenceProcessed")
-                .set(
-                  {
-                    [answer_id]: {
-                      action: k,
-                      data: data,
-                    },
-                  },
-                  { merge: true }
-                );
-            })
-        );
-      })
-  );
-  await db.collection("gameData").doc("worldData").set(originData);
+  const conSqMap = consequence.map(({ consequence: c, time: t }) => {
+    let consq = c.split("\n");
+    consq = consq.filter((a) => a !== "");
+    consq = consq.map(buildConsequence(t));
+    return consq;
+  });
 
-  res.send(originData);
-};
+  console.log(
+    "processing Map :",
+    util.inspect(conSqMap, { showHidden: false, depth: null })
+  );
+  conSqMap.map((c) => {
+    c.filter((f) => f.key.includes(":")).map(({ key: k, data: a, time: t }) => {
+      originData[transformConsq(k)] = calcConsq(
+        originData[transformConsq(k)],
+        a,
+        t
+      );
+    });
+  });
+
+  console.log("worldValue Res :", originData);
+})();
