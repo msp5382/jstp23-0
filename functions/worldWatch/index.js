@@ -229,7 +229,7 @@ exports["world-data-watch"] = async (req, res) => {
                   {
                     [answer_id]: {
                       action: k,
-                      data: data,
+                      data: a,
                     },
                   },
                   { merge: true }
