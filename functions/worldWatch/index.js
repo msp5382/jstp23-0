@@ -151,6 +151,12 @@ const buildConsequence = (t) => {
         key: a.split(" ")[0],
         time: t,
       };
+    } else if (a.split(" ")[0] === "ข้อ") {
+      return {
+        data: { onlyChoice: a.split(" ")[1], quest: a.split(" ")[3] },
+        key: a.split(" ")[2],
+        time: t,
+      };
     } else {
       return {
         data: a.split(" ")[1],
