@@ -239,7 +239,10 @@ exports["world-data-watch"] = async (req, res) => {
       })
   );
 
-  await db.collection("gameData").doc("inspectedWorldData").set(conSqMap);
+  await db
+    .collection("gameData")
+    .doc("inspectedWorldData")
+    .set({ s: conSqMap });
 
   await db.collection("gameData").doc("worldData").set(originData);
 
