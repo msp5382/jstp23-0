@@ -203,6 +203,7 @@ exports["world-data-watch"] = async (req, res) => {
       }
     }
   );
+
   await Promise.all(
     conSqMap
       .filter((a) => a.disable !== true)
@@ -237,6 +238,9 @@ exports["world-data-watch"] = async (req, res) => {
         );
       })
   );
+
+  await db.collection("gameData").doc("inspectedWorldData").set(conSqMap);
+
   await db.collection("gameData").doc("worldData").set(originData);
 
   res.send(originData);
