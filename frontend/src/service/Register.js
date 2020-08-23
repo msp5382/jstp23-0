@@ -13,6 +13,12 @@ export const UploadProfileImg = async (
         .ref("/profileImg")
         .child(uid)
         .getDownloadURL();
+      new UserProfile().setProfile({
+        profileImg: url,
+      });
+      firebase.auth().currentUser.updateProfile({
+        photoURL: url,
+      });
       sol(url);
     });
   });
