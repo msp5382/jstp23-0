@@ -1,5 +1,5 @@
 import firebase from "firebase";
-
+import UserProfile from "./UserProfile";
 export const UploadProfileImg = async (
   file,
   uid = firebase.auth().currentUser.uid

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getStep, setStep } from "./service/Inspector";
+import { getStep, setStep, setDate, getDate } from "./service/Inspector";
 import { fetchQuestAnswer } from "./service/fetchQuestAnswer";
 import { calculateWorldData } from "./service/calculateWorldData";
 export default (props) => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [currentDate, setCurrentDate] = useState(1);
 
   const [answer, setAnswer] = useState([]);
 
@@ -11,6 +12,7 @@ export default (props) => {
     (async () => {
       setCurrentStep(await getStep());
       setAnswer((await fetchQuestAnswer()).AnswerAll);
+      setCurrentDate(await getDate());
     })();
   }, []);
   return (
@@ -29,6 +31,21 @@ export default (props) => {
             setStep(e.target.value).then(() => alert("เรียบร้อย"));
           }}
           value={currentStep}
+        />
+      </div>
+      <div class="mb-2">
+        <div className="flex text-sm">
+          Current Game Date :{" "}
+          <div className="text-white ml-2"> {currentDate}</div>
+        </div>
+        <input
+          type="number "
+          class="bg-teal-900"
+          onChange={(e) => {
+            setCurrentDate(e.target.value);
+            setDate(e.target.value).then(() => alert("เรียบร้อย"));
+          }}
+          value={currentDate}
         />
       </div>
       <div class="bg-black text-sm p-10 text-white">

@@ -16,3 +16,13 @@ export const setStep = async (step) => {
     .doc("nowQuestCount")
     .set({ count: step - 1 });
 };
+
+export const setDate = async (step) => {
+  const db = firebase.firestore();
+  return await db.collection("gameData").doc("worldTime").set({ date: step });
+};
+
+export const getDate = async () => {
+  const db = firebase.firestore();
+  return (await db.collection("gameData").doc("worldTime").get()).data()?.date;
+};
