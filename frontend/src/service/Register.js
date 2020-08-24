@@ -1,5 +1,5 @@
 import firebase from "firebase";
-
+import UserProfile from "./UserProfile";
 export const UploadProfileImg = async (
   file,
   uid = firebase.auth().currentUser.uid
@@ -13,6 +13,12 @@ export const UploadProfileImg = async (
         .ref("/profileImg")
         .child(uid)
         .getDownloadURL();
+      new UserProfile().setProfile({
+        profileImg: url,
+      });
+      firebase.auth().currentUser.updateProfile({
+        photoURL: url,
+      });
       sol(url);
     });
   });

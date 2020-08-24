@@ -85,7 +85,7 @@ export default (props) => {
   return (
     <>
       <Navbar
-        onGoBack={() => this.props.router.navigate("character_gen")}
+        onGoBack={() => this.props.router.navigate("character_edit")}
         pageName="สร้างตัวละคร"
       />
       <PageBody>

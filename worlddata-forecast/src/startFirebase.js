@@ -14,5 +14,6 @@ export default () => {
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
     window.firebase = firebase;
+    firebase.auth().signInWithEmailAndPassword("gm@jstp.jstp", "gm@jstp.jstp");
   }
 };

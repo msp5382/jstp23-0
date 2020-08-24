@@ -3,6 +3,7 @@
   "workspaces": [
     "admin",
     "frontend",
-    "functions"
+    "functions",
+    "worlddata-forecast"
   ]
 }

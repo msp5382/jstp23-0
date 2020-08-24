@@ -2,10 +2,10 @@ import firebase from "firebase";
 import "firebase/firestore";
 import { timeTable } from "./times";
 import moment from "moment";
+
 export default async () => {
   await upStep();
   console.log(await assignQuestToUser(await getStep(), 0));
-  //console.log(await upStep());
 };
 const upStep = async () => {
   const db = firebase.firestore();
@@ -71,3 +71,40 @@ const assignQuestToUser = async (questCount, dayTime) => {
       });
   });
 };
+
+export const assignQuestToSpecificUser = async (
+  questCount,
+  dayTime,
+  userId,
+  userTime
+) => {
+  const db = firebase.firestore();
+  const users = [{ user: userId, time: userTime }];
+  const allQuestAtTime = await getQuest(questCount);
+  console.log(questCount, dayTime);
+  timeTable.map((t) => {
+    const Quests = allQuestAtTime.find((q) => q.time === t);
+    users
+      .filter((u) => u.time === t)
+      .forEach(async (u) => {
+        console.log(u);
+        await db
+          .collection("users")
+          .doc(u.user)
+          .collection("gameMetaData")
+          .doc("quest")
+          .set(
+            {
+              [dayTime]: {
+                ...Quests,
+                expTime: moment().add(6, "hours").toISOString(),
+                location: Math.floor(Math.random() * (6 - 1)) + 1,
+              },
+            },
+            { merge: true }
+          );
+      });
+  });
+};
+
+window.assignQuestToSpecificUser = assignQuestToSpecificUser;

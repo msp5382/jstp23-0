@@ -1,4 +1,4 @@
-const axios = require("axios");
+const util = require("util");
 const admin = require("firebase-admin");
 const serviceAccount = require("./serviceAcc.json");
 
@@ -137,36 +137,6 @@ const calcConsq = (origin, action, time) => {
   }
 };
 
-const buildConsequence = (t) => {
-  return (a) => {
-    if (a.split(" ")[2] === "กับ") {
-      return {
-        data: [a.split(" ")[1], a.split(" ")[3]],
-        key: a.split(" ")[0],
-        time: t,
-      };
-    } else if (a.split(" ")[2] === "ของข้อ") {
-      return {
-        data: { choice: a.split(" ")[1], quest: a.split(" ")[3] },
-        key: a.split(" ")[0],
-        time: t,
-      };
-    } else if (a.split(" ")[0] === "ข้อ") {
-      return {
-        data: { onlyChoice: a.split(" ")[1], quest: a.split(" ")[3] },
-        key: a.split(" ")[2],
-        time: t,
-      };
-    } else {
-      return {
-        data: a.split(" ")[1],
-        key: a.split(" ")[0],
-        time: t,
-      };
-    }
-  };
-};
-
 const loadOrigin = async () => {
   let origin = (await db.collection("gameData").doc("worldData").get()).data();
   if (!origin) {
@@ -184,73 +154,82 @@ const loadOrigin = async () => {
   };
 };
 
-exports["world-data-watch"] = async (req, res) => {
+const buildConsequence = (t) => {
+  return (a) => {
+    if (a.split(" ")[2] === "กับ") {
+      return {
+        data: [a.split(" ")[1], a.split(" ")[3]],
+        key: a.split(" ")[0],
+        time: t,
+      };
+    } else if (a.split(" ")[2] === "ของข้อ") {
+      return {
+        data: { choice: a.split(" ")[1], quest: a.split(" ")[3] },
+        key: a.split(" ")[0],
+        time: t,
+      };
+    } else {
+      return {
+        data: a.split(" ")[1],
+        key: a.split(" ")[0],
+        time: t,
+      };
+    }
+  };
+};
+
+(async () => {
+  let consequence = [
+    {
+      time: "T_X1",
+      consequence: `
+เทคโนโลยี: 0
+ความรู้สึก: 0
+ประชากร: 0
+ไม่เกิดเหตุการณ์ 11 กับ 12`,
+    },
+    {
+      time: "T_X2",
+      consequence: `
+เทคโนโลยี: 0
+ความรู้สึก: 0
+ประชากร: 0
+ไม่เกิดเหตุการณ์ 11`,
+    },
+    {
+      time: "T_X3",
+      consequence: `
+เทคโนโลยี: 0
+ความรู้สึก: 0
+ประชากร: 0
+ไม่สามารถเลือกทางเลือกที่ 3 ของข้อ 3 ได้`,
+    },
+  ];
   let originData = {
     T: 0,
     F: 0,
     P: 0,
   };
-  let consequence = (await fetchQuestAnswer()).AnswerAll;
-  const conSqMap = consequence.map(
-    ({
-      consequence: c,
-      time: t,
-      id: uid,
-      disabled: disabled,
-      answer_id: answer_id,
-    }) => {
-      let consq = c.split("\n");
-      consq = consq.filter((a) => a !== "");
-      consq = consq.map(buildConsequence(t));
-      if (disabled) {
-        return { disable: true };
-      } else {
-        return { action: consq, uid: uid, answer_id: answer_id };
-      }
-    }
+  const conSqMap = consequence.map(({ consequence: c, time: t }) => {
+    let consq = c.split("\n");
+    consq = consq.filter((a) => a !== "");
+    consq = consq.map(buildConsequence(t));
+    return consq;
+  });
+
+  console.log(
+    "processing Map :",
+    util.inspect(conSqMap, { showHidden: false, depth: null })
   );
+  conSqMap.map((c) => {
+    c.filter((f) => f.key.includes(":")).map(({ key: k, data: a, time: t }) => {
+      originData[transformConsq(k)] = calcConsq(
+        originData[transformConsq(k)],
+        a,
+        t
+      );
+    });
+  });
 
-  await Promise.all(
-    conSqMap
-      .filter((a) => a.disable !== true)
-      .map(({ action: c, uid: uid, answer_id: answer_id }) => {
-        c.filter((f) => f.key.includes(":")).map(
-          ({ key: k, data: a, time: t }) => {
-            originData[transformConsq(k)] = calcConsq(
-              originData[transformConsq(k)],
-              a,
-              t
-            );
-          }
-        );
-        return Promise.all(
-          c
-            .filter((f) => !f.key.includes(":"))
-            .map(({ key: k, data: a, time: t }) => {
-              db.collection("users")
-                .doc(uid)
-                .collection("gameMetaData")
-                .doc("consequenceProcessed")
-                .set(
-                  {
-                    [answer_id]: {
-                      action: k,
-                      data: a,
-                    },
-                  },
-                  { merge: true }
-                );
-            })
-        );
-      })
-  );
-
-  await db
-    .collection("gameData")
-    .doc("inspectedWorldData")
-    .set({ s: conSqMap });
-
-  await db.collection("gameData").doc("worldData").set(originData);
-
-  res.send(originData);
-};
+  console.log("worldValue Res :", originData);
+})();

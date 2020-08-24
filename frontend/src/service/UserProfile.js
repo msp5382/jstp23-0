@@ -28,12 +28,15 @@ export default class UserProfile {
     }
   };
   getMyTime = async () => {
-    return firebase
-      .firestore()
-      .collection("users")
-      .doc(this.getUser().uid)
-      .get()
-      .data().time;
+    const data = (
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(this.getUser().uid)
+        .get()
+    ).data();
+    console.log(data);
+    return data.time;
   };
   setProfilePicture = async (file) => {
     const ref = firebase.storage().ref("/profileImg").child(this.getUser().uid);
