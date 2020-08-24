@@ -9,11 +9,11 @@ admin.initializeApp({
 const db = admin.firestore();
 exports["world-time-increaser"] = async (req, res) => {
   const origin =
-    (await db.collection("gameData").doc("worldTime").get()).data().date || 0;
+    (await db.collection("gameData").doc("worldTime").get()).data().date || "0";
   db.collection("gameData")
     .doc("worldTime")
     .set({
-      date: origin + 1,
+      date: (parseInt(origin) + 1).toString(),
     });
   res.send({
     success: true,
