@@ -3,7 +3,8 @@ import { useRoute } from "react-router5";
 import styled from "styled-components";
 import UserProfile from "../../../service/UserProfile";
 import { Navbar, Body, Button } from "../../../component";
-import { WorldHistoryData } from "./historyData";
+import { WorldHistoryData, history } from "./historyData";
+import Game from "../../../service/Game";
 const WorldHistory = styled.div`
   padding: 10px;
   font-size: 14px;
@@ -22,15 +23,22 @@ const ButtonCon = styled(Button)`
 `;
 export default (props) => {
   const { router } = useRoute();
-  const [time, setTime] = useState("");
+  const [time, setTime] = useState("X");
+
+  const [worldTime, setWorldTime] = useState(0);
 
   const User = new UserProfile();
   const [viewByTime, setViewByTime] = useState(false);
+  const ThisGame = new Game();
   useEffect(() => {
     User.getMyTime().then((Utime) => {
       setTime(Utime);
     });
+    ThisGame.getWorldTime().then((time) => {
+      setWorldTime(time);
+    });
   }, []);
+
   return (
     <>
       <Navbar
@@ -38,7 +46,11 @@ export default (props) => {
         onGoBack={() => router.navigate("home")}
       />
       <Body>
-        <WorldHistory>{WorldHistoryData}</WorldHistory>
+        <WorldHistory>
+          {viewByTime
+            ? history[time].slice(0, worldTime).join("\n")
+            : WorldHistoryData}
+        </WorldHistory>
 
         <ButtonCon
           onClick={() => {

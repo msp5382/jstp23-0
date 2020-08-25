@@ -163,4 +163,12 @@ export default class Game {
         cb(doc.data());
       });
   };
+
+  getWorldTime = async () => {
+    const data = (
+      await this.db.collection("gameData").doc("worldTime").get()
+    ).data();
+    console.log(data);
+    return parseInt(data.date) ?? 0;
+  };
 }
