@@ -61,7 +61,8 @@ export default (props) => {
           }}></LoginButton>
         <div
           onClick={() => {
-            new Auth().registerWithPassword(email, password);
+            //new Auth().registerWithPassword(email, password);
+            router.navigate("character_username_pass");
           }}
           style={{ marginTop: 10, textAlign: "center", cursor: "pointer" }}>
           สมัคร JSTPID
