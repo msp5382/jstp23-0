@@ -78,9 +78,13 @@ const CrossTimeBox = styled.div`
 `;
 
 const CrossTimeWorldData = (props) => {
+  let P = parseInt(props.P ?? 0);
+  if (P < 0) {
+    P = 0;
+  }
   return (
     <CrossTimeBox>
-      เทคโนโลยี: {props.T} ความรู้สึก: {props.F} ประชากร: {props.P}
+      เทคโนโลยี: {props.T} ความรู้สึก: {props.F} ประชากร: {P}
     </CrossTimeBox>
   );
 };
