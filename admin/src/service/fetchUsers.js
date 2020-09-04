@@ -30,6 +30,24 @@ export default async () => {
   );
 };
 
+export const getUsersLean = async () => {
+  const db = firebase.firestore();
+  const res = await db.collection("users").get();
+
+  let users = [];
+  res.forEach((doc) => {
+    users.push({
+      id: doc.id,
+      data: doc.data(),
+    });
+  });
+  console.log(users);
+  return users.map((u) => ({
+    id: u.id,
+    data: u.data,
+  }));
+};
+
 export const setTime = async (time, id) => {
   const db = firebase.firestore();
   const MainTime = time

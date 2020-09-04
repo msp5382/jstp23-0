@@ -106,5 +106,3 @@ export const assignQuestToSpecificUser = async (
       });
   });
 };
-
-window.assignQuestToSpecificUser = assignQuestToSpecificUser;

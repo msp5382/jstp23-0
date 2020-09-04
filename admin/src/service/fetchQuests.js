@@ -24,16 +24,17 @@ export default async () => {
   const res = await Promise.all(
     timesTable.map((t) => db.collection("quests").doc(t).get())
   );
-  console.log(
-    res
-      .map((r) => r.data().quests)
-      .reduce((p, c, i) => {
-        return [...p, ...c];
-      }, [])
-  );
   return res
     .map((r) => r.data().quests)
     .reduce((p, c, i) => {
       return [...p, ...c];
     }, []);
+};
+
+export const fetchQuestByIdAndTime = async (id, time) => {
+  const db = firebase.firestore();
+
+  const res = (await db.collection("quests").doc(time).get()).data().quests;
+
+  return res.find((a) => a.id === id);
 };
