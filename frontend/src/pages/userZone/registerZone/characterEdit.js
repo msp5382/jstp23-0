@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import UserProfile from "../../../service/UserProfile";
 import styled from "styled-components";
 import { Navbar, Body, Button } from "../../../component";
+
+import { useRoute } from "react-router5";
 import {
   getCharacterBuildIndex,
   UploadUserCharacter,
@@ -33,6 +35,7 @@ const buildPathString = (file, time) =>
 const buildPreviewString = (file, time) =>
   `/assets/characterGen/${time}/T_${time}0_${file}_P.png`;
 export default (props) => {
+  const { router } = useRoute();
   const [userName, setUserName] = useState("");
   const [characterBuildIndex, setCharacterBuildIndex] = useState([]);
   const [customData, setCustomData] = useState([]);
@@ -85,7 +88,7 @@ export default (props) => {
   return (
     <>
       <Navbar
-        onGoBack={() => this.props.router.navigate("character_gen")}
+        onGoBack={() => router.navigate("character_gen")}
         pageName="สร้างตัวละคร"
       />
       <PageBody>

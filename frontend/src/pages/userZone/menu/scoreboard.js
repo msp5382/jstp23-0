@@ -25,6 +25,7 @@ const Wrap = styled.div`
   display: flex;
   overflow-y: scroll;
   flex-wrap: wrap;
+  justify-content: space-between;
 `;
 
 const UserBox = styled.div`

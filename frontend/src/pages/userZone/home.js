@@ -39,6 +39,9 @@ const CharacterImage = styled.img`
   bottom: 10px;
   z-index: 9;
   margin: auto;
+  @media only screen and (max-width: 320px) {
+    width: 230px;
+  }
 `;
 
 const MenuIconRight = styled.img`
@@ -78,9 +81,13 @@ const CrossTimeBox = styled.div`
 `;
 
 const CrossTimeWorldData = (props) => {
+  let P = parseInt(props.P ?? 0);
+  if (P < 0) {
+    P = 0;
+  }
   return (
     <CrossTimeBox>
-      เทคโนโลยี: {props.T} ความรู้สึก: {props.F} ประชากร: {props.P}
+      เทคโนโลยี: {props.T} ความรู้สึก: {props.F} ประชากร: {P}
     </CrossTimeBox>
   );
 };
