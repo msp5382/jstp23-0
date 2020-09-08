@@ -39,6 +39,9 @@ const CharacterImage = styled.img`
   bottom: 10px;
   z-index: 9;
   margin: auto;
+  @media only screen and (max-width: 320px) {
+    width: 230px;
+  }
 `;
 
 const MenuIconRight = styled.img`
