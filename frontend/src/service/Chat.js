@@ -46,7 +46,6 @@ export default class Chat {
       q.forEach(function (doc) {
         messages.push(doc.data());
       });
-      console.log("Callback parameter:");
       const resMsg = messages.map(this.mapMessage);
       Promise.all(resMsg).then((messages) => {
         if (messages !== []) cb(messages, q.docs[q.docs.length - 1]);
@@ -57,7 +56,6 @@ export default class Chat {
 
   mapMessage = async (messenge) => {
     const thisTime = await this.getUserTime(messenge.sender);
-    console.log("MAPPING", thisTime);
     return { ...messenge, time: thisTime };
   };
   getUserTime = async (uid) => {
