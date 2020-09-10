@@ -71,7 +71,7 @@ const MenuWrap = styled.div`
 const CrossTimeBox = styled.div`
   border: 2px solid #4c341f;
   background-color: #be9c6c;
-  width: 310px;
+  width: 340px;
 
   padding: 4px;
   position: absolute;
