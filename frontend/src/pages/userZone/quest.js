@@ -71,7 +71,7 @@ export default (props) => {
               </div>
             </div>
             <div className="row justify-content-center">
-              <div className="col d-flex justify-content-center">
+              <div className="col-6 d-flex justify-content-center">
                 <Location
                   onClick={() =>
                     router.navigate("choose_quest", { location: 5 })
