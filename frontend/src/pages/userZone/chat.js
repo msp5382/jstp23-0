@@ -268,6 +268,11 @@ function ChatPage(props) {
             value={textMessage}
             onChange={(e) => setTextMessage(e.target.value)}
             type="text"
+            onKeyDown={(e) => {
+              if (e.keyCode === 13) {
+                sendData();
+              }
+            }}
           />
           <Button
             style={{ marginLeft: 5 }}
