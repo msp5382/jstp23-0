@@ -77,6 +77,8 @@ function ChatPage(props) {
 
   useEffect(() => {
     new UserProfile().getMyTime().then((t) => SetMyTime(t));
+
+    new UserProfile().getUserProfileImg().then((p) => (profileImg = p));
     setLoading(true);
     chat.listenToMessage((data, endDoc) => {
       console.log(data.map((d) => d.sender));

@@ -51,9 +51,12 @@ export default (props) => {
 
         <NextButton
           style={{ marginLeft: "auto" }}
-          text="ถัดไป >"
+          text={fileUploading ? "กำลังอัพโหลดไฟล์..." : "ถัดไป >"}
           onClick={async () => {
-            if (!fileUploading) {
+            if (displayName === "") {
+              alert("กรุณาตั้งชื่อ");
+            }
+            if (!fileUploading && displayName !== "") {
               await new UserProfile().setUsername(displayName);
               window.location = "character_edit";
             }
