@@ -7,6 +7,11 @@ import startFirebase from "./service/startFirebase";
 import Auth from "./service/Auth";
 const router = createRouter();
 
+// Registering Sequence
+// Change comment in Character Edit
+// Clear User and Chat
+// Trigger World data
+
 startFirebase();
 new Auth().getUserDataListener((s) => {});
 
