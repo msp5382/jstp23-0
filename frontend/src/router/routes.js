@@ -43,7 +43,7 @@ export default [
     admin: true,
   },
 
-  { name: "index", path: "/index", component: <HomePage /> },
+  { name: "index", path: "/index", component: <LoginPage /> },
 
   { name: "login", path: "/login", component: <LoginPage /> },
   { name: "home", path: "/home", component: <HomePage />, needLogin: true },
