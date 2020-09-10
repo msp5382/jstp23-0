@@ -17,13 +17,6 @@ const QuestBox = styled.div`
     opacity: 0.5;
   }
 `;
-
-const Trunk = styled.div`
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
 const PageBody = styled(Body)`
   padding-left: 30px;
   padding-right: 30px;
