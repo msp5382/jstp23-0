@@ -116,10 +116,10 @@ export default (props) => {
               UploadUserCharacter(b).then((url) => {
                 console.log(url);
                 setIsBuilding(false);
-                //window.location = "/home";
-                alert(
-                  "การสมัครเสร็จเรียบร้อย ระบบจะเปิดให้ท่านเข้าใช้ในวันพรุ่งนี้"
-                );
+                window.location = "/home";
+                //alert(
+                //  "การสมัครเสร็จเรียบร้อย ระบบจะเปิดให้ท่านเข้าใช้ในวันพรุ่งนี้"
+                //);
               });
             });
           }}></NextButton>
