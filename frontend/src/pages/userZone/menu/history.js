@@ -21,6 +21,47 @@ const ButtonCon = styled(Button)`
   margin-right: auto;
   margin-top: 10px;
 `;
+
+const romanize = (num) => {
+  if (isNaN(num)) return NaN;
+  var digits = String(+num).split(""),
+    key = [
+      "",
+      "C",
+      "CC",
+      "CCC",
+      "CD",
+      "D",
+      "DC",
+      "DCC",
+      "DCCC",
+      "CM",
+      "",
+      "X",
+      "XX",
+      "XXX",
+      "XL",
+      "L",
+      "LX",
+      "LXX",
+      "LXXX",
+      "XC",
+      "",
+      "I",
+      "II",
+      "III",
+      "IV",
+      "V",
+      "VI",
+      "VII",
+      "VIII",
+      "IX",
+    ],
+    roman = "",
+    i = 3;
+  while (i--) roman = (key[+digits.pop() + i * 10] || "") + roman;
+  return Array(+digits.join("") + 1).join("M") + roman;
+};
 export default (props) => {
   const { router } = useRoute();
   const [time, setTime] = useState("X");
@@ -48,8 +89,20 @@ export default (props) => {
       <Body>
         <WorldHistory>
           {viewByTime
-            ? history[time].slice(0, worldTime).join("\n")
-            : WorldHistoryData}
+            ? history[time].slice(0, worldTime).map((x, i) => (
+                <>
+                  {i === 0 ? (
+                    <></>
+                  ) : (
+                    <>
+                      <br /> <br />
+                    </>
+                  )}
+                  Chapter {romanize(i + 1)} <br /> {x}
+                </>
+              ))
+            : //.join("\n")
+              WorldHistoryData}
         </WorldHistory>
 
         <ButtonCon
