@@ -102,7 +102,12 @@ export default (props) => {
                 </>
               ))
             : //.join("\n")
-              WorldHistoryData}
+              WorldHistoryData.map((x, i) => (
+                <>
+                  {x}
+                  <br /> <br />
+                </>
+              ))}
         </WorldHistory>
 
         <ButtonCon
