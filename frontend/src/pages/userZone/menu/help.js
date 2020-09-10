@@ -10,7 +10,15 @@ export default (props) => {
   return (
     <>
       <Navbar pageName="ช่วยเหลือ!" onGoBack={() => router.navigate("home")} />
-      <Body></Body>
+      <Body>
+        <Button
+          onClick={() =>
+            (window.location =
+              "https://docs.google.com/forms/d/e/1FAIpQLSchFdYH4S-rAnY7BUwYwvs6OmCDjIVgRgx_XbctO2d81BDqIA/viewform?usp=send_form")
+          }
+          text="Report Bug"
+        />
+      </Body>
     </>
   );
 };

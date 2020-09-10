@@ -23,11 +23,22 @@ const Uname = styled.div`
   font-size: 0.6rem;
   margin-left: 0.2rem;
 `;
+
+const Information = styled.div`
+  font-size: 0.6rem;
+  margin-left: 0.2rem;
+  color: #9c6b32;
+`;
 const ChatBubble = (prop) => {
   return (
     <div>
       <Uname>{prop.name}</Uname>
       <Bubble future={prop.future}>{prop.children}</Bubble>
+      {prop.cut ? (
+        <Information>ข้อความจากอดีตจะมีการตกหล่นไปตามกาลเวลา</Information>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
@@ -190,6 +201,9 @@ function ChatPage(props) {
           <img
             alt="profile"
             src={data.profilePic || "/assets/example_user.png"}
+            onError={(e) => {
+              e.target.src = "/assets/example_user.png";
+            }}
             style={{
               width: 40,
               height: 40,
@@ -201,6 +215,7 @@ function ChatPage(props) {
           />
           <ChatBubble
             future={data.future}
+            cut={data.cut}
             name={UsernameCache.find((u) => u.uid === data.sender)?.username}>
             {data.message}
           </ChatBubble>

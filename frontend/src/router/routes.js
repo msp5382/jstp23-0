@@ -25,7 +25,16 @@ import HistoryPage from "../pages/userZone/menu/history";
 import HelpPage from "../pages/userZone/menu/help";
 import DoMissionPage from "../pages/userZone/doMission";
 import EventComplete from "../pages/userZone/eventComplete";
+
+import IntroPage from "../pages/intro/introVid";
+
 export default [
+  {
+    name: "intro",
+    path: "/intro/",
+    component: <IntroPage />,
+    needLogin: false,
+  },
   {
     name: "admin",
     path: "/admin_dash",
@@ -34,7 +43,8 @@ export default [
     admin: true,
   },
 
-  { name: "index", path: "/index", component: <IndexPage /> },
+  { name: "index", path: "/index", component: <HomePage /> },
+
   { name: "login", path: "/login", component: <LoginPage /> },
   { name: "home", path: "/home", component: <HomePage />, needLogin: true },
   { name: "chat", path: "/chat", component: <ChatPage />, needLogin: true },
