@@ -77,9 +77,23 @@ const CrossTimeBox = styled.div`
   position: absolute;
   bottom: 4rem;
   z-index: 100;
-  opacity: 0.8;
+  opacity: 0.9;
 `;
 
+const ColorBox = styled.span`
+  color: ${(props) => props.color};
+  margin-left: 2px;
+  margin-right: 4px;
+`;
+const DataColor = (d) => {
+  if (d < 250) {
+    return "#dc3545";
+  } else if (d > 1000) {
+    return "#0d6efd";
+  } else {
+    return "#28a745";
+  }
+};
 const CrossTimeWorldData = (props) => {
   let P = parseInt(props.P ?? 0);
   if (P < 0) {
@@ -87,7 +101,12 @@ const CrossTimeWorldData = (props) => {
   }
   return (
     <CrossTimeBox>
-      เทคโนโลยี: {props.T} ความรู้สึก: {props.F} ประชากร: {P}
+      เทคโนโลยี:
+      <ColorBox color={DataColor(props.T)}>{props.T}</ColorBox>
+      ความรู้สึก:
+      <ColorBox color={DataColor(props.F)}> {props.F}</ColorBox>
+      ประชากร:
+      <ColorBox color={DataColor(P)}>{P}</ColorBox>
     </CrossTimeBox>
   );
 };
