@@ -44,7 +44,9 @@ export default class Game {
         .filter((d) => {
           const res = !Answers.includes(d.id);
           console.log("answer ", res);
-          return res;
+          //return res;
+          // debug quest not shown
+          return true;
         })
     );
     return Object.values(QuestData)
