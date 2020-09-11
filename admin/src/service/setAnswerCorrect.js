@@ -15,7 +15,8 @@ export default async (id, isPass, data) => {
 
 export const readAnswerSet = async () => {
   const db = firebase.firestore();
-  return Object.keys(
-    (await db.collection("gameData").doc("AnswerMark").get()).data()
-  );
+  const k =
+    (await db.collection("gameData").doc("AnswerMark").get()).data() ?? [];
+  console.log(k);
+  return Object.keys(k);
 };
