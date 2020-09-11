@@ -5,13 +5,14 @@ import moment from "moment";
 
 export default async () => {
   await upStep();
-  console.log(await assignQuestToUser(await getStep(), 0));
+  await upPosition();
+  console.log(await assignQuestToUser(await getStep(), await getPosition()));
 };
 const upStep = async () => {
   const db = firebase.firestore();
   const { count: now } = (
     await db.collection("gameData").doc("nowQuestCount").get()
-  ).data();
+  ).data() ?? { count: 0 };
   return await db
     .collection("gameData")
     .doc("nowQuestCount")
@@ -22,9 +23,35 @@ const getStep = async () => {
   const db = firebase.firestore();
   const { count: now } = (
     await db.collection("gameData").doc("nowQuestCount").get()
-  ).data();
+  ).data() ?? { count: 0 };
   return now;
 };
+
+const getPosition = async () => {
+  const db = firebase.firestore();
+  const { count: now } = (
+    await db.collection("gameData").doc("nowQuestPosition").get()
+  ).data() ?? { count: 0 };
+  return now;
+};
+
+const upPosition = async () => {
+  const db = firebase.firestore();
+  const { count: now } = (
+    await db.collection("gameData").doc("nowQuestPosition").get()
+  ).data() ?? { count: 0 };
+  let plus;
+  if (parseInt(now) < 3) {
+    plus = parseInt(now) + 1;
+  } else if (parseInt(now) >= 3) {
+    plus = 0;
+  }
+  return await db
+    .collection("gameData")
+    .doc("nowQuestPosition")
+    .set({ count: plus });
+};
+
 const getUserWithTime = async () => {
   const db = firebase.firestore();
   const d = (
@@ -63,7 +90,7 @@ const assignQuestToUser = async (questCount, dayTime) => {
             {
               [dayTime]: {
                 ...Quests,
-                expTime: moment().add(6, "hours").toISOString(),
+                expTime: moment().add(8, "hours").toISOString(),
                 location: Math.floor(Math.random() * (6 - 1)) + 1,
               },
             },
