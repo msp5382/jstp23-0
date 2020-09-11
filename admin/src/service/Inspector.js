@@ -14,7 +14,7 @@ export const setStep = async (step) => {
   return await db
     .collection("gameData")
     .doc("nowQuestCount")
-    .set({ count: step });
+    .set({ count: parseInt(step) });
 };
 
 export const setDate = async (date) => {

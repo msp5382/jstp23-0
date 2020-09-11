@@ -15,8 +15,9 @@ const upStep = async () => {
   return await db
     .collection("gameData")
     .doc("nowQuestCount")
-    .set({ count: now + 1 });
+    .set({ count: parseInt(now) + 1 });
 };
+
 const getStep = async () => {
   const db = firebase.firestore();
   const { count: now } = (
