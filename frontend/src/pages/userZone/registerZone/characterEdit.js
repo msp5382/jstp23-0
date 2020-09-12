@@ -91,7 +91,7 @@ export default (props) => {
       <Navbar
         onGoBack={() =>
           router.navigate(
-            router.getState().param.settings ? "settings" : "character_gen"
+            router.getState().params?.settings ? "settings" : "character_gen"
           )
         }
         pageName="สร้างตัวละคร"

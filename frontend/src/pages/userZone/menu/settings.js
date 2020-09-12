@@ -76,7 +76,7 @@ export default (props) => {
             <div className="col">
               <Button
                 onClick={() => {
-                  window.location = "/character_edit";
+                  router.navigate("character_edit", { settings: true });
                 }}
                 text={"ไปปรับแต่งตัวละคร"}></Button>
             </div>
@@ -100,10 +100,10 @@ export default (props) => {
         </div>
 
         <div></div>
-        {username != oldUserName &&
-        username != undefined &&
-        username != null &&
-        username != "" ? (
+        {username !== oldUserName &&
+        username !== undefined &&
+        username !== null &&
+        username !== "" ? (
           <div className="row justify-content-end mr-4 mt-2">
             <Button
               onClick={() => {
