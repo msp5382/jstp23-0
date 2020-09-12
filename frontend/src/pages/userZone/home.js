@@ -125,7 +125,7 @@ export default (props) => {
     })();
   }, []);
   return (
-    <div>
+    <div style={{ touchAction: "none" }}>
       <Navbar pageName={new Auth().getUserData().displayName} />
 
       <MenuWrap>

@@ -87,7 +87,7 @@ export default (props) => {
     }
   };
   return (
-    <div style={{ touchAction: "unset" }}>
+    <div style={{ touchAction: "pan-y" }}>
       <Navbar
         onGoBack={() =>
           router.navigate(
