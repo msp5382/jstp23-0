@@ -11,7 +11,7 @@ body {
   background-color: hsl(33, 38%, 59%);
   color: #442e15;
   /*overflow-y: hidden;*/
-  touch-action: none;
+  /*touch-action: none;*/
 }
 
 ::-webkit-scrollbar {
