@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { fetchQuestAnswer } from "./service/fetchQuestAnswer";
 import { fetchQuestByIdAndTime } from "./service/fetchQuests";
-import setAnswerCorrect, { readAnswerSet } from "./service/setAnswerCorrect";
+import setAnswerCorrect, {
+  readAnswerSet,
+  readAnswerSetRealTime,
+} from "./service/setAnswerCorrect";
 const QuestAnswerR = (props) => {
   const [QD, setQ] = useState({ quest_answer_id: "0", answerText: "" });
   const [Checking, setChecking] = useState(false);
@@ -67,13 +70,15 @@ export default (props) => {
     (async () => {
       const fetched = await fetchQuestAnswer();
       console.log(fetched);
-      const marked = await readAnswerSet();
+      ///const marked = await readAnswerSet();
+      readAnswerSetRealTime((marked) => {
+        setAnswer(
+          fetched.QuestAnswerAll.filter(
+            (a) => !marked.includes(a.quest_answer_id)
+          )
+        );
+      });
       setQuestAnswer(fetched.AnswerAll);
-      setAnswer(
-        fetched.QuestAnswerAll.filter(
-          (a) => !marked.includes(a.quest_answer_id)
-        )
-      );
     })();
   }, []);
 
