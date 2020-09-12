@@ -20,7 +20,7 @@ export default (props) => {
   const assignQuestByUser = (q) => {
     const Quest = prompt("Quest Id? for  " + q.data?.displayName);
     if (!isNaN(Quest)) {
-      assignQuestToSpecificUser(parseInt(Quest), 0, q.id, q.meta?.subTime);
+      assignQuestToSpecificUser(parseInt(Quest), q.id, q.meta?.subTime);
     }
   };
   return (

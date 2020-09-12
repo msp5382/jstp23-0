@@ -102,14 +102,14 @@ const assignQuestToUser = async (questCount, dayTime) => {
 
 export const assignQuestToSpecificUser = async (
   questCount,
-  dayTime,
+
   userId,
   userTime
 ) => {
   const db = firebase.firestore();
   const users = [{ user: userId, time: userTime }];
   const allQuestAtTime = await getQuest(questCount);
-  console.log(questCount, dayTime);
+  const dayTime = (await getPosition()) + 1;
   timeTable.map((t) => {
     const Quests = allQuestAtTime.find((q) => q.time === t);
     users
