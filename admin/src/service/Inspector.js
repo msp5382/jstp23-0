@@ -1,5 +1,6 @@
 import firebase from "firebase";
 import "firebase/firestore";
+import { getUsersLean } from "./fetchUsers";
 import { timeTable } from "./times";
 export const getStep = async () => {
   const db = firebase.firestore();
@@ -14,7 +15,7 @@ export const setStep = async (step) => {
   return await db
     .collection("gameData")
     .doc("nowQuestCount")
-    .set({ count: step });
+    .set({ count: parseInt(step) });
 };
 
 export const setDate = async (date) => {
@@ -26,3 +27,35 @@ export const getDate = async () => {
   const db = firebase.firestore();
   return (await db.collection("gameData").doc("worldTime").get()).data()?.date;
 };
+
+export const cleanAnswer = async () => {
+  const db = firebase.firestore();
+  const users = await getUsersLean();
+  return await Promise.all(
+    users.map(({ id }) => {
+      return Promise.all([
+        db
+          .collection("users")
+          .doc(id)
+          .collection("gameMetaData")
+          .doc("quest")
+          .delete(),
+        db
+          .collection("users")
+          .doc(id)
+          .collection("gameMetaData")
+          .doc("quest_answers")
+          .delete(),
+        db
+          .collection("users")
+          .doc(id)
+          .collection("gameMetaData")
+          .doc("answers")
+          .delete(),
+      ]);
+    })
+  );
+  //https://us-central1-jstp-23-0.cloudfunctions.net/world-data-watch
+};
+
+window.cleanAnswer = cleanAnswer;

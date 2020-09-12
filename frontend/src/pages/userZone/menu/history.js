@@ -88,26 +88,32 @@ export default (props) => {
       />
       <Body>
         <WorldHistory>
-          {viewByTime
-            ? history[time].slice(0, worldTime).map((x, i) => (
-                <>
-                  {i === 0 ? (
-                    <></>
-                  ) : (
+          {viewByTime ? (
+            <>
+              {time
+                ? history[time]?.slice(0, worldTime).map((x, i) => (
                     <>
-                      <br /> <br />
+                      {i === 0 ? (
+                        <></>
+                      ) : (
+                        <>
+                          <br /> <br />
+                        </>
+                      )}
+                      Chapter {romanize(i + 1)} <br /> {x}
                     </>
-                  )}
-                  Chapter {romanize(i + 1)} <br /> {x}
-                </>
-              ))
-            : //.join("\n")
-              WorldHistoryData.map((x, i) => (
-                <>
-                  {x}
-                  <br /> <br />
-                </>
-              ))}
+                  ))
+                : `วันแรกในปัจจุบันย่อมไม่มีอดีต`}
+            </>
+          ) : (
+            //.join("\n")
+            WorldHistoryData.map((x, i) => (
+              <>
+                {x}
+                <br /> <br />
+              </>
+            ))
+          )}
         </WorldHistory>
 
         <ButtonCon
