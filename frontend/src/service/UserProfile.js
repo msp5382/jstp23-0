@@ -93,12 +93,17 @@ export default class UserProfile {
     }
   };
   getUserCharacter = async (uid = this.getUser().uid) => {
-    const url = await firebase
-      .storage()
-      .ref("/character")
-      .child(uid)
-      .getDownloadURL();
-    return url;
+    try {
+      const url = await firebase
+        .storage()
+        .ref("/character")
+        .child(uid)
+        .getDownloadURL();
+      return url;
+    } catch (err) {
+      console.log("No Character");
+      window.location = "character_edit";
+    }
   };
 
   getAllUsers = async () => {
