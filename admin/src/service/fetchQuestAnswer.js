@@ -41,6 +41,48 @@ export const fetchQuestAnswer = async () => {
   return parseUserIntoEdiableQuest(data);
 };
 
+export const fetchQuestAnswerRealTime = async (cb) => {
+  const db = firebase.firestore();
+  const res = await db.collection("users").onSnapshot(async (doc) => {
+    //console.log("Current data: ", doc.data());
+
+    let users = [];
+    res.forEach((doc) => {
+      users.push({
+        id: doc.id,
+        data: doc.data(),
+      });
+    });
+    console.log(users);
+    const data = await Promise.all(
+      users.map(async (u) => ({
+        answer:
+          (
+            await db
+              .collection("users")
+              .doc(u.id)
+              .collection("gameMetaData")
+              .doc("answers")
+              .get()
+          ).data() || "NULL",
+        quest_answer:
+          (
+            await db
+              .collection("users")
+              .doc(u.id)
+              .collection("gameMetaData")
+              .doc("quest_answers")
+              .get()
+          ).data() || "NULL",
+        id: u.id,
+        data: u.data,
+      }))
+    );
+    console.log(data);
+    cb(parseUserIntoEdiableQuest(data));
+  });
+};
+
 const parseUserIntoEdiableQuest = (d) => {
   const QuestAnswerAll = d.reduce((p, c) => {
     if (c.answer !== "NULL" && c.quest_answer !== "NULL") {

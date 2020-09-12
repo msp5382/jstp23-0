@@ -20,3 +20,13 @@ export const readAnswerSet = async () => {
   console.log(k);
   return Object.keys(k);
 };
+
+export const readAnswerSetRealTime = async (cb) => {
+  const db = firebase.firestore();
+  await db
+    .collection("gameData")
+    .doc("AnswerMark")
+    .onSnapshot(async (doc) => {
+      cb(Object.keys(doc.data()));
+    });
+};

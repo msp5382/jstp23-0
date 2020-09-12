@@ -36,6 +36,7 @@ const buildPreviewString = (file, time) =>
   `/assets/characterGen/${time}/T_${time}0_${file}_P.png`;
 export default (props) => {
   const { router } = useRoute();
+
   const [userName, setUserName] = useState("");
   const [characterBuildIndex, setCharacterBuildIndex] = useState([]);
   const [customData, setCustomData] = useState([]);
@@ -86,9 +87,13 @@ export default (props) => {
     }
   };
   return (
-    <>
+    <div style={{ touchAction: "unset" }}>
       <Navbar
-        onGoBack={() => router.navigate("character_gen")}
+        onGoBack={() =>
+          router.navigate(
+            router.getState().params?.settings ? "settings" : "character_gen"
+          )
+        }
         pageName="สร้างตัวละคร"
       />
       <PageBody>
@@ -124,6 +129,6 @@ export default (props) => {
             });
           }}></NextButton>
       </PageBody>
-    </>
+    </div>
   );
 };
