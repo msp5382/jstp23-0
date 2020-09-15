@@ -67,19 +67,27 @@ export default (props) => {
       ) : (
         <>
           <div class="text-md">Click user to assign</div>
-          {users.map((q, i) => (
-            <div
-              onClick={() => {
-                assignQuestByUser(q);
-              }}
-              key={i}
-              class="mt-2 border border-gray-300 rounded p-2">
-              <div class="text-sm text-gray-500">
-                {q.id} in {q.data?.time}
+          {users
+            .sort((a, b) => {
+              if (a.data.displayName < b.data.displayName) {
+                return -1;
+              } else if (a.data.displayName > b.data.displayName) {
+                return 1;
+              }
+            })
+            .map((q, i) => (
+              <div
+                onClick={() => {
+                  assignQuestByUser(q);
+                }}
+                key={i}
+                class="mt-2 border border-gray-300 rounded p-2">
+                <div class="text-sm text-gray-500">
+                  {q.id} in {q.data?.time}
+                </div>
+                <div class="text-sm truncate">{q.data?.displayName}</div>
               </div>
-              <div class="text-sm truncate">{q.data?.displayName}</div>
-            </div>
-          ))}
+            ))}
         </>
       )}
     </div>
