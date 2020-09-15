@@ -40,12 +40,13 @@ const upPosition = async () => {
   const { count: now } = (
     await db.collection("gameData").doc("nowQuestPosition").get()
   ).data() ?? { count: 0 };
-  let plus;
-  if (parseInt(now) < 3) {
-    plus = parseInt(now) + 1;
-  } else if (parseInt(now) >= 3) {
-    plus = 0;
-  }
+  // let plus;
+  // if (parseInt(now) < 3) {
+  //   plus = parseInt(now) + 1;
+  // } else if (parseInt(now) >= 3) {
+  //   plus = 0;
+  // }
+  let plus = parseInt(now) + 1;
   return await db
     .collection("gameData")
     .doc("nowQuestPosition")

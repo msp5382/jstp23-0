@@ -151,7 +151,8 @@ export default (props) => {
   });
   useEffect(() => {
     let f = async () => {
-      const UserGame = await new Game().getMyQuest();
+      const UserGame =
+        router.getState().params.quest ?? (await new Game().getMyQuest());
       console.log(UserGame);
       if (UserGame) {
         setQuestData(UserGame);

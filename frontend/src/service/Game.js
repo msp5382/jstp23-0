@@ -28,14 +28,13 @@ export default class Game {
     const Answers = Object.values(QuestAnswer)
       .filter((a) => a !== "answers")
       .map((a) => a.answerFor);
-    console.log("Answers", Answers);
     console.log(
-      "Res Q",
+      "Q",
       Object.values(QuestData)
         .filter((d) => d !== "quest")
         .filter((d) => {
           const res = moment().isBefore(
-            moment(d.expTime).add(6, "hour"),
+            moment(d.expTime).add(8, "hour"),
             "hour"
           );
           console.log("time ", res);
@@ -44,15 +43,13 @@ export default class Game {
         .filter((d) => {
           const res = !Answers.includes(d.id);
           console.log("answer ", res);
-          //return res;
-          // debug quest not shown
-          return true;
+          return res;
         })
     );
     return Object.values(QuestData)
       .filter((d) => d !== "quest")
       .filter((d) => {
-        const res = moment().isBefore(moment(d.expTime).add(6, "hour"), "hour");
+        const res = moment().isBefore(moment(d.expTime).add(8, "hour"), "hour");
         console.log("time ", res);
         return res;
       })
