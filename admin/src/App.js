@@ -4,7 +4,7 @@ const User = (u) => {
   const [time, setUTime] = useState(u?.meta?.subTime);
   return (
     <div class="border-solid border border-white	p-2 m-2 rounded flex">
-      <div class="w-1/2" onClick={() => (window.location = `/user?id=${u.id}`)}>
+      <div class="w-1/2">
         <div className=" text-sm text-gray-500">{u.id}</div>
         <div className=" text-sm ">{u.data?.displayName}</div>
       </div>
