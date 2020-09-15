@@ -14,11 +14,15 @@ const Location = styled.img`
 export default (props) => {
   const { router } = useRoute();
   const [userTime, setTime] = useState();
+  const [quest, setQuest] = useState();
   useEffect(() => {
+    const game = new Game();
     const f = async () => {
-      const { time } = await new Game().getMyMeta();
+      const { time } = await game.getMyMeta();
       console.log("found time", time);
       setTime(time);
+      const quest = await game.getMyQuest();
+      setQuest(quest);
     };
     f();
   }, []);
@@ -34,7 +38,10 @@ export default (props) => {
               <div className="col d-flex justify-content-center">
                 <Location
                   onClick={() =>
-                    router.navigate("choose_quest", { location: 1 })
+                    router.navigate("choose_quest", {
+                      location: 1,
+                      quest: quest,
+                    })
                   }
                   src={`/assets/location/${userTime}0.png`}
                   className="img-fluid"
@@ -43,7 +50,10 @@ export default (props) => {
               <div className="col d-flex justify-content-center">
                 <Location
                   onClick={() =>
-                    router.navigate("choose_quest", { location: 2 })
+                    router.navigate("choose_quest", {
+                      location: 2,
+                      quest: quest,
+                    })
                   }
                   src={`/assets/location/${userTime}1.png`}
                   className="img-fluid"
@@ -54,7 +64,10 @@ export default (props) => {
               <div className="col d-flex justify-content-center">
                 <Location
                   onClick={() =>
-                    router.navigate("choose_quest", { location: 3 })
+                    router.navigate("choose_quest", {
+                      location: 3,
+                      quest: quest,
+                    })
                   }
                   src={`/assets/location/${userTime}2.png`}
                   className="img-fluid"
@@ -63,7 +76,10 @@ export default (props) => {
               <div className="col d-flex justify-content-center">
                 <Location
                   onClick={() =>
-                    router.navigate("choose_quest", { location: 4 })
+                    router.navigate("choose_quest", {
+                      location: 4,
+                      quest: quest,
+                    })
                   }
                   src={`/assets/location/${userTime}3.png`}
                   className="img-fluid"
@@ -74,7 +90,10 @@ export default (props) => {
               <div className="col-6 d-flex justify-content-center">
                 <Location
                   onClick={() =>
-                    router.navigate("choose_quest", { location: 5 })
+                    router.navigate("choose_quest", {
+                      location: 5,
+                      quest: quest,
+                    })
                   }
                   src={`/assets/location/${userTime}4.png`}
                   className="img-fluid"

@@ -4,7 +4,7 @@ const User = (u) => {
   const [time, setUTime] = useState(u?.meta?.subTime);
   return (
     <div class="border-solid border border-white	p-2 m-2 rounded flex">
-      <div class="w-1/2" onClick={() => (window.location = `/user?id=${u.id}`)}>
+      <div class="w-1/2">
         <div className=" text-sm text-gray-500">{u.id}</div>
         <div className=" text-sm ">{u.data?.displayName}</div>
       </div>
@@ -78,9 +78,17 @@ export default (props) => {
           class="bg-indigo-300 mr-3 hover:bg-indigo-700 text-black mb-3 font-bold py-2 px-4 rounded">
           Login
         </button>
-        {users.map((u) => (
-          <User {...u} />
-        ))}
+        {users
+          .sort((a, b) => {
+            if (a.data.displayName < b.data.displayName) {
+              return -1;
+            } else if (a.data.displayName > b.data.displayName) {
+              return 1;
+            }
+          })
+          .map((u) => (
+            <User {...u} />
+          ))}
       </div>
     </>
   );

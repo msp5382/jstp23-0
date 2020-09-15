@@ -4,8 +4,6 @@ import UserProfile from "../service/UserProfile";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 export default class Game {
-  //คลาสใช้ dev เท่านั้นนะครับ
-  //onProd ใช้ uid กับ profile ของ user ที่ต้องการ
   constructor() {
     this.db = firebase.firestore();
     this.profile = new UserProfile();
@@ -28,34 +26,20 @@ export default class Game {
     const Answers = Object.values(QuestAnswer)
       .filter((a) => a !== "answers")
       .map((a) => a.answerFor);
-    console.log("Answers", Answers);
     console.log(
-      "Res Q",
+      "Q",
       Object.values(QuestData)
         .filter((d) => d !== "quest")
-        .filter((d) => {
-          const res = moment().isBefore(
-            moment(d.expTime).add(6, "hour"),
-            "hour"
-          );
-          console.log("time ", res);
-          return res;
-        })
+        .filter((d) => d.expTime > Date.now())
         .filter((d) => {
           const res = !Answers.includes(d.id);
           console.log("answer ", res);
-          //return res;
-          // debug quest not shown
-          return true;
+          return res;
         })
     );
     return Object.values(QuestData)
       .filter((d) => d !== "quest")
-      .filter((d) => {
-        const res = moment().isBefore(moment(d.expTime).add(6, "hour"), "hour");
-        console.log("time ", res);
-        return res;
-      })
+      .filter((d) => new Date(d.expTime) > Date.now())
       .filter((d) => {
         const res = !Answers.includes(d.id);
         console.log("answer ", res);
