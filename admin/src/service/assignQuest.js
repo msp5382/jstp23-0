@@ -81,8 +81,6 @@ const assignQuestToUser = async (questCount, dayTime) => {
     users
       .filter((u) => u.time === t)
       .forEach(async (u) => {
-        console.log(u);
-
         const quests = Object.keys(
           (
             await db
@@ -93,7 +91,7 @@ const assignQuestToUser = async (questCount, dayTime) => {
               .get()
           ).data()
         );
-
+        console.log(u, { pos: quests + 1 });
         await db
           .collection("users")
           .doc(u.user)
@@ -111,6 +109,7 @@ const assignQuestToUser = async (questCount, dayTime) => {
           );
       });
   });
+  alert("เรียบร้อย");
 };
 
 export const assignQuestToSpecificUser = async (
