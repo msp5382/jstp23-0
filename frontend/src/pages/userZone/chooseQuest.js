@@ -153,7 +153,7 @@ export default (props) => {
     let f = async () => {
       const UserGame =
         router.getState().params.quest ?? (await new Game().getMyQuest());
-      console.log(UserGame);
+      console.log("Quests", UserGame);
       if (UserGame) {
         setQuestData(UserGame);
       }
