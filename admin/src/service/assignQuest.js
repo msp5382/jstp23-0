@@ -126,7 +126,7 @@ export const assignQuestToSpecificUser = async (
             {
               [dayTime]: {
                 ...Quests,
-                expTime: moment().add(6, "hours").toISOString(),
+                expTime: moment().add(8, "hours").toISOString(),
                 location: Math.floor(Math.random() * (6 - 1)) + 1,
               },
             },
