@@ -26,17 +26,6 @@ export default class Game {
     const Answers = Object.values(QuestAnswer)
       .filter((a) => a !== "answers")
       .map((a) => a.answerFor);
-    console.log(
-      "Q",
-      Object.values(QuestData)
-        .filter((d) => d !== "quest")
-        .filter((d) => d.expTime > Date.now())
-        .filter((d) => {
-          const res = !Answers.includes(d.id);
-          console.log("answer ", res);
-          return res;
-        })
-    );
     return Object.values(QuestData)
       .filter((d) => d !== "quest")
       .filter((d) => new Date(d.expTime) > Date.now())
