@@ -82,6 +82,18 @@ const assignQuestToUser = async (questCount, dayTime) => {
       .filter((u) => u.time === t)
       .forEach(async (u) => {
         console.log(u);
+
+        const quests = Object.keys(
+          (
+            await db
+              .collection("users")
+              .doc(u.user)
+              .collection("gameMetaData")
+              .doc("quest")
+              .get()
+          ).data()
+        );
+
         await db
           .collection("users")
           .doc(u.user)
@@ -89,7 +101,7 @@ const assignQuestToUser = async (questCount, dayTime) => {
           .doc("quest")
           .set(
             {
-              [dayTime]: {
+              [quests + 1]: {
                 ...Quests,
                 expTime: moment().add(8, "hours").toISOString(),
                 location: Math.floor(Math.random() * (6 - 1)) + 1,
