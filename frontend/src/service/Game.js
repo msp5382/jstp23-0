@@ -26,6 +26,10 @@ export default class Game {
     const Answers = Object.values(QuestAnswer)
       .filter((a) => a !== "answers")
       .map((a) => a.answerFor);
+    console.log(
+      "RawQuests",
+      Object.values(QuestData).filter((d) => d !== "quest")
+    );
     return Object.values(QuestData)
       .filter((d) => d !== "quest")
       .filter((d) => new Date(d.expTime) > Date.now())
