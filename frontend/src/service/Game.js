@@ -8,12 +8,14 @@ export default class Game {
     this.db = firebase.firestore();
     this.profile = new UserProfile();
     this.uid = this.profile.getUser().uid;
+
+    window.getMyQuest = this.getMyQuest;
   }
 
-  getMyQuest = async () => {
+  getMyQuest = async (uid) => {
     const res = await this.db
       .collection("users")
-      .doc(this.uid)
+      .doc(uid ?? this.uid)
       .collection("gameMetaData")
       .get();
     let col = [];
@@ -28,16 +30,19 @@ export default class Game {
       .map((a) => a.answerFor);
     console.log(
       "RawQuests",
-      Object.values(QuestData).filter((d) => d !== "quest")
+      Object.values(QuestData)
+        .filter((d) => d !== "quest")
+        .sort((a, b) => parseInt(a.id) - parseInt(b.id))
+        .map((a) => ({ ...a, v: moment(a.expTime).fromNow() }))
     );
     return Object.values(QuestData)
       .filter((d) => d !== "quest")
-      .filter((d) => new Date(d.expTime) > Date.now())
-      .filter((d) => {
-        const res = !Answers.includes(d.id);
-        console.log("answer ", res);
-        return res;
-      });
+      .filter((d) => new Date(d.expTime) > Date.now());
+    //.filter((d) => {
+    //  const res = !Answers.includes(d.id);
+    //  console.log("answer ", res);
+    //  return res;
+    //});
   };
 
   getMyMeta = async () => {
