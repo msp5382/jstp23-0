@@ -90,7 +90,7 @@ const assignQuestToUser = async (questCount, dayTime) => {
               .doc("quest")
               .get()
           ).data()
-        );
+        ).length;
         console.log(u, { pos: quests + 1 });
         await db
           .collection("users")
