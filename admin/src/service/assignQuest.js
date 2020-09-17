@@ -75,13 +75,71 @@ const assignQuestToUser = async (questCount, dayTime) => {
   const db = firebase.firestore();
   const users = await getUserWithTime();
   const allQuestAtTime = await getQuest(questCount);
-  console.log(questCount, dayTime);
+
   timeTable.map((t) => {
     const Quests = allQuestAtTime.find((q) => q.time === t);
     users
       .filter((u) => u.time === t)
       .forEach(async (u) => {
-        console.log(u);
+        const quests = Object.keys(
+          (
+            await db
+              .collection("users")
+              .doc(u.user)
+              .collection("gameMetaData")
+              .doc("quest")
+              .get()
+          ).data()
+        ).length;
+        console.log(u, { pos: quests + 1 });
+        await db
+          .collection("users")
+          .doc(u.user)
+          .collection("gameMetaData")
+          .doc("quest")
+          .set(
+            {
+              [quests + 1]: {
+                ...Quests,
+                expTime: moment().add(8, "hours").toISOString(),
+                location: Math.floor(Math.random() * (6 - 1)) + 1,
+              },
+            },
+            { merge: true }
+          );
+      });
+  });
+  alert("เรียบร้อย");
+};
+
+export const assignQuestToSpecificUser = async (
+  questCount,
+
+  userId,
+  userTime
+) => {
+  const db = firebase.firestore();
+  const users = [{ user: userId, time: userTime }];
+  const allQuestAtTime = await getQuest(questCount);
+
+  const quests = Object.keys(
+    (
+      await db
+        .collection("users")
+        .doc(userId)
+        .collection("gameMetaData")
+        .doc("quest")
+        .get()
+    ).data()
+  );
+
+  const dayTime = quests.length + 1;
+  timeTable.map((t) => {
+    const Quests = allQuestAtTime.find((q) => q.time === t);
+    users
+      .filter((u) => u.time === t)
+      .forEach(async (u) => {
+        console.log(u, { pos: dayTime });
         await db
           .collection("users")
           .doc(u.user)
@@ -98,40 +156,6 @@ const assignQuestToUser = async (questCount, dayTime) => {
             { merge: true }
           );
       });
-  });
-};
-
-export const assignQuestToSpecificUser = async (
-  questCount,
-
-  userId,
-  userTime
-) => {
-  const db = firebase.firestore();
-  const users = [{ user: userId, time: userTime }];
-  const allQuestAtTime = await getQuest(questCount);
-  const dayTime = (await getPosition()) + 1;
-  timeTable.map((t) => {
-    const Quests = allQuestAtTime.find((q) => q.time === t);
-    users
-      .filter((u) => u.time === t)
-      .forEach(async (u) => {
-        console.log(u);
-        await db
-          .collection("users")
-          .doc(u.user)
-          .collection("gameMetaData")
-          .doc("quest")
-          .set(
-            {
-              [dayTime]: {
-                ...Quests,
-                expTime: moment().add(6, "hours").toISOString(),
-                location: Math.floor(Math.random() * (6 - 1)) + 1,
-              },
-            },
-            { merge: true }
-          );
-      });
+    return;
   });
 };
