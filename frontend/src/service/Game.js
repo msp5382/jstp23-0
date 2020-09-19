@@ -37,12 +37,12 @@ export default class Game {
     );
     return Object.values(QuestData)
       .filter((d) => d !== "quest")
-      .filter((d) => new Date(d.expTime) > Date.now());
-    //.filter((d) => {
-    //  const res = !Answers.includes(d.id);
-    //  console.log("answer ", res);
-    //  return res;
-    //});
+      .filter((d) => new Date(d.expTime) > Date.now())
+      .filter((d) => {
+        const res = !Answers.includes(d.id);
+        console.log("answer ", res);
+        return res;
+      });
   };
 
   getMyMeta = async () => {
