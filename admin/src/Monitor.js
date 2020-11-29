@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getStep, setStep, setDate, getDate } from "./service/Inspector";
 import { fetchQuestAnswer } from "./service/fetchQuestAnswer";
 import { calculateWorldData } from "./service/calculateWorldData";
+import "./service/editUserTest";
 export default (props) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [currentDate, setCurrentDate] = useState(1);

@@ -12,7 +12,7 @@ export default class Game {
     window.getMyQuest = this.getMyQuest;
   }
 
-  getMyQuest = async (uid) => {
+  getMyQuest = async (uid, all) => {
     const res = await this.db
       .collection("users")
       .doc(uid ?? this.uid)
@@ -35,14 +35,20 @@ export default class Game {
         .sort((a, b) => parseInt(a.id) - parseInt(b.id))
         .map((a) => ({ ...a, v: moment(a.expTime).fromNow() }))
     );
-    return Object.values(QuestData)
-      .filter((d) => d !== "quest")
-      .filter((d) => new Date(d.expTime) > Date.now())
-      .filter((d) => {
-        const res = !Answers.includes(d.id);
-        console.log("answer ", res);
-        return res;
-      });
+    if (all) {
+      return Object.values(QuestData)
+        .filter((d) => d !== "quest")
+        .filter((d) => new Date(d.expTime) > Date.now());
+    } else {
+      return Object.values(QuestData)
+        .filter((d) => d !== "quest")
+        .filter((d) => new Date(d.expTime) > Date.now())
+        .filter((d) => {
+          const res = !Answers.includes(d.id);
+          console.log("answer ", res);
+          return res;
+        });
+    }
   };
 
   getMyMeta = async () => {

@@ -89,7 +89,7 @@ const assignQuestToUser = async (questCount, dayTime) => {
               .collection("gameMetaData")
               .doc("quest")
               .get()
-          ).data()
+          ).data() ?? []
         ).length;
         console.log(u, { pos: quests + 1 });
         await db
@@ -130,7 +130,7 @@ export const assignQuestToSpecificUser = async (
         .collection("gameMetaData")
         .doc("quest")
         .get()
-    ).data()
+    ).data() ?? []
   );
 
   const dayTime = quests.length + 1;
@@ -158,4 +158,32 @@ export const assignQuestToSpecificUser = async (
       });
     return;
   });
+};
+
+export const getUserLastQuest = async (uid) => {
+  const res = await this.db
+    .collection("users")
+    .doc(uid ?? this.uid)
+    .collection("gameMetaData")
+    .get();
+  let col = [];
+
+  res.forEach((d) => {
+    col.push({ ...d.data(), id: d.id });
+  });
+  const QuestData = col.find((d) => d.id === "quest");
+  const QuestAnswer = col.find((d) => d.id === "answers") || [];
+  const Answers = Object.values(QuestAnswer)
+    .filter((a) => a !== "answers")
+    .map((a) => a.answerFor);
+  console.log(
+    "RawQuests",
+    Object.values(QuestData)
+      .filter((d) => d !== "quest")
+      .sort((a, b) => parseInt(a.id) - parseInt(b.id))
+      .map((a) => ({ ...a, v: moment(a.expTime).fromNow() }))
+  );
+  return Object.values(QuestData)
+    .filter((d) => d !== "quest")
+    .filter((d) => new Date(d.expTime) > Date.now());
 };
