@@ -38,12 +38,7 @@ export default class Game {
     if (all) {
       return Object.values(QuestData)
         .filter((d) => d !== "quest")
-        .filter((d) => new Date(d.expTime) > Date.now())
-        .filter((d) => {
-          const res = !Answers.includes(d.id);
-          console.log("answer ", res);
-          return res;
-        });
+        .filter((d) => new Date(d.expTime) > Date.now());
     } else {
       return Object.values(QuestData)
         .filter((d) => d !== "quest")
