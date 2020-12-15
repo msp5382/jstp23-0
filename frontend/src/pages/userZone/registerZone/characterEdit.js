@@ -8,6 +8,7 @@ import {
   getCharacterBuildIndex,
   UploadUserCharacter,
 } from "../../../service/Register";
+import Game from "../../../service/Game";
 const PageBody = styled(Body)`
   padding-left: 15px;
   padding-right: 15px;
@@ -29,14 +30,26 @@ const Options = styled.div`
   background-color: #fff;
   padding: 5px;
   cursor: pointer;
+  margin: 5px;
 `;
-const buildPathString = (file, time) =>
-  `/assets/characterGen/${time}/T_${time}0_${file}.png`;
-const buildPreviewString = (file, time) =>
-  `/assets/characterGen/${time}/T_${time}0_${file}_P.png`;
+const buildPathString = (file, time) => {
+  if (file.includes("FACE")) {
+    return `/assets/characterGen/D_Face/D_F${file.replace("FACE", "")}.png`;
+  } else {
+    return `/assets/characterGen/D_${time}/D_${time}${file}.png`;
+  }
+};
+
+const buildPreviewString = (file, time) => {
+  if (file.includes("FACE")) {
+    return `/assets/characterGen/D_Face/D_F${file.replace("FACE", "")}_P.png`;
+  } else {
+    return `/assets/characterGen/D_${time}/D_${time}${file}_P.png`;
+  }
+};
 export default (props) => {
   const { router } = useRoute();
-
+  const [_time, setTime] = useState("X");
   const [userName, setUserName] = useState("");
   const [characterBuildIndex, setCharacterBuildIndex] = useState([]);
   const [customData, setCustomData] = useState([]);
@@ -45,38 +58,45 @@ export default (props) => {
   const UserTime = "X";
   useEffect(() => {
     (async () => {
-      setCharacterBuildIndex(await getCharacterBuildIndex(UserTime));
+      const game = new Game();
+      const { time } = await game.getMyMeta();
+      setCharacterBuildIndex(await getCharacterBuildIndex(time));
+      setTime(time);
     })();
     setUserName(new UserProfile().getUser().displayName);
 
     const Context = Canvas.current.getContext("2d");
     const Base = new Image();
-    Base.src = buildPathString("BLANK", UserTime);
+    Base.src = `/assets/characterGen/BLANK.png`;
     Base.onload = () => {
-      Context.drawImage(Base, 0, 0, Base.width * 0.25, Base.height * 0.25);
+      Context.drawImage(Base, 0, 0, Base.width * 0.15, Base.height * 0.15);
     };
   }, []);
 
   useEffect(() => {
     const Context = Canvas.current.getContext("2d");
+    Context.clearRect(0, 0, Canvas.current.width, Canvas.current.height);
     const Base = new Image();
-    Base.src = buildPathString("BLANK", UserTime);
+    Base.src = `/assets/characterGen/BLANK.png`;
     Base.onload = () => {
-      Context.drawImage(Base, 0, 0, Base.width * 0.25, Base.height * 0.25);
+      Context.drawImage(Base, 0, 0, Base.width * 0.15, Base.height * 0.15);
     };
-    customData.map((item) => {
-      let AddingImage = new Image();
-      AddingImage.src = buildPathString(item, UserTime);
-      AddingImage.onload = () => {
-        Context.drawImage(
-          AddingImage,
-          0,
-          0,
-          AddingImage.width * 0.25,
-          AddingImage.height * 0.25
-        );
-      };
-    });
+    if (customData.length == 0) {
+    } else {
+      customData.map((item) => {
+        let AddingImage = new Image();
+        AddingImage.src = buildPathString(item, _time);
+        AddingImage.onload = () => {
+          Context.drawImage(
+            AddingImage,
+            0,
+            0,
+            AddingImage.width * 0.15,
+            AddingImage.height * 0.15
+          );
+        };
+      });
+    }
   }, [customData]);
 
   const addCustomData = (selected) => {
@@ -100,7 +120,7 @@ export default (props) => {
         <div class="row justify-content-center">
           <BodyCanvas ref={Canvas} width="300" height="500"></BodyCanvas>
         </div>
-        <div class="d-flex justify-content-between">
+        <div class="d-flex flex-wrap justify-content-center ">
           {characterBuildIndex.map((c, i) => (
             <Options
               onClick={() => {
@@ -108,7 +128,7 @@ export default (props) => {
               }}
               selected={customData.includes(c)}
               key={i}>
-              <img alt="options" src={buildPreviewString(c, UserTime)}></img>
+              <img alt="options" src={buildPreviewString(c, _time)}></img>
             </Options>
           ))}
         </div>

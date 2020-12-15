@@ -41,11 +41,25 @@ export const registerWithPassword = async (email, password) => {
 };
 
 export const getCharacterBuildIndex = async (time) => {
+  const COMMON_ITEMS = [
+    "FACE1",
+    "FACE2",
+    "FACE3",
+    "FACE4",
+    "FACE5",
+    "FACE6",
+    "FACE7",
+    "FACE8",
+    "FACE9",
+    "FACE10",
+    "FACE11",
+  ];
   switch (time) {
     case "X":
       return ["EYE1", "EYE2", "GLASSES", "MOUTH1", "MOUTH2"];
       break;
     default:
+      return ["1", "2", "3", "4", "5", "6", "7", "8", ...COMMON_ITEMS];
       break;
   }
 };
