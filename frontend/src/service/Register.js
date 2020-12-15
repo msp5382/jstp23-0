@@ -52,14 +52,24 @@ export const getCharacterBuildIndex = async (time) => {
     "FACE8",
     "FACE9",
     "FACE10",
-    "FACE11",
+
+    "HAIR1",
+    "HAIR2",
+    "HAIR3",
+    "HAIR4_M",
+    "HAIR5_M",
+    "HAIR6_M",
+    "HAIR7_M",
   ];
   switch (time) {
     case "X":
       return ["EYE1", "EYE2", "GLASSES", "MOUTH1", "MOUTH2"];
       break;
+    case "M":
+      return ["1", "2", "3", "4", "5", "6", ...COMMON_ITEMS];
+      break;
     default:
-      return ["1", "2", "3", "4", "5", "6", "7", "8", ...COMMON_ITEMS];
+      return ["1", "2", "3", "4", "5", "6", ...COMMON_ITEMS];
       break;
   }
 };

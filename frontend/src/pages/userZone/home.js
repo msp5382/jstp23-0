@@ -39,6 +39,7 @@ const CharacterImage = styled.img`
   bottom: 10px;
   z-index: 9;
   margin: auto;
+  margin-left: -30px;
   @media only screen and (max-width: 320px) {
     width: 230px;
   }
