@@ -32,6 +32,28 @@ const Options = styled.div`
   cursor: pointer;
   margin: 5px;
 `;
+
+const buildHairPathString = (hairEnum) => {
+  if (hairEnum.includes("_M")) {
+    return {
+      F: `/assets/characterGen/D_Hair/D_H_${hairEnum
+        .replace("HAIR", "")
+        .replace("_M", "")}_F.png`,
+    };
+  } else {
+    return {
+      F: `/assets/characterGen/D_Hair/D_H_${hairEnum.replace(
+        "HAIR",
+        ""
+      )}_F.png`,
+      B: `/assets/characterGen/D_Hair/D_H_${hairEnum.replace(
+        "HAIR",
+        ""
+      )}_B.png`,
+    };
+  }
+};
+
 const buildPathString = (file, time) => {
   if (file.includes("FACE")) {
     return `/assets/characterGen/D_Face/D_F${file.replace("FACE", "")}.png`;
@@ -43,6 +65,10 @@ const buildPathString = (file, time) => {
 const buildPreviewString = (file, time) => {
   if (file.includes("FACE")) {
     return `/assets/characterGen/D_Face/D_F${file.replace("FACE", "")}_P.png`;
+  } else if (file.includes("HAIR")) {
+    return `/assets/characterGen/D_Hair/D_H_${file
+      .replace("HAIR", "")
+      .replace("_M", "")}_F_P.png`;
   } else {
     return `/assets/characterGen/D_${time}/D_${time}${file}_P.png`;
   }
@@ -56,6 +82,17 @@ export default (props) => {
   const [isBuilding, setIsBuilding] = useState(false);
   const Canvas = useRef();
   const UserTime = "X";
+
+  const createBlankCharacter = () => {
+    const Context = Canvas.current.getContext("2d");
+    //Context.clearRect(0, 0, Canvas.current.width, Canvas.current.height);
+    const Base = new Image();
+    Base.src = `/assets/characterGen/BLANK.png`;
+    Base.onload = () => {
+      Context.drawImage(Base, 0, 0, Base.width * 0.15, Base.height * 0.15);
+    };
+  };
+
   useEffect(() => {
     (async () => {
       const game = new Game();
@@ -66,37 +103,96 @@ export default (props) => {
     setUserName(new UserProfile().getUser().displayName);
 
     const Context = Canvas.current.getContext("2d");
-    const Base = new Image();
-    Base.src = `/assets/characterGen/BLANK.png`;
-    Base.onload = () => {
-      Context.drawImage(Base, 0, 0, Base.width * 0.15, Base.height * 0.15);
-    };
+    // const Base = new Image();
+    // Base.src = `/assets/characterGen/BLANK.png`;
+    // Base.onload = () => {
+    //   Context.drawImage(Base, 0, 0, Base.width * 0.15, Base.height * 0.15);
+    // };
+    Context.clearRect(0, 0, Canvas.current.width, Canvas.current.height);
+    createBlankCharacter();
   }, []);
 
   useEffect(() => {
-    const Context = Canvas.current.getContext("2d");
-    Context.clearRect(0, 0, Canvas.current.width, Canvas.current.height);
-    const Base = new Image();
-    Base.src = `/assets/characterGen/BLANK.png`;
-    Base.onload = () => {
-      Context.drawImage(Base, 0, 0, Base.width * 0.15, Base.height * 0.15);
-    };
-    if (customData.length == 0) {
-    } else {
-      customData.map((item) => {
-        let AddingImage = new Image();
-        AddingImage.src = buildPathString(item, _time);
-        AddingImage.onload = () => {
-          Context.drawImage(
-            AddingImage,
-            0,
-            0,
-            AddingImage.width * 0.15,
-            AddingImage.height * 0.15
-          );
-        };
-      });
-    }
+    (async () => {
+      const Context = Canvas.current.getContext("2d");
+      Context.clearRect(0, 0, Canvas.current.width, Canvas.current.height);
+      createBlankCharacter();
+      if (customData.length != 0) {
+        const _customData = customData.sort((a, b) => {
+          if (!a.includes("HAIR") && b.includes("HAIR")) return 1;
+          else return -1;
+        });
+        console.log(_customData);
+        //_customData.map((item, i) => {
+        let j = _customData.length;
+        for (let i = 0; i < j; i++) {
+          const item = _customData[i];
+          console.log("making", item);
+          if (item.includes("HAIR") && item.includes("_M")) {
+            let AddingImage = new Image();
+            AddingImage.src = buildHairPathString(item)["F"];
+            AddingImage.onload = () => {
+              Context.drawImage(
+                AddingImage,
+                0,
+                0,
+                AddingImage.width * 0.15,
+                AddingImage.height * 0.15
+              );
+            };
+          } else if (item.includes("HAIR") && !item.includes("_M")) {
+            Context.clearRect(
+              0,
+              0,
+              Canvas.current.width,
+              Canvas.current.height
+            );
+            let AddingImage = new Image();
+            AddingImage.src = buildHairPathString(item)["B"];
+
+            await new Promise(
+              (res, rej) =>
+                (AddingImage.onload = () => {
+                  Context.drawImage(
+                    AddingImage,
+                    0,
+                    0,
+                    AddingImage.width * 0.15,
+                    AddingImage.height * 0.15
+                  );
+                  createBlankCharacter();
+                  const AddingImageBack = new Image();
+                  AddingImageBack.src = buildHairPathString(item)["F"];
+                  AddingImageBack.onload = () => {
+                    Context.drawImage(
+                      AddingImageBack,
+                      0,
+                      0,
+                      AddingImageBack.width * 0.15,
+                      AddingImageBack.height * 0.15
+                    );
+                  };
+                  console.log("complete draw");
+                  res();
+                })
+            );
+          } else {
+            let AddingImage = new Image();
+            AddingImage.src = buildPathString(item, _time);
+            AddingImage.onload = () => {
+              Context.drawImage(
+                AddingImage,
+                0,
+                0,
+                AddingImage.width * 0.15,
+                AddingImage.height * 0.15
+              );
+            };
+          }
+          //});
+        }
+      }
+    })();
   }, [customData]);
 
   const addCustomData = (selected) => {
@@ -128,7 +224,10 @@ export default (props) => {
               }}
               selected={customData.includes(c)}
               key={i}>
-              <img alt="options" src={buildPreviewString(c, _time)}></img>
+              <img
+                alt="options"
+                style={{ width: "auto", height: "calc(100% - 5px)" }}
+                src={buildPreviewString(c, _time)}></img>
             </Options>
           ))}
         </div>
