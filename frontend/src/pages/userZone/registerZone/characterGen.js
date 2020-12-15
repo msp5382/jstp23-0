@@ -1,9 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useRoute } from "react-router5";
 import UserProfile from "../../../service/UserProfile";
 import { UploadProfileImg } from "../../../service/Register";
 import { Navbar, Body, TextBox, Button } from "../../../component";
+import Game from "../../../service/Game";
+
 const PageBody = styled(Body)`
   padding-left: 15px;
   padding-right: 15px;
@@ -16,7 +18,6 @@ export default (props) => {
   const { router } = useRoute();
   const file = useRef();
   const [displayName, setDisplayName] = useState("");
-
   const [fileUploading, setFileUploading] = useState(false);
 
   return (
