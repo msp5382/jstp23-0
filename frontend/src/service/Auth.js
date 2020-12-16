@@ -10,6 +10,7 @@ export default class Auth {
         console.log(res);
         localStorage.setItem("JSTPLOGIN", "true");
       } catch (error) {
+        alert("รหัสผ่านหรืออีเมลล์ผืด");
         console.error(error);
       }
     } else {
