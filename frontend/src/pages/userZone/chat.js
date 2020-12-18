@@ -122,6 +122,8 @@ function ChatPage(props) {
         };
       } else if (timeMap[MyTime] === timeMap[message.time]) {
         return { ...message };
+      } else if (message.time === "ANY") {
+        return { ...message };
       } else {
         return { ...message, message: message.message, cut: true };
       }
