@@ -3,8 +3,18 @@ import "firebase/firestore";
 export default class Chat {
   constructor() {
     this.db = firebase.firestore();
-    this.userNameCache = [];
-    this.timeCache = [];
+    this.userNameCache = [
+      {
+        uid: "gameMaster_1234",
+        username: "GameMaster",
+      },
+    ];
+    this.timeCache = [
+      {
+        uid: "gameMaster_1234",
+        time: "M",
+      },
+    ];
     this.timeTable = ["M", "R", "D", "B", "V"];
   }
   getUserName = async (uid) => {
