@@ -62,7 +62,7 @@ const assignQuestToUser = async (questCount, dayTime) => {
             {
               [dayTime]: {
                 ...Quests,
-                expTime: moment().add(6, "hours").toISOString(),
+                expTime: moment().add(12, "hours").toISOString(),
                 location: Math.floor(Math.random() * (6 - 1)) + 1,
               },
             },
