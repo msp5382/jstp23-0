@@ -69,7 +69,7 @@ export const getCharacterBuildIndex = async (time) => {
       return ["1", "2", "3", "4", "5", "6", ...COMMON_ITEMS];
       break;
     case "V":
-      return ["1", "2", "3", "4", ...COMMON_ITEMS];
+      return ["1", "2", "3", ...COMMON_ITEMS];
       break;
     case "D":
       return ["1", "2", "3", "4", ...COMMON_ITEMS];
