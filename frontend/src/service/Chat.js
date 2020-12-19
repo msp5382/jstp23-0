@@ -12,7 +12,7 @@ export default class Chat {
     this.timeCache = [
       {
         uid: "gameMaster_1234",
-        time: "M",
+        time: "ANY",
       },
     ];
     this.timeTable = ["M", "R", "D", "B", "V"];
