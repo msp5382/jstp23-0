@@ -41,7 +41,9 @@ export default (props) => {
       </button>
       <button
         onClick={() => {
-          assignQuest();
+          if (window.confirm("แน่ใจ?")) {
+            assignQuest();
+          }
         }}
         class="bg-indigo-300 mr-3 hover:bg-indigo-700 text-black mb-3 font-bold py-2 px-4 rounded">
         Trigger Quest Assigner
@@ -86,7 +88,6 @@ export default (props) => {
                   {q.id} in {q.data?.time}
                 </div>
                 <div class="text-sm truncate">{q.data?.displayName}</div>
-                
               </div>
             ))}
         </>

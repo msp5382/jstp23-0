@@ -58,4 +58,29 @@ export const cleanAnswer = async () => {
   //https://us-central1-jstp-23-0.cloudfunctions.net/world-data-watch
 };
 
+export const copyAnswer = async () => {
+  const db = firebase.firestore();
+  const users = await getUsersLean();
+  return await Promise.all(
+    users.map(({ id }) => {
+      return Promise.all([
+        db
+          .collection("users")
+          .doc(id)
+          .collection("gameMetaData")
+          .doc("quest_answers")
+          .get(),
+        db
+          .collection("users")
+          .doc(id)
+          .collection("gameMetaData")
+          .doc("answers")
+          .get(),
+      ]);
+    })
+  );
+  //https://us-central1-jstp-23-0.cloudfunctions.net/world-data-watch
+};
+
 window.cleanAnswer = cleanAnswer;
+window.copyAnswer = copyAnswer;
