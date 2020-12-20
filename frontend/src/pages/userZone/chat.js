@@ -115,11 +115,17 @@ function ChatPage(props) {
         V: 4,
       };
       if (timeMap[MyTime] > timeMap[message.time]) {
-        return {
-          ...message,
-          message: "ข้อความนี้เกิดขึ้นในอนาคต...",
-          future: true,
-        };
+        if (props.route.params?.cheat === "on") {
+          return {
+            ...message,
+          };
+        } else {
+          return {
+            ...message,
+            message: "ข้อความนี้เกิดขึ้นในอนาคต...",
+            future: true,
+          };
+        }
       } else if (timeMap[MyTime] === timeMap[message.time]) {
         return { ...message };
       } else if (message.time === "ANY") {
@@ -150,13 +156,23 @@ function ChatPage(props) {
       setWordCutFiltered(
         dataWithOutK.map((x, i) => {
           if (x.cut) {
-            return {
-              ...x,
-              message: data[i]
-                .split("|")
-                .map((x, i) => (i % 2 === 0 ? "__" : x))
-                .join(""),
-            };
+            if (props.route.params?.cheat === "on") {
+              return {
+                ...x,
+                message: data[i]
+                  .split("|")
+                  .map((x, i) => (i % 2 === 0 ? x : x))
+                  .join(""),
+              };
+            } else {
+              return {
+                ...x,
+                message: data[i]
+                  .split("|")
+                  .map((x, i) => (i % 2 === 0 ? "__" : x))
+                  .join(""),
+              };
+            }
           } else {
             return { ...x, messageCut: data[i].split("|") };
           }
