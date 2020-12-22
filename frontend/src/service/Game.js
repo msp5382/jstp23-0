@@ -26,15 +26,9 @@ export default class Game {
     const QuestData = col.find((d) => d.id === "quest");
     const QuestAnswer = col.find((d) => d.id === "answers") || [];
     const Answers = Object.values(QuestAnswer)
-      .filter((a) => a !== "answers")
-      .map((a) => a.answerFor);
-    console.log(
-      "RawQuests",
-      Object.values(QuestData)
-        .filter((d) => d !== "quest")
-        .sort((a, b) => parseInt(a.id) - parseInt(b.id))
-        .map((a) => ({ ...a, v: moment(a.expTime).fromNow() }))
-    );
+      .filter((a) => a !== "quest_answers")
+      .map((a) => a.quest_answerFor);
+
     if (all) {
       return Object.values(QuestData)
         .filter((d) => d !== "quest")
@@ -48,7 +42,6 @@ export default class Game {
         })
         .filter((d) => {
           const res = !Answers.includes(d.id);
-          console.log(res, d);
           return res;
         });
     }
