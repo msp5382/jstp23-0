@@ -49,6 +49,14 @@ export default (props) => {
           value={currentDate}
         />
       </div>
+      <button
+        onClick={() => {
+          if (window.confirm("แน่ใจ?")) {
+          }
+        }}
+        class="bg-indigo-300 mr-3 hover:bg-indigo-700 text-black mb-3 font-bold py-2 px-4 rounded">
+        Remove Duplicate Quest
+      </button>
       <div class="bg-black text-sm p-10 text-white">
         {answer.map((a) => (
           <div>
