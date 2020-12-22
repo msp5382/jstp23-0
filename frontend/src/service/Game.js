@@ -42,10 +42,13 @@ export default class Game {
     } else {
       return Object.values(QuestData)
         .filter((d) => d !== "quest")
-        .filter((d) => new Date(d.expTime) > Date.now())
+        .filter((d) => {
+          console.log(d, new Date(d.expTime) >= Date.now());
+          return new Date(d.expTime) >= Date.now();
+        })
         .filter((d) => {
           const res = !Answers.includes(d.id);
-          console.log("answer ", res);
+          console.log(res, d);
           return res;
         });
     }

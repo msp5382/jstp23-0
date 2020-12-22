@@ -66,6 +66,7 @@ const QuestAnswerR = (props) => {
 export default (props) => {
   const [questAnswer, setQuestAnswer] = useState([]);
   const [answer, setAnswer] = useState([]);
+  const [filterChecked, setfilterChecked] = useState(true);
   useEffect(() => {
     (async () => {
       const fetched = await fetchQuestAnswer();
@@ -73,20 +74,29 @@ export default (props) => {
       ///const marked = await readAnswerSet();
       readAnswerSetRealTime((marked) => {
         setAnswer(
-          fetched.QuestAnswerAll.filter(
-            (a) => !marked.includes(a.quest_answer_id)
-          )
+          filterChecked
+            ? fetched.QuestAnswerAll.filter(
+                (a) => !marked.includes(a.quest_answer_id)
+              )
+            : fetched.QuestAnswerAll
         );
       });
       setQuestAnswer(fetched.AnswerAll);
     })();
-  }, []);
+  }, [filterChecked]);
 
   //useEffect(() => {}, [answer]);
 
   return (
     <>
       <div class="container mx-auto pt-5 ">
+        <button
+          onClick={() => {
+            setfilterChecked(!filterChecked);
+          }}
+          class="bg-indigo-300 mr-3 hover:bg-indigo-700 text-black mb-3 font-bold py-2 px-4 rounded">
+          {filterChecked ? "view all answer" : "view only new answer"}
+        </button>
         {answer?.map((d, i) => (
           <QuestAnswerR
             key={i}

@@ -114,7 +114,17 @@ function ChatPage(props) {
         B: 3,
         V: 4,
       };
-      if (timeMap[MyTime] > timeMap[message.time]) {
+
+      console.log(
+        "message.time",
+        message.time,
+        "MyTime",
+        MyTime,
+        timeMap[MyTime],
+        timeMap[message.time]
+      );
+
+      if (timeMap[MyTime] < timeMap[message.time]) {
         if (props.route.params?.cheat === "on") {
           return {
             ...message,
