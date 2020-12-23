@@ -186,9 +186,9 @@ const loadOrigin = async () => {
 
 exports["world-data-watch"] = async (req, res) => {
   let originData = {
-    T: -200,
+    T: -150,
     F: 500,
-    P: -200,
+    P: -100,
   };
   let consequence = (await fetchQuestAnswer()).AnswerAll;
   const conSqMap = consequence.map(
