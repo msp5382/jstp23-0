@@ -117,19 +117,19 @@ const calcConsq = (origin, action, time) => {
   let timeFac = 1;
 
   if (time.includes("M")) {
-    timeFac = 110;
+    timeFac = 110 / 2;
   } else if (time.includes("R")) {
-    timeFac = 50;
+    timeFac = 50 / 2;
   } else if (time.includes("D")) {
-    timeFac = 30;
+    timeFac = 30 / 2;
   } else if (time.includes("B")) {
-    timeFac = 20;
+    timeFac = 20 / 2;
   } else if (time.includes("V")) {
-    timeFac = 10;
+    timeFac = 10 / 2;
   }
 
   if (action === "-") {
-    return origin - timeFac * 1.8;
+    return origin - timeFac * 1.5;
   } else if (action.includes("0")) {
     return origin;
   } else if (action === "+") {
