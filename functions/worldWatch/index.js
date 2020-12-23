@@ -250,7 +250,7 @@ exports["world-data-watch"] = async (req, res) => {
     .doc("inspectedWorldData")
     .set({ s: conSqMap });
 
-  await db.collection("gameData").doc("worldData").set(originData);
+  //await db.collection("gameData").doc("worldData").set(originData);
 
   res.send(originData);
 };
