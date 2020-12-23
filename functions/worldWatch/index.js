@@ -129,7 +129,7 @@ const calcConsq = (origin, action, time) => {
   }
 
   if (action === "-") {
-    return origin - timeFac;
+    return origin - timeFac * 2;
   } else if (action.includes("0")) {
     return origin;
   } else if (action === "+") {
