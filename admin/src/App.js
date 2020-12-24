@@ -3,7 +3,9 @@ import fetchUsers, { setTime } from "./service/fetchUsers";
 const User = (u) => {
   const [time, setUTime] = useState(u?.meta?.subTime);
   return (
-    <div class="border-solid border border-white	p-2 m-2 rounded flex">
+    <div
+      class="border-solid border border-white	p-2 m-2 rounded flex"
+      onClick={() => (window.location = "/view_quest_answer?uid=" + u.id)}>
       <div class="w-1/2">
         <div className=" text-sm text-gray-500">{u.id}</div>
         <div className=" text-sm ">{u.data?.displayName}</div>
