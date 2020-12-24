@@ -40,19 +40,23 @@ const QuestAnswerR = (props) => {
             <img key={i} src={a} alt="attatchfile" />
           ))}
         </div>
-        <div class="flex mt-2 justify-end">
-          <button
-            onClick={() => setPassOrNot(true)}
-            class=" bg-teal-500 text-sm  hover:bg-teal-700 text-white font-bold py-1 px-2 rounded">
-            ผ่าน
-          </button>
+        {true ? (
+          <>{props.uname}</>
+        ) : (
+          <div class="flex mt-2 justify-end">
+            <button
+              onClick={() => setPassOrNot(true)}
+              class=" bg-teal-500 text-sm  hover:bg-teal-700 text-white font-bold py-1 px-2 rounded">
+              ผ่าน
+            </button>
 
-          <button
-            onClick={() => setPassOrNot(false)}
-            class=" bg-red-500 text-sm ml-2 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
-            ไม่ผ่าน
-          </button>
-        </div>
+            <button
+              onClick={() => setPassOrNot(false)}
+              class=" bg-red-500 text-sm ml-2 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+              ไม่ผ่าน
+            </button>
+          </div>
+        )}
       </div>
     );
   } else {
@@ -72,16 +76,23 @@ export default (props) => {
       const fetched = await fetchQuestAnswer();
       console.log(fetched);
       ///const marked = await readAnswerSet();
-      readAnswerSetRealTime((marked) => {
-        setAnswer(
-          filterChecked
-            ? fetched.QuestAnswerAll.filter(
-                (a) => !marked.includes(a.quest_answer_id)
-              )
-            : fetched.QuestAnswerAll
+      // Turn off due to P va need data
+      // readAnswerSetRealTime((marked) => {
+      //   setAnswer(
+      //     filterChecked
+      //       ? fetched.QuestAnswerAll.filter(
+      //           (a) => !marked.includes(a.quest_answer_id)
+      //         )
+      //       : fetched.QuestAnswerAll
+      //   );
+      // });
+      if (props.params.uid) {
+        setQuestAnswer(
+          fetched.QuestAnswerAll.filter((q) => q.id === props.params.uid)
         );
-      });
-      setQuestAnswer(fetched.AnswerAll);
+      } else {
+        setQuestAnswer(fetched.QuestAnswerAll);
+      }
     })();
   }, [filterChecked]);
 
@@ -97,10 +108,15 @@ export default (props) => {
           class="bg-indigo-300 mr-3 hover:bg-indigo-700 text-black mb-3 font-bold py-2 px-4 rounded">
           {filterChecked ? "view all answer" : "view only new answer"}
         </button>
-        {answer?.map((d, i) => (
+
+        {questAnswer?.map((
+          d,
+          i // Change to quest answer
+        ) => (
           <QuestAnswerR
             key={i}
             q={d}
+            uname={d.name}
             checked={(isPass, quest_answer_id) =>
               setAnswer(
                 answer.filter((a) => a.quest_answer_id !== quest_answer_id)
